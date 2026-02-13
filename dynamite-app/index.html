@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>장소만들기 국제포럼</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
+    <style>
+        :root { --primary-blue: #003399; --accent-yellow: #FFDD00; --action-red: #FF3300; --white: #ffffff; --bg-gray: #f5f5f5; --admin-bg: #1a1a1a; }
+        * { box-sizing: border-box; font-family: 'Pretendard', sans-serif; }
+        body { margin: 0; padding: 0; background-color: var(--primary-blue); color: var(--white); overflow-x: hidden; padding-bottom: 80px; }
+        .container { max-width: 480px; margin: 0 auto; min-height: 100vh; position: relative; }
+        .hidden { display: none !important; }
+        
+        .btn { width: 100%; padding: 16px; border: none; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.1s; }
+        .btn:active { transform: scale(0.98); }
+        .btn-primary { background: var(--accent-yellow); color: var(--primary-blue); }
+        .btn-red { background: var(--action-red); color: white; }
+        .btn-dark { background: #333; color: white; border: 1px solid #555; }
+        .btn-green { background: #2ecc71; color: white; } 
+        .btn-purple { background: #9b59b6; color: white; }
+        .btn-small { padding: 10px; font-size: 14px; width: auto; flex: 1; }
+
+        .input-box { width: 100%; padding: 15px; margin-bottom: 10px; border-radius: 8px; border: 2px solid var(--accent-yellow); background: transparent; color: white; font-size: 16px; }
+        .tag-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+        .tag-item { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); padding: 12px; border-radius: 8px; text-align: center; font-size: 13px; cursor: pointer; }
+        .tag-item.selected { background: var(--action-red); border-color: var(--action-red); font-weight: bold; }
+        .section-label { font-size: 14px; color: var(--accent-yellow); margin-top: 25px; display: block; }
+
+        .match-card { background: white; color: #333; border-radius: 16px; padding: 20px; margin: 15px 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); margin-bottom: 15px; position: relative; }
+        .match-badge { position: absolute; top: 15px; right: 15px; font-size: 12px; font-weight: bold; padding: 4px 8px; border-radius: 8px; }
+        .badge-perfect { background: #ff0055; color: white; }
+        .badge-good { background: #2ecc71; color: white; }
+        .match-tags span { background: #eee; padding: 4px 8px; border-radius: 4px; font-size: 11px; color: #555; margin-right: 4px; display: inline-block; margin-bottom: 4px;}
+        .match-tags .highlight { background: var(--primary-blue); color: var(--accent-yellow); font-weight: bold; }
+
+        #page-login, #page-qr { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; padding: 20px; text-align: center; position: relative; }
+        #page-input, #page-home, #page-match, #page-talk, #page-admin, #page-survey { padding: 20px; padding-bottom: 100px; display: block; }
+        
+        .guide-section { background: rgba(255,255,255,0.1); border-radius: 16px; padding: 20px; margin: 15px 0; }
+        .timeline-item { display: flex; margin-bottom: 15px; }
+        .time { width: 90px; font-weight: bold; font-size:13px; color: var(--accent-yellow); } .event { flex: 1; opacity: 0.9; border-left: 2px solid var(--action-red); padding-left: 10px; font-size:13px; line-height: 1.4; }
+        
+        /* 연사 슬라이드 */
+        .speaker-container { display: flex; overflow-x: auto; gap: 10px; padding-bottom: 10px; scroll-snap-type: x mandatory; }
+        .speaker-card { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 15px; border-radius: 12px; min-width: 140px; scroll-snap-align: start; text-align: left; }
+        .speaker-org { font-size: 11px; color: var(--accent-yellow); margin-bottom: 4px; }
+        .speaker-name { font-weight: bold; font-size: 16px; }
+
+        .creator-signature { position: absolute; bottom: 20px; font-size: 11px; color: rgba(255,255,255,0.3); font-style: italic; }
+
+        .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px; }
+        .stat-box { background: #333; padding: 20px; border-radius: 12px; text-align: center; }
+        .stat-value { font-size: 28px; font-weight: bold; color: var(--white); }
+        .control-panel { background: #222; padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #444; }
+        #reader { width: 100%; background: black; border-radius: 10px; margin-top: 10px; display: none; }
+        #scan-result { margin-top: 10px; font-weight: bold; color: var(--accent-yellow); text-align: center; min-height: 24px;}
+        .manual-checkin-box { background: #444; padding: 15px; border-radius: 8px; margin-top: 20px; border: 1px dashed #666; }
+        .manual-input { width: 70%; padding: 10px; border-radius: 5px; border: none; font-size: 14px; }
+        .lucky-draw-box { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 15px; margin-top: 20px; text-align: center; border: 2px solid #fff; }
+        #winner-display { font-size: 30px; font-weight: bold; color: var(--accent-yellow); margin: 20px 0; min-height: 40px; text-shadow: 2px 2px 0 #000; }
+        .admin-qa-list { background: #333; padding: 10px; border-radius: 8px; height: 200px; overflow-y: auto; }
+        .chat-box { height: 400px; background: rgba(255,255,255,0.9); border-radius: 16px; padding: 15px; overflow-y: auto; margin: 20px; color: #333; }
+        .chat-msg { background: white; padding: 8px 12px; border-radius: 10px; margin-bottom: 8px; font-size: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); color:#333; }
+        #big-screen-mode { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: black; color: white; z-index: 9999; padding: 40px; overflow-y: hidden; display: flex; flex-direction: column; }
+        .big-title { font-size: 40px; font-weight: bold; color: var(--accent-yellow); margin-bottom: 30px; text-align: center; border-bottom: 3px solid var(--action-red); padding-bottom: 20px; }
+        .big-qa-list { flex: 1; overflow-y: auto; padding: 20px; }
+        .big-qa-item { background: #222; padding: 25px; margin-bottom: 20px; border-radius: 15px; font-size: 28px; line-height: 1.4; border-left: 8px solid var(--primary-blue); }
+        .close-big-btn { position: absolute; top: 20px; right: 20px; font-size: 20px; background: transparent; border: 1px solid #555; color: #555; cursor: pointer; }
+
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; max-width: 480px; height: 65px; background: #001a4d; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid rgba(255,255,255,0.1); z-index: 1000; box-shadow: 0 -2px 10px rgba(0,0,0,0.3); }
+        .nav-item { font-size: 11px; color: rgba(255,255,255,0.5); text-align: center; cursor: pointer; flex: 1; display:flex; flex-direction: column; gap:4px; }
+        .nav-item.active { color: var(--accent-yellow); font-weight: bold; }
+        .loader { border: 4px solid #f3f3f3; border-top: 4px solid var(--action-red); border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; display: inline-block; vertical-align: middle; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        #match-modal { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index: 2000; display: flex; align-items: center; justify-content: center; }
+        .modal-content { background: white; color: black; padding: 30px; border-radius: 20px; text-align: center; width: 80%; max-width: 350px; }
+
+        /* 주최주관 푸터 */
+        .footer-info { margin-top: 40px; padding: 20px; background: rgba(0,0,0,0.2); border-radius: 12px; font-size: 11px; color: rgba(255,255,255,0.6); line-height: 1.6; text-align: center; word-break: keep-all; }
+        .footer-info b { color: rgba(255,255,255,0.8); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    
+    <div id="page-login">
+        <div style="margin-top:40px; text-align:center;">
+            <div style="font-size:26px; color:var(--accent-yellow); font-weight:900; margin-bottom:12px; line-height:1.3; word-break:keep-all;">충주진로 한-영<br>장소만들기 국제포럼</div>
+            <h1 style="font-size:20px; font-style:italic; text-shadow:2px 2px 0 var(--action-red); margin:0; line-height:1;">DYNAMITE</h1>
+        </div>
+        <div style="width:100%; margin-top:60px;">
+            <input type="text" id="userName" class="input-box" placeholder="이름 (실명 입력)">
+            <input type="text" id="userOrg" class="input-box" placeholder="소속 (기관, 기업명 등)">
+            <input type="tel" id="userPhone" class="input-box" placeholder="전화번호 (숫자만 입력)">
+            <button class="btn btn-primary" onclick="checkLogin()" id="btn-login">입장하기 🚀</button>
+        </div>
+        <div class="creator-signature">Designed & Directed by 곤드레</div>
+    </div>
+
+    <div id="page-input" class="hidden">
+        <h3>프로필 설정</h3>
+        <p style="font-size:12px; color:#aaa;">* 실제 매칭에 사용될 정보입니다.</p>
+        <label class="section-label">1. 활동 분야 (1개 선택)</label>
+        <div class="tag-grid" id="grid-category">
+            <div class="tag-item" onclick="selectSingle(this)">F&B/제조</div>
+            <div class="tag-item" onclick="selectSingle(this)">공간/스테이</div>
+            <div class="tag-item" onclick="selectSingle(this)">공예/디자인</div>
+            <div class="tag-item" onclick="selectSingle(this)">콘텐츠/미디어</div>
+        </div>
+        <label class="section-label">2. Give (최대 2개)</label>
+        <div class="tag-grid" id="grid-give">
+            <div class="tag-item" onclick="selectMulti(this)">공간 제공</div>
+            <div class="tag-item" onclick="selectMulti(this)">상품/제품</div>
+            <div class="tag-item" onclick="selectMulti(this)">홍보/마케팅</div>
+            <div class="tag-item" onclick="selectMulti(this)">판매 채널</div>
+            <div class="tag-item" onclick="selectMulti(this)">운영 노하우</div>
+            <div class="tag-item" onclick="selectMulti(this)">단순 네트워킹</div>
+        </div>
+        <label class="section-label">3. Get (최대 2개)</label>
+        <div class="tag-grid" id="grid-get">
+            <div class="tag-item" onclick="selectMulti(this)">공간 제공</div>
+            <div class="tag-item" onclick="selectMulti(this)">상품/제품</div>
+            <div class="tag-item" onclick="selectMulti(this)">홍보/마케팅</div>
+            <div class="tag-item" onclick="selectMulti(this)">판매 채널</div>
+            <div class="tag-item" onclick="selectMulti(this)">운영 노하우</div>
+            <div class="tag-item" onclick="selectMulti(this)">단순 네트워킹</div>
+        </div>
+        <button class="btn btn-primary" onclick="completeSignup()" id="btn-signup"><span>완료 및 저장 ✨</span></button>
+    </div>
+
+    <div id="page-home" class="hidden">
+        <div class="main-header" style="display:flex; justify-content:space-between; align-items:flex-start;">
+            <div>
+                <div style="font-size:22px; color:var(--accent-yellow); font-weight:bold; line-height:1.2; margin-bottom:5px;">충주진로 한-영<br>장소만들기 국제포럼</div>
+                <h2 style="margin:0; font-size:14px; font-style:italic; opacity:0.8;">DYNAMITE</h2>
+            </div>
+            <button onclick="logout()" style="background:transparent; border:1px solid rgba(255,255,255,0.3); color:white; padding:5px 10px; border-radius:5px; font-size:12px;">로그아웃</button>
+        </div>
+        
+        <div style="padding:0 20px;">
+            <h4 style="margin:25px 0 10px 0;">📅 행사 개요</h4>
+            <div class="guide-section">
+                <div class="timeline-item"><div class="time">일시</div><div class="event">2026. 2. 25(수)<br>09:30 ~ 12:00</div></div>
+                <div class="timeline-item"><div class="time">장소</div><div class="event">건국대학교 글로컬캠퍼스<br>중원도서관 숨스퀘어</div></div>
+                <div class="timeline-item"><div class="time">참가대상</div><div class="event">도시재생 로컬크리에이터 및 충주시민 100명</div></div>
+            </div>
+
+            <h4 style="margin:25px 0 10px 0;">🎙️ 주요 연사</h4>
+            <div class="speaker-container">
+                <div class="speaker-card">
+                    <div class="speaker-org">주한영국문화원</div>
+                    <div class="speaker-name">사라 데브롤</div>
+                </div>
+                <div class="speaker-card">
+                    <div class="speaker-org">주한영국문화원</div>
+                    <div class="speaker-name">박영조 원장</div>
+                </div>
+                <div class="speaker-card">
+                    <div class="speaker-org">MadLab</div>
+                    <div class="speaker-name">레이첼 터너</div>
+                </div>
+                <div class="speaker-card">
+                    <div class="speaker-org">MadLab</div>
+                    <div class="speaker-name">아사 칼로우</div>
+                </div>
+                <div class="speaker-card">
+                    <div class="speaker-org">Innovate UK</div>
+                    <div class="speaker-name">제임스 휠</div>
+                </div>
+                <div class="speaker-card">
+                    <div class="speaker-org">지역문화정책전문가</div>
+                    <div class="speaker-name">노나 헌터</div>
+                </div>
+            </div>
+            
+            <h4 style="margin:25px 0 10px 0;">🗺️ 오시는 길</h4>
+            <button class="btn btn-dark" style="margin-bottom:20px; font-weight:normal;" onclick="window.open('https://map.kakao.com/link/search/건국대학교글로컬캠퍼스중원도서관')">
+                📍 중원도서관 숨스퀘어 <b style="color:var(--accent-yellow)">(지도보기)</b>
+            </button>
+
+            <h4 style="margin:25px 0 10px 0;">📂 자료실</h4>
+            <button class="btn btn-dark" style="font-weight:normal;" onclick="alert('준비 중입니다.')">📄 [포럼 자료집] 다운로드</button>
+
+            <div class="footer-info">
+                <b>주최·주관</b><br>충주시, 충주문화관광재단 문화도시센터<br><br>
+                <b>공동주관</b><br>주한영국문화원, 충북창조경제혁신센터, 충주시청년센터
+            </div>
+        </div>
+    </div>
+
+    <div id="page-match" class="hidden">
+        <div class="main-header" style="margin-bottom:10px;">
+            <h2 style="margin:0;">참가자 네트워킹 👥</h2>
+            <div style="font-size:12px; opacity:0.8;">Give & Get 기반 맞춤 추천</div>
+        </div>
+        <div style="padding:0 20px;">
+            <h3><span id="display-name" style="color:var(--accent-yellow)">OOO</span>님을 위한 추천</h3>
+            <p style="font-size:12px; opacity:0.7;">* 매칭을 수락하면 서로의 연락처가 공개됩니다.</p>
+            <div id="matching-list">
+                <div style="text-align:center; margin-top:50px;"><div class="loader"></div> <br>참가자 분석 중...</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-talk" class="hidden">
+        <h3 style="margin-bottom:5px;">💬 실시간 Q&A</h3>
+        <p style="font-size:12px; opacity:0.7; margin-top:0;">연사에게 궁금한 점을 남겨주세요.</p>
+        <div class="chat-box" id="qa-board"><div style="color:#999; text-align:center; margin-top:20px;">첫 질문을 남겨보세요!</div></div>
+        <div style="display:flex; gap:10px; margin-top:10px;">
+            <input type="text" id="chatInput" class="input-box" style="margin:0; background:rgba(255,255,255,0.2);" placeholder="질문 입력...">
+            <button class="btn btn-primary" style="width:80px; margin:0;" onclick="postQuestion()">등록</button>
+        </div>
+    </div>
+
+    <div id="page-qr" class="hidden">
+        <div class="qr-card">
+            <h3>DYNAMITE PASS</h3>
+            <div id="qrcode"></div>
+            <div style="margin-top:15px; font-weight:bold; color:var(--primary-blue);">
+                <span id="qr-name">이름</span>
+            </div>
+            <p style="font-size:12px; color:#666; margin-top:20px;">행사장 입구에서 QR코드를 제시해 주세요.</p>
+        </div>
+    </div>
+
+    <div id="page-survey" class="hidden">
+        <h3>📝 만족도 조사</h3>
+        <p style="font-size:12px; opacity:0.7;">포럼에 대한 소중한 의견을 남겨주세요.</p>
+        <div style="margin:20px 0;">
+            <label class="section-label">전반적인 만족도</label>
+            <select id="survey-score" class="input-box" style="background:#002266; margin-top:5px;">
+                <option value="5">⭐⭐⭐⭐⭐ (매우 만족)</option>
+                <option value="4">⭐⭐⭐⭐ (만족)</option>
+                <option value="3">⭐⭐⭐ (보통)</option>
+                <option value="2">⭐⭐ (아쉬움)</option>
+                <option value="1">⭐ (별로)</option>
+            </select>
+        </div>
+        <label class="section-label">가장 좋았던 점이나 아쉬운 점</label>
+        <input type="text" id="survey-comment" class="input-box" placeholder="자유롭게 남겨주세요">
+        <button class="btn btn-primary" onclick="submitSurvey()">제출하기 📨</button>
+    </div>
+
+    <div id="page-admin" class="hidden" style="background:var(--admin-bg);">
+        <div class="admin-header"><h3>ADMIN</h3><button onclick="logout()" style="background:#555; color:white; border:none;">로그아웃</button></div>
+        <div class="dashboard-grid">
+            <div class="stat-box"><div style="font-size:12px; color:#aaa;">입장객</div><div class="stat-value" style="color:var(--accent-yellow)" id="visitor-count">0</div></div>
+            <div class="stat-box"><div style="font-size:12px; color:#aaa;">매칭</div><div class="stat-value" style="color:#00d2ff" id="match-count">0</div></div>
+        </div>
+        <button class="btn btn-primary" style="margin-bottom:20px;" onclick="openBigScreen()">🖥️ 전광판 모드</button>
+        <div class="control-panel">
+            <div style="font-weight:bold; color:var(--action-red);">📡 스캐너</div>
+            <div id="reader"></div><div id="scan-result" class="hidden">대기...</div>
+            <button class="btn btn-primary" id="btn-start-scan" onclick="startScanner()">📷 스캔</button>
+            <button class="btn btn-red hidden" id="btn-stop-scan" onclick="stopScanner()">⏹ 종료</button>
+            <div class="manual-checkin-box" style="display:flex; gap:10px;">
+                <input type="text" id="manualInput" class="manual-input" placeholder="이름">
+                <button class="btn btn-dark btn-small" onclick="manualCheckIn()">확인</button>
+            </div>
+        </div>
+        <div class="lucky-draw-box"><h3>🎁 추첨</h3><div id="winner-display">?</div><button class="btn btn-purple" onclick="startLuckyDraw()">🎲 시작</button></div>
+        <div class="control-panel"><div class="admin-qa-list" id="admin-qa-feed"></div><button class="btn btn-dark" onclick="fetchQuestions()">🔄</button></div>
+    </div>
+
+    <div id="big-screen-mode" class="hidden">
+        <button class="close-big-btn" onclick="closeBigScreen()">X</button>
+        <div class="big-title">💬 실시간 Q&A</div>
+        <div class="big-qa-list" id="big-qa-feed"></div>
+    </div>
+
+    <div class="bottom-nav hidden" id="bottom-nav">
+        <div class="nav-item active" onclick="switchTab('home', this)"><span>🏠</span><span>홈</span></div>
+        <div class="nav-item" onclick="switchTab('match', this)"><span>👥</span><span>매칭</span></div>
+        <div class="nav-item" onclick="switchTab('talk', this)"><span>💬</span><span>소통</span></div>
+        <div class="nav-item" onclick="switchTab('qr', this)"><span>🎫</span><span>티켓</span></div>
+        <div class="nav-item" onclick="switchTab('survey', this)"><span>📝</span><span>설문</span></div>
+    </div>
+
+    <div id="match-modal" class="hidden">
+        <div class="modal-content">
+            <h3 style="color:#003399;">💌 대화 요청</h3>
+            <p id="modal-msg" style="margin:20px 0;"><b>OOO</b>님이 네트워킹을 신청했습니다.</p>
+            <div style="display:flex; gap:10px;">
+                <button class="btn btn-dark" style="margin:0;" onclick="respondMatch(false)">거절</button>
+                <button class="btn btn-primary" style="margin:0;" onclick="respondMatch(true)">수락</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // ★ 기획자님의 구글 웹앱 주소! (그대로 둡니다)
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzkvAVkT_hvjSe9ZZI5QXngMW5OKAjWB8jL9dH8LkL6Y1ZGgechfm1QHx_sufUR6-FaQw/exec"; 
+
+    // 전화번호 0 제거 함수 (앱에서도 제거해서 보냄)
+    function normalizePhoneLocal(phone) {
+        if (!phone) return "";
+        let p = String(phone).replace(/[^0-9]/g, "").trim();
+        if (p.startsWith("0")) p = p.substring(1);
+        return p;
+    }
+
+    let userData = { name: "", org: "", phone: "", category: "", give: "", get: "", role: "user" };
+    let realUserList = []; 
+    let scannedUsers = [];
+    let currentRequester = ""; 
+    let matchedPartners = {}; 
+
+    window.onload = function() {
+        const savedUser = localStorage.getItem('dynamite_user');
+        if (savedUser) {
+            userData = JSON.parse(savedUser);
+            if (userData.role === 'admin') {
+                showPage('admin');
+                setInterval(fetchStats, 5000); 
+                setInterval(fetchQuestions, 3000);
+            } else {
+                initUserMode();
+            }
+        }
+    };
+
+    function logout() { localStorage.removeItem('dynamite_user'); location.reload(); }
+
+    function checkLogin() {
+        const name = document.getElementById('userName').value.trim();
+        const org = document.getElementById('userOrg').value.trim();
+        const rawPhone = document.getElementById('userPhone').value;
+        const phone = normalizePhoneLocal(rawPhone); // [수정] 앱에서도 0 떼고 비교
+
+        if(!name || !phone) { alert('이름과 전화번호를 정확히 입력해주세요!'); return; }
+        userData = { name, org, phone };
+
+        if(name === 'admin') {
+            userData.role = 'admin';
+            localStorage.setItem('dynamite_user', JSON.stringify(userData));
+            showPage('admin');
+            setInterval(fetchStats, 5000);
+            setInterval(fetchQuestions, 3000); 
+            return;
+        }
+
+        const btn = document.getElementById('btn-login');
+        btn.innerHTML = '<div class="loader"></div> 확인 중...';
+        btn.disabled = true;
+
+        const timeoutPromise = new Promise((resolve, reject) => {
+            setTimeout(() => reject("Timeout"), 3000); 
+        });
+
+        const fetchPromise = fetch(GOOGLE_SCRIPT_URL + "?action=get_users")
+            .then(res => res.json());
+
+        Promise.race([fetchPromise, timeoutPromise])
+        .then(users => {
+            const found = users.find(u => u.name === name && u.phone === phone);
+            if (found) {
+                userData = { ...userData, ...found }; 
+                localStorage.setItem('dynamite_user', JSON.stringify(userData));
+                initUserMode();
+            } else {
+                showPage('input');
+            }
+        })
+        .catch(err => {
+            console.log("서버 지연 -> 강제 이동");
+            showPage('input');
+        });
+    }
+
+    function selectSingle(el) { Array.from(el.parentElement.children).forEach(c => c.classList.remove('selected')); el.classList.add('selected'); }
+    function selectMulti(el) {
+        const parent = el.parentElement;
+        const selectedCount = parent.querySelectorAll('.selected').length;
+        if(el.classList.contains('selected')) { el.classList.remove('selected'); } else { if(selectedCount >= 2) { alert('최대 2개까지만 선택 가능합니다!'); return; } el.classList.add('selected'); }
+    }
+
+    function completeSignup() {
+        const category = document.querySelector('#grid-category .selected')?.innerText || "";
+        if(!category) { alert("활동 분야를 선택해주세요!"); return; }
+        userData.category = category;
+
+        const btn = document.getElementById('btn-signup');
+        btn.innerHTML = '<div class="loader"></div> 저장 중...';
+        btn.disabled = true;
+
+        const gives = Array.from(document.querySelectorAll('#grid-give .selected')).map(el => el.innerText);
+        const gets = Array.from(document.querySelectorAll('#grid-get .selected')).map(el => el.innerText);
+        userData.give = gives.join(', ');
+        userData.get = gets.join(', ');
+
+        const dataPayload = { action: "signup", name: userData.name, org: userData.org, phone: userData.phone, category: category, give: gives, get: gets };
+
+        fetch(GOOGLE_SCRIPT_URL, {
+            method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain" }, body: JSON.stringify(dataPayload)
+        }).then(() => {
+            alert("✅ 입장 완료!");
+            localStorage.setItem('dynamite_user', JSON.stringify(userData));
+            initUserMode();
+        }).catch(() => {
+            localStorage.setItem('dynamite_user', JSON.stringify(userData));
+            initUserMode();
+        });
+    }
+
+    function initUserMode() {
+        document.getElementById('display-name').innerText = userData.name;
+        document.getElementById('qr-name').innerText = userData.name;
+        new QRCode(document.getElementById("qrcode"), { text: `USER:${userData.name}`, width: 150, height: 150 });
+
+        showPage('home');
+        document.getElementById('bottom-nav').classList.remove('hidden');
+
+        fetchMyMatches().then(() => {
+            fetchRealUsers();
+            setInterval(pollMatchStatus, 5000); 
+        });
+    }
+
+    function showPage(pageId) {
+        const pages = ['page-login', 'page-input', 'page-home', 'page-match', 'page-guide', 'page-talk', 'page-qr', 'page-survey', 'page-admin'];
+        pages.forEach(id => {
+            const el = document.getElementById(id);
+            if(el) el.classList.add('hidden');
+        });
+        const target = document.getElementById('page-' + pageId);
+        if(target) target.classList.remove('hidden');
+    }
+
+    function switchTab(tab, el) {
+        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+        if(el) el.classList.add('active');
+        showPage(tab);
+    }
+
+    function fetchMyMatches() {
+        return fetch(GOOGLE_SCRIPT_URL + `?action=get_my_matches&name=${userData.name}`)
+        .then(res => res.json())
+        .then(data => {
+            data.forEach(m => { matchedPartners[m.name] = m.phone; });
+        })
+        .catch(e => console.log(e));
+    }
+
+    function fetchRealUsers() {
+        fetch(GOOGLE_SCRIPT_URL + "?action=get_users").then(res => res.json()).then(data => { realUserList = data; renderMatchingList(); });
+    }
+
+    function renderMatchingList() {
+        const listDiv = document.getElementById('matching-list');
+        
+        // [추가] 내 출석 상태 확인 (출석 안 했으면 리스트 안 보여줌)
+        const me = realUserList.find(u => u.name === userData.name && u.phone === userData.phone);
+        if (!me || !String(me.status).includes("출석완료")) {
+            listDiv.innerHTML = `
+                <div style="text-align:center; padding:40px 10px; background:rgba(0,0,0,0.2); border-radius:12px; margin-top:20px;">
+                    <div style="font-size:30px; margin-bottom:10px;">🛑</div>
+                    <h3 style="color:var(--action-red); margin-top:0;">현장 출석 확인 필요</h3>
+                    <p style="font-size:13px; color:#ddd; line-height:1.5;">행사 당일 안내데스크에서<br><b>QR 출석체크</b>를 완료하신 참가자만<br>네트워킹 매칭 기능을 이용할 수 있습니다.</p>
+                </div>
+            `;
+            return;
+        }
+
+        // [추가] 나를 제외하고 '출석완료'된 사람만 필터링
+        const others = realUserList.filter(u => u.name !== userData.name && String(u.status).includes("출석완료"));
+        
+        if (others.length === 0) { listDiv.innerHTML = "<p style='text-align:center; margin-top:50px; opacity:0.6;'>현재 출석한 다른 참가자가 없습니다.</p>"; return; }
+
+        const myGive = userData.give.split(', ').filter(x => x);
+        const myGet = userData.get.split(', ').filter(x => x);
+
+        const sortedUsers = others.map(u => {
+            const theirGive = u.give ? u.give.split(', ') : [];
+            const theirGet = u.get ? u.get.split(', ') : [];
+            const iGiveTheyWantCount = myGive.filter(x => theirGet.includes(x)).length;
+            const theyGiveIWantCount = theirGive.filter(x => myGet.includes(x)).length;
+            
+            let score = 0, badge = "", matchType = ""; 
+            if (iGiveTheyWantCount > 0 && theyGiveIWantCount > 0) {
+                score = 100 + iGiveTheyWantCount + theyGiveIWantCount;
+                badge = `<div class="match-badge badge-perfect">🔥 천생연분</div>`;
+                matchType = "perfect";
+            } else if (theyGiveIWantCount > 0) {
+                score = 50 + theyGiveIWantCount;
+                badge = `<div class="match-badge badge-good">✨ 추천</div>`;
+                matchType = "good";
+            }
+            score += Math.random(); 
+            return { ...u, score, badge, matchType, iGiveTheyWantCount, theyGiveIWantCount };
+        }).filter(u => u.score > 10).sort((a, b) => b.score - a.score); 
+
+        const displayUsers = sortedUsers.slice(0, 2);
+
+        listDiv.innerHTML = displayUsers.map(u => {
+            const isMatched = matchedPartners[u.name];
+            const btnHtml = isMatched 
+                ? `<button class="btn btn-green" style="margin-top:10px;">📞 0${isMatched}</button>`
+                : `<button class="btn btn-red" style="margin-top:10px;" onclick="requestMatch('${u.name}')">💌 대화 요청 보내기</button>`;
+
+            return `
+            <div class="match-card">
+                ${u.badge}
+                <div style="font-weight:bold; font-size:18px;">${u.name} <span style="font-size:12px; color:#666;">| ${u.org}</span></div>
+                <div style="font-size:12px; color:#666; margin:5px 0;">${u.category}</div>
+                <div class="match-tags" style="margin-top:8px;">
+                    ${u.matchType === 'perfect' ? `<span class="highlight" style="background:#fff0f5; color:#ff0055;">❤️ 서로 니즈 일치</span>` : ''}
+                    <span class="highlight">GIVE: ${u.give}</span>
+                </div>
+                <div id="btn-area-${u.name}">${btnHtml}</div>
+            </div>`;
+        }).join('');
+    }
+
+    function requestMatch(targetName) {
+        if(!confirm(`${targetName}님에게 네트워킹을 요청할까요?`)) return;
+        fetch(GOOGLE_SCRIPT_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain" }, body: JSON.stringify({ action: "request_match", sender: userData.name, receiver: targetName }) }).then(() => alert("요청을 보냈습니다!"));
+    }
+
+    function pollMatchStatus() {
+        fetch(GOOGLE_SCRIPT_URL + `?action=poll_match&name=${userData.name}`)
+        .then(res => res.json())
+        .then(data => {
+            if (data.incoming) {
+                currentRequester = data.incoming;
+                document.getElementById('modal-msg').innerHTML = `<b>${currentRequester}</b>님이 네트워킹을 신청했습니다.`;
+                document.getElementById('match-modal').classList.remove('hidden');
+            }
+            if (data.accepted) {
+                const partner = data.accepted;
+                alert(`🎉 매칭 성공!\n\n${partner.name}님의 연락처:\n0${partner.phone}`);
+                matchedPartners[partner.name] = partner.phone; 
+                renderMatchingList(); 
+            }
+        });
+    }
+
+    function respondMatch(isAccepted) {
+        const response = isAccepted ? "accepted" : "rejected";
+        document.getElementById('match-modal').classList.add('hidden');
+        if (isAccepted) {
+            const partner = realUserList.find(u => u.name === currentRequester);
+            if(partner) {
+                alert(`매칭되었습니다!\n상대방(${partner.name}) 연락처: 0${partner.phone}`);
+                matchedPartners[partner.name] = partner.phone;
+                renderMatchingList();
+            }
+        }
+        fetch(GOOGLE_SCRIPT_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain" }, body: JSON.stringify({ action: "respond_match", sender: currentRequester, receiver: userData.name, response: response }) });
+    }
+
+    function postQuestion() {
+        const input = document.getElementById('chatInput');
+        if(!input.value) return;
+        const board = document.getElementById('qa-board');
+        board.innerHTML += `<div class="chat-msg"><b>${userData.name}:</b> ${input.value}</div>`;
+        fetch(GOOGLE_SCRIPT_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain" }, body: JSON.stringify({ action: "ask", name: userData.name, question: input.value }) }).then(() => input.value = '');
+    }
+    function fetchQuestions() {
+        fetch(GOOGLE_SCRIPT_URL + "?action=get_questions").then(res => res.json()).then(data => {
+            const feed = document.getElementById('admin-qa-feed'); const bigFeed = document.getElementById('big-qa-feed');
+            if(data.length === 0) { feed.innerHTML = "<div style='padding:10px; color:#aaa;'>등록된 질문이 없습니다.</div>"; return; }
+            feed.innerHTML = data.reverse().map(q => `<div style="background:#444; padding:10px; margin-bottom:5px; border-radius:5px; font-size:14px;"><span style="color:var(--accent-yellow)">[${q.name}]</span> ${q.text}</div>`).join('');
+            bigFeed.innerHTML = data.map(q => `<div class="big-qa-item"><span class="big-qa-author">[${q.name}]:</span><br>${q.text}</div>`).join('');
+        });
+    }
+    function fetchStats() {
+        fetch(GOOGLE_SCRIPT_URL + "?action=get_stats").then(res => res.json()).then(data => {
+            if(data.visitors !== undefined) document.getElementById('visitor-count').innerText = data.visitors;
+            if(data.matches !== undefined) document.getElementById('match-count').innerText = data.matches;
+        });
+    }
+    function submitSurvey() {
+        const score = document.getElementById('survey-score').value;
+        const comment = document.getElementById('survey-comment').value;
+        fetch(GOOGLE_SCRIPT_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain" }, body: JSON.stringify({ action: "survey", name: userData.name, score: score, comment: comment }) }).then(() => { alert("소중한 의견 감사합니다."); document.getElementById('survey-comment').value = ""; });
+    }
+    function openBigScreen() { document.getElementById('big-screen-mode').classList.remove('hidden'); }
+    function closeBigScreen() { document.getElementById('big-screen-mode').classList.add('hidden'); }
+    
+    let html5QrCode;
+    let visitorCount = 0;
+    function startScanner() {
+        document.getElementById('reader').style.display = 'block';
+        document.getElementById('btn-start-scan').classList.add('hidden');
+        html5QrCode = new Html5Qrcode("reader");
+        html5QrCode.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (decodedText) => { if(decodedText.startsWith("USER:")) processCheckIn(decodedText.split(":")[1]); }).then(() => document.getElementById('btn-stop-scan').classList.remove('hidden'));
+    }
+    function stopScanner() { if(html5QrCode) html5QrCode.stop().then(() => { document.getElementById('reader').style.display = 'none'; document.getElementById('btn-start-scan').classList.remove('hidden'); document.getElementById('btn-stop-scan').classList.add('hidden'); }); }
+    function manualCheckIn() { const name = document.getElementById('manualInput').value; if(name) { processCheckIn(name); document.getElementById('manualInput').value = ""; } }
+    
+    function processCheckIn(name) {
+        document.getElementById('scan-result').innerHTML = `⏳ <b>${name}</b> 확인 중...`;
+        fetch(GOOGLE_SCRIPT_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain" }, body: JSON.stringify({ action: "checkin", name: name }) }).then(() => { 
+            document.getElementById('scan-result').innerHTML = `🎉 <b>${name}</b> 완료!`;
+            const currentCount = parseInt(document.getElementById('visitor-count').innerText) || 0;
+            document.getElementById('visitor-count').innerText = currentCount + 1;
+            if(html5QrCode) { html5QrCode.pause(); setTimeout(() => { html5QrCode.resume(); }, 2000); } 
+        });
+    }
+    function startLuckyDraw() { if(scannedUsers.length === 0 && realUserList.length > 0) scannedUsers = realUserList.map(u=>u.name); if(scannedUsers.length === 0) { alert("출석한 인원이 없습니다."); return; } const display = document.getElementById('winner-display'); let count = 0; const interval = setInterval(() => { display.innerText = scannedUsers[Math.floor(Math.random() * scannedUsers.length)]; if(++count > 20) { clearInterval(interval); const winner = scannedUsers[Math.floor(Math.random() * scannedUsers.length)]; display.innerText = "🎉 " + winner + " 🎉"; confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } }); } }, 100); }
+</script>
+
+</body>
+</html>
