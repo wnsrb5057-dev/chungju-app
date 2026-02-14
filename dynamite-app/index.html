@@ -627,9 +627,7 @@
         });
     }
     function startLuckyDraw() { if(scannedUsers.length === 0 && realUserList.length > 0) scannedUsers = realUserList.map(u=>u.name); if(scannedUsers.length === 0) { alert("출석한 인원이 없습니다."); return; } const display = document.getElementById('winner-display'); let count = 0; const interval = setInterval(() => { display.innerText = scannedUsers[Math.floor(Math.random() * scannedUsers.length)]; if(++count > 20) { clearInterval(interval); const winner = scannedUsers[Math.floor(Math.random() * scannedUsers.length)]; display.innerText = "🎉 " + winner + " 🎉"; confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } }); } }, 100); }
-</script>
-
-   // ▼▼▼ 이 코드를 script 맨 아래에 붙여넣어 보세요 (진단용) ▼▼▼
+ // ▼▼▼ 이 코드를 script 맨 아래에 붙여넣어 보세요 (진단용) ▼▼▼
 setTimeout(() => {
     const me = realUserList.find(u => u.name === userData.name && u.phone === userData.phone);
     if (!me) {
@@ -638,7 +636,7 @@ setTimeout(() => {
         alert("✅ 진단 결과:\n\n내 이름: " + me.name + "\n서버가 인식한 내 상태: [" + me.status + "]\n\n(여기에 '출석완료'가 안 보이면 서버 배포가 안 된 겁니다!)");
     }
 }, 5000); // 5초 뒤 진단 실행
+</script>
 
-    
 </body>
 </html>
