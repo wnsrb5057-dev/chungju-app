@@ -12,7 +12,7 @@
         :root { --primary-blue: #003399; --accent-yellow: #FFDD00; --action-red: #FF3300; --white: #ffffff; --bg-gray: #f5f5f5; --admin-bg: #1a1a1a; }
         * { box-sizing: border-box; font-family: 'Pretendard', sans-serif; }
         body { margin: 0; padding: 0; background-color: var(--primary-blue); color: var(--white); overflow-x: hidden; padding-bottom: 80px; }
-        .container { max-width: 480px; margin: 0 auto; min-height: 100vh; position: relative; }
+        .container { max-width: 480px; margin: 0 auto; min-height: 100vh; position: relative; padding-top: 10px; } /* 상단 여백 추가 */
         .hidden { display: none !important; }
         
         .btn { width: 100%; padding: 16px; border: none; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.1s; }
@@ -40,6 +40,9 @@
         #page-login, #page-qr { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; padding: 20px; text-align: center; position: relative; }
         #page-input, #page-home, #page-match, #page-talk, #page-admin, #page-survey { padding: 20px; padding-bottom: 100px; display: block; }
         
+        /* [수정] 헤더가 한/영 버튼과 겹치지 않게 여백 추가 */
+        .main-header { display: flex; justify-content: space-between; align-items: flex-start; padding-top: 30px; margin-bottom: 10px; }
+
         .guide-section { background: rgba(255,255,255,0.1); border-radius: 16px; padding: 20px; margin: 15px 0; }
         .timeline-item { display: flex; margin-bottom: 15px; }
         .time { width: 90px; font-weight: bold; font-size:13px; color: var(--accent-yellow); } .event { flex: 1; opacity: 0.9; border-left: 2px solid var(--action-red); padding-left: 10px; font-size:13px; line-height: 1.4; }
@@ -81,8 +84,8 @@
         .footer-info { margin-top: 40px; padding: 20px; background: rgba(0,0,0,0.2); border-radius: 12px; font-size: 11px; color: rgba(255,255,255,0.6); line-height: 1.6; text-align: center; word-break: keep-all; }
         .footer-info b { color: rgba(255,255,255,0.8); }
 
-        /* [NEW] 언어 변환 버튼 */
-        .lang-btn { position: absolute; top: 15px; right: 15px; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 5px 10px; border-radius: 20px; font-size: 12px; cursor: pointer; z-index: 100; }
+        /* [수정] 언어 변환 버튼을 왼쪽 상단으로 이동 */
+        .lang-btn { position: absolute; top: 15px; left: 15px; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 5px 10px; border-radius: 20px; font-size: 12px; cursor: pointer; z-index: 100; }
     </style>
 </head>
 <body>
@@ -155,7 +158,7 @@
     </div>
 
     <div id="page-home" class="hidden">
-        <div class="main-header" style="display:flex; justify-content:space-between; align-items:flex-start;">
+        <div class="main-header">
             <div>
                 <div id="t-home-title" style="font-size:22px; color:var(--accent-yellow); font-weight:bold; line-height:1.2; margin-bottom:5px;">충주진로 한-영<br>장소만들기 국제포럼</div>
                 <h2 style="margin:0; font-size:14px; font-style:italic; opacity:0.8;">DYNAMITE</h2>
@@ -590,7 +593,7 @@ END:VCARD`;
                 <div style="font-size:12px; color:#666; margin:5px 0;">${u.category}</div>
                 <div class="match-tags" style="margin-top:8px;">
                     ${u.matchType === 'perfect' ? `<span class="highlight" style="background:#fff0f5; color:#ff0055;">❤️ Match</span>` : ''}
-                    <span class="highlight">GIVE: ${u.give}</span>
+                    <span class="highlight">나눌 수 있는 것: ${u.give}</span>
                 </div>
                 <div id="btn-area-${u.name}">${btnHtml}</div>
             </div>`;
