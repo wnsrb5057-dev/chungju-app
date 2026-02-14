@@ -393,9 +393,9 @@
             "t-modal-title": "대화 요청", "btn-reject": "거절", "btn-accept": "수락",
             "btn-chat-send": "보내기",
             "t-host-label": "주최",
-            "t-host-desc": "충주시, (재)충주중원문화재단",
-            "t-cohost-label": "주관",
-            "t-cohost-desc": "주한영국문화원, 충북창조경제혁신센터, 충주시청소년수련원"
+            "t-host-desc": "충주시, 충주문화관광재단 문화도시센터", // [수정] 주최 변경
+            "t-cohost-label": "공동주관", // [수정] 공동주관으로 변경
+            "t-cohost-desc": "주한영국문화원, 충북창조경제혁신센터, 충주청년센터" // [수정] 참여기관 변경
         },
         en: {
             "t-main-title": "UK-Korea Placemaking<br>International Forum",
@@ -434,9 +434,9 @@
             "t-modal-title": "Request Chat", "btn-reject": "Reject", "btn-accept": "Accept",
             "btn-chat-send": "Send",
             "t-host-label": "HOST",
-            "t-host-desc": "Chungju City, CJ Culture City Center",
+            "t-host-desc": "Chungju City, Chungju Culture Tourism Foundation Cultural City Center", // [수정] 영문 반영
             "t-cohost-label": "CO-HOST",
-            "t-cohost-desc": "British Council, CCEI, Chungju Youth Center"
+            "t-cohost-desc": "British Council, CCEI, Chungju Youth Center" // [수정] 영문 반영
         }
     };
 
@@ -540,7 +540,6 @@ END:VCARD`;
     function selectMulti(el) {
         const parent = el.parentElement;
         const selectedCount = parent.querySelectorAll('.selected').length;
-        // [수정] 최대 3개까지 선택 가능하도록 변경
         if(el.classList.contains('selected')) { el.classList.remove('selected'); } else { if(selectedCount >= 3) { alert('최대 3개까지만 선택 가능합니다!'); return; } el.classList.add('selected'); }
     }
 
