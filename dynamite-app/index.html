@@ -134,7 +134,7 @@
         <div class="check-group">
             <label class="check-item">
                 <input type="checkbox" name="applyType" value="포럼">
-                <span id="t-opt-forum">포럼 (09:30~11:10)</span>
+                <span id="t-opt-forum">포럼 (09:30~12:00)</span>
             </label>
             <label class="check-item">
                 <input type="checkbox" name="applyType" value="워크샵">
@@ -193,16 +193,16 @@
                     <span id="t-part1-title">한-영 장소만들기 국제포럼</span>
                 </div>
                 <div class="timeline-item">
-                    <div class="time">09:30~</div>
+                    <div class="time">09:30~12:00</div>
                     <div class="event" id="t-loc-label1">건국대학교 글로컬캠퍼스<br>중원도서관 숨스퀘어</div>
                 </div>
                 <div style="margin:10px 0; border-bottom:1px dashed rgba(255,255,255,0.1);"></div>
-                <div class="section-header" style="color:var(--action-red); margin-top:5px;">
+                <div class="section-header" style="color:var(--action-yellow); margin-top:5px;">
                     <span id="t-part2-title">장소만들기 관련 워크샵</span>
                 </div>
                 <div class="timeline-item">
-                    <div class="time">14:00~</div>
-                    <div class="event" id="t-loc-label2">관아골 아트뱅크 등<br>원도심 일대</div>
+                    <div class="time">14:00~18:00</div>
+                    <div class="event" id="t-loc-label2">건국대학교 글로컬캠퍼스<br>중원도서관 숨스퀘어</div>
                 </div>
             </div>
 
@@ -243,7 +243,7 @@
         <div class="chat-box" id="qa-board"><div style="color:#999; text-align:center; margin-top:20px;">No messages yet.</div></div>
         <div style="display:flex; gap:10px; margin-top:10px;">
             <input type="text" id="chatInput" class="input-box" style="margin:0; background:rgba(255,255,255,0.2);" placeholder="Message...">
-            <button class="btn btn-primary" style="width:80px; margin:0;" onclick="postQuestion()">Send</button>
+            <button class="btn btn-primary" style="width:80px; margin:0;" onclick="postQuestion()">보내기</button>
         </div>
     </div>
 
@@ -341,7 +341,7 @@
     // [수정] 연사 정보
     const speakers = [
         { ko: { org: "주한영국문화원", name: "사라 데브롤" }, en: { org: "British Council", name: "Sarah Deverall" } },
-        { ko: { org: "주한영국문화원", name: "박영조 원장" }, en: { org: "British Council Korea", name: "Director Park" } },
+        { ko: { org: "주한영국문화원 원장", name: "박영조" }, en: { org: "British Council Korea", name: "Director Park" } },
         { ko: { org: "MadLab", name: "레이첼 터너" }, en: { org: "MadLab", name: "Rachael Turner" } },
         { ko: { org: "MadLab", name: "아사 칼로우" }, en: { org: "MadLab", name: "Asa Calow" } },
         { ko: { org: "Innovate UK", name: "제임스 휠" }, en: { org: "Innovate UK", name: "James Wheale" } },
