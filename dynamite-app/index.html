@@ -30,6 +30,11 @@
         .tag-item.selected { background: var(--action-red); border-color: var(--action-red); font-weight: bold; transform: scale(1.05); }
         .section-label { font-size: 14px; color: var(--accent-yellow); margin-top: 25px; display: block; font-weight: bold; }
 
+        .check-group { display: flex; flex-direction: column; gap: 10px; background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px; margin-top: 10px; }
+        .check-item { display: flex; align-items: center; gap: 10px; font-size: 14px; cursor: pointer; }
+        .check-item input { width: 18px; height: 18px; accent-color: var(--accent-yellow); }
+        .warn-text { color: #ff6b6b; font-size: 11px; margin-left: 5px; font-weight: bold; }
+
         .match-card { background: white; color: #333; border-radius: 16px; padding: 20px; margin: 15px 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); margin-bottom: 15px; position: relative; }
         .match-badge { position: absolute; top: 15px; right: 15px; font-size: 12px; font-weight: bold; padding: 4px 8px; border-radius: 8px; }
         .badge-perfect { background: #ff0055; color: white; }
@@ -89,7 +94,6 @@
 <body>
 
 <div class="container">
-    
     <button class="lang-btn" onclick="toggleLanguage()">🇰🇷 / 🇬🇧</button>
 
     <div id="page-login">
@@ -118,20 +122,31 @@
 
             <button class="btn btn-primary" onclick="checkLogin()" id="btn-login">입장하기 🚀</button>
         </div>
-        <div class="creator-signature">Designed & Directed by JunGyu</div>
+        <div class="creator-signature">Designed & Directed by 곤드레</div>
     </div>
 
     <div id="page-input" class="hidden">
         <h3 id="t-profile-title">네트워킹 프로필 설정</h3>
-        <p id="t-profile-sub" style="font-size:12px; color:#aaa;">* 현장에서 나와 꼭 맞는 참가자를 찾기 위한 정보입니다.</p>
         
+        <label id="t-label-apply" class="section-label">0. 참가 신청 (중복 선택 가능)</label>
+        <div class="check-group">
+            <label class="check-item">
+                <input type="checkbox" name="applyType" value="포럼">
+                <span id="t-opt-forum">포럼 (09:30~11:10)</span>
+            </label>
+            <label class="check-item">
+                <input type="checkbox" name="applyType" value="워크샵">
+                <span><span id="t-opt-workshop">워크샵 (14:00~18:00)</span> <span id="t-warn-workshop" class="warn-text">* 선착순 선정 (Limited)</span></span>
+            </label>
+        </div>
+
         <label id="t-label-cat" class="section-label">1. 주요 활동 분야 (1개 선택)</label>
         <div class="tag-grid" id="grid-category">
             <div class="tag-item" onclick="selectSingle(this)">F&B/제조</div>
             <div class="tag-item" onclick="selectSingle(this)">공간/스테이</div>
             <div class="tag-item" onclick="selectSingle(this)">공예/디자인</div>
             <div class="tag-item" onclick="selectSingle(this)">콘텐츠/미디어</div>
-        </div>
+            <div class="tag-item" onclick="selectSingle(this)">공공/행정</div> <div class="tag-item" onclick="selectSingle(this)">기타</div> </div>
         
         <label id="t-label-give" class="section-label">💡 2. 내가 나눌 수 있는 것 (최대 2개)</label>
         <div class="tag-grid" id="grid-give">
@@ -140,7 +155,7 @@
             <div class="tag-item" onclick="selectMulti(this)">홍보/마케팅</div>
             <div class="tag-item" onclick="selectMulti(this)">판매 채널</div>
             <div class="tag-item" onclick="selectMulti(this)">운영 노하우</div>
-            <div class="tag-item" onclick="selectMulti(this)">단순 네트워킹</div>
+            <div class="tag-item" onclick="selectMulti(this)">공공 문서</div> <div class="tag-item" onclick="selectMulti(this)">단순 네트워킹</div>
         </div>
         
         <label id="t-label-get" class="section-label">🤝 3. 내가 도움 받고 싶은 것 (최대 2개)</label>
@@ -167,7 +182,7 @@
         <div style="padding:0 20px;">
             <h4 id="t-info-title" style="margin:25px 0 10px 0;">📅 행사 개요</h4>
             <div class="guide-section">
-                <div class="timeline-item"><div id="t-date-label" class="time">일시</div><div class="event">2026. 2. 25(Wed)<br>09:30 ~ 12:00</div></div>
+                <div class="timeline-item"><div id="t-date-label" class="time">일시</div><div class="event">2026. 2. 25(Wed)<br>09:30 ~ 18:00</div></div>
                 <div class="timeline-item"><div id="t-loc-label" class="time">장소</div><div class="event">건국대학교 글로컬캠퍼스<br>중원도서관 숨스퀘어</div></div>
             </div>
 
@@ -289,7 +304,7 @@
 
 <script>
     // ★ 기획자님의 '새 주소'를 여기에 붙여넣으세요! ★
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzDfPe8xNooeybaWHRoZ9FQj5jSlETnmZLtGQZdE773NAlVtG4kI9XgOfCWD_EO8EovDw/exec"; 
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyZYZwTJT2oo0-_C6ReG0I20yE8LPW1VfJFfBBJkSRR57AsNA_rCcdVMXhKTjq4Vijj1g/exec"; 
 
     function normalizePhoneLocal(phone) {
         if (!phone) return "";
@@ -300,18 +315,17 @@
 
     let userData = { name: "", org: "", phone: "", category: "", give: "", get: "", role: "user" };
     let realUserList = []; 
-    let scannedUsers = [];
-    let currentRequester = ""; 
     let matchedPartners = {}; 
     let currentLang = "ko"; 
 
-    // 연사 데이터 (한글/영어 분리)
+    // 연사 데이터 업데이트
     const speakers = [
         { ko: { org: "주한영국문화원", name: "사라 데브롤" }, en: { org: "British Council", name: "Sarah Deverall" } },
         { ko: { org: "주한영국문화원", name: "박영조 원장" }, en: { org: "British Council Korea", name: "Director Park" } },
         { ko: { org: "MadLab", name: "레이첼 터너" }, en: { org: "MadLab", name: "Rachael Turner" } },
         { ko: { org: "MadLab", name: "아사 칼로우" }, en: { org: "MadLab", name: "Asa Calow" } },
         { ko: { org: "Innovate UK", name: "제임스 휠" }, en: { org: "Innovate UK", name: "James Wheale" } },
+        { ko: { org: "보탬플러스", name: "이상창 이사" }, en: { org: "Botam Plus", name: "Director Sangchang Lee" } },
         { ko: { org: "지역문화정책전문가", name: "노나 헌터" }, en: { org: "Policy Expert", name: "Nona Hurter" } }
     ];
 
@@ -322,7 +336,10 @@
             "t-privacy-title": "[필수] 개인정보 수집 및 이용 동의",
             "t-privacy-desc": "수집항목: 이름, 소속, 연락처<br>수집목적: 행사 출석 확인 및 네트워킹 매칭<br>보유기간: 행사 종료 후 즉시 파기",
             "t-profile-title": "네트워킹 프로필 설정",
-            "t-profile-sub": "* 현장에서 나와 꼭 맞는 참가자를 찾기 위한 정보입니다.",
+            "t-label-apply": "0. 참가 신청 (중복 선택 가능)",
+            "t-opt-forum": "포럼 (09:30~11:10)",
+            "t-opt-workshop": "워크샵 (14:00~18:00)",
+            "t-warn-workshop": "* 선착순 선정 (Limited)",
             "t-label-cat": "1. 주요 활동 분야 (1개 선택)",
             "t-label-give": "💡 2. 내가 나눌 수 있는 것 (최대 2개)",
             "t-label-get": "🤝 3. 내가 도움 받고 싶은 것 (최대 2개)",
@@ -353,7 +370,10 @@
             "t-privacy-title": "[Required] Privacy Policy Consent",
             "t-privacy-desc": "Items: Name, Org, Phone<br>Purpose: Attendance & Networking<br>Retention: Deleted immediately after event",
             "t-profile-title": "Set Networking Profile",
-            "t-profile-sub": "* To find the perfect match for you.",
+            "t-label-apply": "0. Apply for (Multiple Choice)",
+            "t-opt-forum": "Forum (09:30~11:10)",
+            "t-opt-workshop": "Workshop (14:00~18:00)",
+            "t-warn-workshop": "* First-come, first-served",
             "t-label-cat": "1. Category (Select 1)",
             "t-label-give": "💡 2. What I can GIVE (Max 2)",
             "t-label-get": "🤝 3. What I want to GET (Max 2)",
@@ -389,8 +409,8 @@
             const els = document.getElementsByClassName(key);
             for(let e of els) e.innerText = value;
         }
-        renderSpeakers(); // 연사 목록 새로고침
-        renderMatchingList(); // 매칭 리스트(버튼 언어) 새로고침
+        renderSpeakers(); 
+        renderMatchingList(); 
     }
 
     function renderSpeakers() {
@@ -401,7 +421,6 @@
         }).join('');
     }
 
-    // vCard 다운로드 함수
     function downloadVCard(name, org, phone) {
         const vcard = `BEGIN:VCARD
 VERSION:3.0
@@ -419,7 +438,7 @@ END:VCARD`;
     }
 
     window.onload = function() {
-        renderSpeakers(); // 초기 연사 렌더링
+        renderSpeakers(); 
         const savedUser = localStorage.getItem('dynamite_user');
         if (savedUser) {
             userData = JSON.parse(savedUser);
@@ -486,7 +505,11 @@ END:VCARD`;
 
     function completeSignup() {
         const category = document.querySelector('#grid-category .selected')?.innerText || "";
+        const checkedApply = Array.from(document.querySelectorAll('input[name="applyType"]:checked')).map(cb => cb.value);
+
+        if(checkedApply.length === 0) { alert("참가 신청 유형을 하나 이상 선택해주세요!"); return; }
         if(!category) { alert("활동 분야를 선택해주세요!"); return; }
+        
         userData.category = category;
 
         const btn = document.getElementById('btn-signup');
@@ -498,7 +521,16 @@ END:VCARD`;
         userData.give = gives.join(', ');
         userData.get = gets.join(', ');
 
-        const dataPayload = { action: "signup", name: userData.name, org: userData.org, phone: userData.phone, category: category, give: gives, get: gets };
+        const dataPayload = { 
+            action: "signup", 
+            name: userData.name, 
+            org: userData.org, 
+            phone: userData.phone, 
+            category: category, 
+            give: gives, 
+            get: gets,
+            applyType: checkedApply // [NEW] 신청 유형 전송
+        };
 
         fetch(GOOGLE_SCRIPT_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain" }, body: JSON.stringify(dataPayload) })
         .then(() => {
