@@ -42,9 +42,8 @@
         .match-tags span { background: #eee; padding: 4px 8px; border-radius: 4px; font-size: 11px; color: #555; margin-right: 4px; display: inline-block; margin-bottom: 4px;}
         .match-tags .highlight { background: var(--primary-blue); color: var(--accent-yellow); font-weight: bold; }
 
-        /* [수정] QR 카드 스타일 추가 (중앙 정렬) */
         .qr-card { background: white; color: #333; border-radius: 20px; padding: 30px; text-align: center; width: 85%; max-width: 340px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        #qrcode img { margin: 0 auto; } /* QR 이미지 자체 중앙 정렬 */
+        #qrcode img { margin: 0 auto; }
 
         #page-login, #page-qr { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; padding: 20px; text-align: center; position: relative; }
         #page-input, #page-home, #page-match, #page-talk, #page-admin, #page-survey { padding: 20px; padding-bottom: 100px; display: block; }
@@ -156,7 +155,7 @@
             <div class="tag-item" onclick="selectSingle(this)">기타</div>
         </div>
         
-        <label id="t-label-give" class="section-label">💡 2. 내가 나눌 수 있는 것 (최대 2개)</label>
+        <label id="t-label-give" class="section-label">💡 2. 내가 나눌 수 있는 것 (최대 3개)</label>
         <div class="tag-grid" id="grid-give">
             <div class="tag-item" onclick="selectMulti(this)">공간 제공</div>
             <div class="tag-item" onclick="selectMulti(this)">상품/제품</div>
@@ -168,7 +167,7 @@
             <div class="tag-item" onclick="selectMulti(this)">단순 네트워킹</div>
         </div>
         
-        <label id="t-label-get" class="section-label">🤝 3. 내가 도움 받고 싶은 것 (최대 2개)</label>
+        <label id="t-label-get" class="section-label">🤝 3. 내가 도움 받고 싶은 것 (최대 3개)</label>
         <div class="tag-grid" id="grid-get">
             <div class="tag-item" onclick="selectMulti(this)">공간 제공</div>
             <div class="tag-item" onclick="selectMulti(this)">상품/제품</div>
@@ -225,8 +224,10 @@
             <button class="btn btn-dark" style="font-weight:normal;" onclick="alert('준비 중입니다.')">📄 <span id="t-file-btn">[포럼 자료집] 다운로드</span></button>
 
             <div class="footer-info">
-                <b>HOST</b><br>Chungju City, CJ Culture City Center<br><br>
-                <b>CO-HOST</b><br>British Council, CCEI, Chungju Youth Center
+                <b id="t-host-label">HOST</b><br>
+                <span id="t-host-desc">Chungju City, CJ Culture City Center</span><br><br>
+                <b id="t-cohost-label">CO-HOST</b><br>
+                <span id="t-cohost-desc">British Council, CCEI, Chungju Youth Center</span>
             </div>
         </div>
     </div>
@@ -366,8 +367,8 @@
             "t-opt-workshop": "워크샵 (14:00~18:00)",
             "t-warn-workshop": "* 선착순 선정 (Limited)",
             "t-label-cat": "1. 주요 활동 분야 (1개 선택)",
-            "t-label-give": "💡 2. 내가 나눌 수 있는 것 (최대 2개)",
-            "t-label-get": "🤝 3. 내가 도움 받고 싶은 것 (최대 2개)",
+            "t-label-give": "💡 2. 내가 나눌 수 있는 것 (최대 3개)",
+            "t-label-get": "🤝 3. 내가 도움 받고 싶은 것 (최대 3개)",
             "btn-signup": "완료 및 저장 ✨",
             "t-home-title": "충주진로 한-영<br>장소만들기 국제포럼",
             "t-info-title": "📅 행사 개요",
@@ -390,7 +391,11 @@
             "opt-5": "⭐⭐⭐⭐⭐ (매우 만족)", "opt-4": "⭐⭐⭐⭐ (만족)", "opt-3": "⭐⭐⭐ (보통)", "opt-2": "⭐⭐ (아쉬움)", "opt-1": "⭐ (별로)",
             "t-nav-home": "홈", "t-nav-match": "매칭", "t-nav-talk": "소통", "t-nav-qr": "티켓", "t-nav-survey": "설문",
             "t-modal-title": "대화 요청", "btn-reject": "거절", "btn-accept": "수락",
-            "btn-chat-send": "보내기"
+            "btn-chat-send": "보내기",
+            "t-host-label": "주최",
+            "t-host-desc": "충주시, (재)충주중원문화재단",
+            "t-cohost-label": "주관",
+            "t-cohost-desc": "주한영국문화원, 충북창조경제혁신센터, 충주시청소년수련원"
         },
         en: {
             "t-main-title": "UK-Korea Placemaking<br>International Forum",
@@ -403,8 +408,8 @@
             "t-opt-workshop": "Workshop (14:00~18:00)",
             "t-warn-workshop": "* First-come, first-served",
             "t-label-cat": "1. Category (Select 1)",
-            "t-label-give": "💡 2. What I can GIVE (Max 2)",
-            "t-label-get": "🤝 3. What I want to GET (Max 2)",
+            "t-label-give": "💡 2. What I can GIVE (Max 3)",
+            "t-label-get": "🤝 3. What I want to GET (Max 3)",
             "btn-signup": "Save & Complete ✨",
             "t-home-title": "UK-Korea Placemaking<br>International Forum",
             "t-info-title": "📅 Overview",
@@ -427,7 +432,11 @@
             "opt-5": "⭐⭐⭐⭐⭐ (Excellent)", "opt-4": "⭐⭐⭐⭐ (Good)", "opt-3": "⭐⭐⭐ (Average)", "opt-2": "⭐⭐ (Poor)", "opt-1": "⭐ (Bad)",
             "t-nav-home": "Home", "t-nav-match": "Match", "t-nav-talk": "Talk", "t-nav-qr": "Ticket", "t-nav-survey": "Survey",
             "t-modal-title": "Request Chat", "btn-reject": "Reject", "btn-accept": "Accept",
-            "btn-chat-send": "Send"
+            "btn-chat-send": "Send",
+            "t-host-label": "HOST",
+            "t-host-desc": "Chungju City, CJ Culture City Center",
+            "t-cohost-label": "CO-HOST",
+            "t-cohost-desc": "British Council, CCEI, Chungju Youth Center"
         }
     };
 
@@ -531,7 +540,8 @@ END:VCARD`;
     function selectMulti(el) {
         const parent = el.parentElement;
         const selectedCount = parent.querySelectorAll('.selected').length;
-        if(el.classList.contains('selected')) { el.classList.remove('selected'); } else { if(selectedCount >= 2) { alert('최대 2개까지만 선택 가능합니다!'); return; } el.classList.add('selected'); }
+        // [수정] 최대 3개까지 선택 가능하도록 변경
+        if(el.classList.contains('selected')) { el.classList.remove('selected'); } else { if(selectedCount >= 3) { alert('최대 3개까지만 선택 가능합니다!'); return; } el.classList.add('selected'); }
     }
 
     function completeSignup() {
