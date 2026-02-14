@@ -48,8 +48,10 @@
         .main-header { display: flex; justify-content: space-between; align-items: flex-start; padding-top: 30px; margin-bottom: 10px; }
 
         .guide-section { background: rgba(255,255,255,0.1); border-radius: 16px; padding: 20px; margin: 15px 0; }
-        .timeline-item { display: flex; margin-bottom: 15px; }
-        .time { width: 90px; font-weight: bold; font-size:13px; color: var(--accent-yellow); } .event { flex: 1; opacity: 0.9; border-left: 2px solid var(--action-red); padding-left: 10px; font-size:13px; line-height: 1.4; }
+        .section-header { font-size: 16px; font-weight: bold; color: var(--accent-yellow); margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 8px; }
+        .timeline-item { display: flex; margin-bottom: 12px; }
+        .time { width: 60px; font-weight: bold; font-size:13px; color: rgba(255,255,255,0.7); } 
+        .event { flex: 1; border-left: 2px solid var(--action-red); padding-left: 10px; font-size:14px; font-weight:bold; line-height: 1.4; }
         
         .speaker-container { display: flex; overflow-x: auto; gap: 10px; padding-bottom: 10px; scroll-snap-type: x mandatory; }
         .speaker-card { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 15px; border-radius: 12px; min-width: 140px; scroll-snap-align: start; text-align: left; }
@@ -146,7 +148,9 @@
             <div class="tag-item" onclick="selectSingle(this)">공간/스테이</div>
             <div class="tag-item" onclick="selectSingle(this)">공예/디자인</div>
             <div class="tag-item" onclick="selectSingle(this)">콘텐츠/미디어</div>
-            <div class="tag-item" onclick="selectSingle(this)">공공/행정</div> <div class="tag-item" onclick="selectSingle(this)">기타</div> </div>
+            <div class="tag-item" onclick="selectSingle(this)">공공/행정</div> 
+            <div class="tag-item" onclick="selectSingle(this)">기타</div>
+        </div>
         
         <label id="t-label-give" class="section-label">💡 2. 내가 나눌 수 있는 것 (최대 2개)</label>
         <div class="tag-grid" id="grid-give">
@@ -155,7 +159,8 @@
             <div class="tag-item" onclick="selectMulti(this)">홍보/마케팅</div>
             <div class="tag-item" onclick="selectMulti(this)">판매 채널</div>
             <div class="tag-item" onclick="selectMulti(this)">운영 노하우</div>
-            <div class="tag-item" onclick="selectMulti(this)">공공 문서</div> <div class="tag-item" onclick="selectMulti(this)">단순 네트워킹</div>
+            <div class="tag-item" onclick="selectMulti(this)">공공 문서</div>
+            <div class="tag-item" onclick="selectMulti(this)">문화 기획</div> <div class="tag-item" onclick="selectMulti(this)">단순 네트워킹</div>
         </div>
         
         <label id="t-label-get" class="section-label">🤝 3. 내가 도움 받고 싶은 것 (최대 2개)</label>
@@ -165,7 +170,8 @@
             <div class="tag-item" onclick="selectMulti(this)">홍보/마케팅</div>
             <div class="tag-item" onclick="selectMulti(this)">판매 채널</div>
             <div class="tag-item" onclick="selectMulti(this)">운영 노하우</div>
-            <div class="tag-item" onclick="selectMulti(this)">단순 네트워킹</div>
+            <div class="tag-item" onclick="selectMulti(this)">공공 문서</div>
+            <div class="tag-item" onclick="selectMulti(this)">문화 기획</div> <div class="tag-item" onclick="selectMulti(this)">단순 네트워킹</div>
         </div>
         <button class="btn btn-primary" onclick="completeSignup()" id="btn-signup"><span>완료 및 저장 ✨</span></button>
     </div>
@@ -181,9 +187,23 @@
         
         <div style="padding:0 20px;">
             <h4 id="t-info-title" style="margin:25px 0 10px 0;">📅 행사 개요</h4>
+            
             <div class="guide-section">
-                <div class="timeline-item"><div id="t-date-label" class="time">일시</div><div class="event">2026. 2. 25(Wed)<br>09:30 ~ 18:00</div></div>
-                <div class="timeline-item"><div id="t-loc-label" class="time">장소</div><div class="event">건국대학교 글로컬캠퍼스<br>중원도서관 숨스퀘어</div></div>
+                <div class="section-header">
+                    <span id="t-part1-title">한-영 장소만들기 국제포럼</span>
+                </div>
+                <div class="timeline-item">
+                    <div class="time">09:30~</div>
+                    <div class="event" id="t-loc-label1">건국대학교 글로컬캠퍼스<br>중원도서관 숨스퀘어</div>
+                </div>
+                <div style="margin:10px 0; border-bottom:1px dashed rgba(255,255,255,0.1);"></div>
+                <div class="section-header" style="color:var(--action-red); margin-top:5px;">
+                    <span id="t-part2-title">장소만들기 관련 워크샵</span>
+                </div>
+                <div class="timeline-item">
+                    <div class="time">14:00~</div>
+                    <div class="event" id="t-loc-label2">관아골 아트뱅크 등<br>원도심 일대</div>
+                </div>
             </div>
 
             <h4 id="t-speaker-title" style="margin:25px 0 10px 0;">🎙️ 주요 연사</h4>
@@ -318,14 +338,14 @@
     let matchedPartners = {}; 
     let currentLang = "ko"; 
 
-    // 연사 데이터 업데이트
+    // [수정] 연사 정보
     const speakers = [
         { ko: { org: "주한영국문화원", name: "사라 데브롤" }, en: { org: "British Council", name: "Sarah Deverall" } },
         { ko: { org: "주한영국문화원", name: "박영조 원장" }, en: { org: "British Council Korea", name: "Director Park" } },
         { ko: { org: "MadLab", name: "레이첼 터너" }, en: { org: "MadLab", name: "Rachael Turner" } },
         { ko: { org: "MadLab", name: "아사 칼로우" }, en: { org: "MadLab", name: "Asa Calow" } },
         { ko: { org: "Innovate UK", name: "제임스 휠" }, en: { org: "Innovate UK", name: "James Wheale" } },
-        { ko: { org: "보탬플러스", name: "이상창 이사" }, en: { org: "Botam Plus", name: "Director Sangchang Lee" } },
+        { ko: { org: "보탬플러스 이사", name: "이상창" }, en: { org: "Director, Botem Plus", name: "Sangchang Lee" } },
         { ko: { org: "지역문화정책전문가", name: "노나 헌터" }, en: { org: "Policy Expert", name: "Nona Hurter" } }
     ];
 
@@ -346,8 +366,10 @@
             "btn-signup": "완료 및 저장 ✨",
             "t-home-title": "충주진로 한-영<br>장소만들기 국제포럼",
             "t-info-title": "📅 행사 개요",
-            "t-date-label": "일시",
-            "t-loc-label": "장소",
+            "t-part1-title": "한-영 장소만들기 국제포럼",
+            "t-part2-title": "장소만들기 관련 워크샵",
+            "t-loc-label1": "건국대학교 글로컬캠퍼스<br>중원도서관 숨스퀘어",
+            "t-loc-label2": "건국대학교 글로컬캠퍼스<br>중원도서관 숨스퀘어",
             "t-speaker-title": "🎙️ 주요 연사",
             "t-map-title": "🗺️ 오시는 길",
             "t-map-btn": "중원도서관 숨스퀘어 지도보기",
@@ -380,8 +402,10 @@
             "btn-signup": "Save & Complete ✨",
             "t-home-title": "UK-Korea Placemaking<br>International Forum",
             "t-info-title": "📅 Overview",
-            "t-date-label": "Date",
-            "t-loc-label": "Venue",
+            "t-part1-title": "International Forum",
+            "t-part2-title": "Placemaking Workshop",
+            "t-loc-label1": "Jungwon Library, Konkuk Univ.",
+            "t-loc-label2": "Gwanagol Artbank, etc.",
             "t-speaker-title": "🎙️ Speakers",
             "t-map-title": "🗺️ Location",
             "t-map-btn": "View Map (Jungwon Library)",
@@ -529,7 +553,7 @@ END:VCARD`;
             category: category, 
             give: gives, 
             get: gets,
-            applyType: checkedApply // [NEW] 신청 유형 전송
+            applyType: checkedApply
         };
 
         fetch(GOOGLE_SCRIPT_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain" }, body: JSON.stringify(dataPayload) })
