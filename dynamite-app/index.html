@@ -79,8 +79,9 @@
         .big-qa-item { background: #222; padding: 25px; margin-bottom: 20px; border-radius: 15px; font-size: 28px; line-height: 1.4; border-left: 8px solid var(--primary-blue); }
         .close-big-btn { position: absolute; top: 20px; right: 20px; font-size: 20px; background: transparent; border: 1px solid #555; color: #555; cursor: pointer; }
 
+        /* [수정] 하단 내비게이션 폰트 사이즈 11px -> 10px로 축소 (줄바꿈 방지) */
         .bottom-nav { position: fixed; bottom: 0; width: 100%; max-width: 480px; height: 65px; background: #001a4d; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid rgba(255,255,255,0.1); z-index: 1000; box-shadow: 0 -2px 10px rgba(0,0,0,0.3); }
-        .nav-item { font-size: 11px; color: rgba(255,255,255,0.5); text-align: center; cursor: pointer; flex: 1; display:flex; flex-direction: column; gap:4px; }
+        .nav-item { font-size: 10px; color: rgba(255,255,255,0.5); text-align: center; cursor: pointer; flex: 1; display:flex; flex-direction: column; gap:4px; }
         .nav-item.active { color: var(--accent-yellow); font-weight: bold; }
         .loader { border: 4px solid #f3f3f3; border-top: 4px solid var(--action-red); border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; display: inline-block; vertical-align: middle; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -134,7 +135,7 @@
         <div class="check-group">
             <label class="check-item">
                 <input type="checkbox" name="applyType" value="포럼">
-                <span id="t-opt-forum">포럼 (09:30~12:00)</span>
+                <span id="t-opt-forum">포럼 (09:30~11:10)</span>
             </label>
             <label class="check-item">
                 <input type="checkbox" name="applyType" value="워크샵">
@@ -160,7 +161,8 @@
             <div class="tag-item" onclick="selectMulti(this)">판매 채널</div>
             <div class="tag-item" onclick="selectMulti(this)">운영 노하우</div>
             <div class="tag-item" onclick="selectMulti(this)">공공 문서</div>
-            <div class="tag-item" onclick="selectMulti(this)">문화 기획</div> <div class="tag-item" onclick="selectMulti(this)">단순 네트워킹</div>
+            <div class="tag-item" onclick="selectMulti(this)">문화 기획</div>
+            <div class="tag-item" onclick="selectMulti(this)">단순 네트워킹</div>
         </div>
         
         <label id="t-label-get" class="section-label">🤝 3. 내가 도움 받고 싶은 것 (최대 2개)</label>
@@ -171,7 +173,8 @@
             <div class="tag-item" onclick="selectMulti(this)">판매 채널</div>
             <div class="tag-item" onclick="selectMulti(this)">운영 노하우</div>
             <div class="tag-item" onclick="selectMulti(this)">공공 문서</div>
-            <div class="tag-item" onclick="selectMulti(this)">문화 기획</div> <div class="tag-item" onclick="selectMulti(this)">단순 네트워킹</div>
+            <div class="tag-item" onclick="selectMulti(this)">문화 기획</div>
+            <div class="tag-item" onclick="selectMulti(this)">단순 네트워킹</div>
         </div>
         <button class="btn btn-primary" onclick="completeSignup()" id="btn-signup"><span>완료 및 저장 ✨</span></button>
     </div>
@@ -193,16 +196,16 @@
                     <span id="t-part1-title">한-영 장소만들기 국제포럼</span>
                 </div>
                 <div class="timeline-item">
-                    <div class="time">09:30~12:00</div>
+                    <div class="time">09:30~</div>
                     <div class="event" id="t-loc-label1">건국대학교 글로컬캠퍼스<br>중원도서관 숨스퀘어</div>
                 </div>
                 <div style="margin:10px 0; border-bottom:1px dashed rgba(255,255,255,0.1);"></div>
-                <div class="section-header" style="color:var(--action-yellow); margin-top:5px;">
+                <div class="section-header" style="color:var(--accent-yellow); margin-top:5px;">
                     <span id="t-part2-title">장소만들기 관련 워크샵</span>
                 </div>
                 <div class="timeline-item">
-                    <div class="time">14:00~18:00</div>
-                    <div class="event" id="t-loc-label2">건국대학교 글로컬캠퍼스<br>중원도서관 숨스퀘어</div>
+                    <div class="time">14:00~</div>
+                    <div class="event" id="t-loc-label2">관아골 아트뱅크 등<br>원도심 일대</div>
                 </div>
             </div>
 
@@ -243,7 +246,7 @@
         <div class="chat-box" id="qa-board"><div style="color:#999; text-align:center; margin-top:20px;">No messages yet.</div></div>
         <div style="display:flex; gap:10px; margin-top:10px;">
             <input type="text" id="chatInput" class="input-box" style="margin:0; background:rgba(255,255,255,0.2);" placeholder="Message...">
-            <button class="btn btn-primary" style="width:80px; margin:0;" onclick="postQuestion()">보내기</button>
+            <button class="btn btn-primary" style="width:80px; margin:0;" onclick="postQuestion()">Send</button>
         </div>
     </div>
 
@@ -303,7 +306,7 @@
 
     <div class="bottom-nav hidden" id="bottom-nav">
         <div class="nav-item active" onclick="switchTab('home', this)"><span>🏠</span><span class="t-nav-home">홈</span></div>
-        <div class="nav-item" onclick="switchTab('match', this)"><span>👥</span><span class="t-nav-match">매칭</span></div>
+        <div class="nav-item" onclick="switchTab('match', this)"><span>📷</span><span class="t-nav-match">사진 보내기</span></div>
         <div class="nav-item" onclick="switchTab('talk', this)"><span>💬</span><span class="t-nav-talk">소통</span></div>
         <div class="nav-item" onclick="switchTab('qr', this)"><span>🎫</span><span class="t-nav-qr">티켓</span></div>
         <div class="nav-item" onclick="switchTab('survey', this)"><span>📝</span><span class="t-nav-survey">설문</span></div>
@@ -338,14 +341,13 @@
     let matchedPartners = {}; 
     let currentLang = "ko"; 
 
-    // [수정] 연사 정보
     const speakers = [
         { ko: { org: "주한영국문화원", name: "사라 데브롤" }, en: { org: "British Council", name: "Sarah Deverall" } },
-        { ko: { org: "주한영국문화원 원장", name: "박영조" }, en: { org: "British Council Korea", name: "Director Park" } },
+        { ko: { org: "주한영국문화원", name: "박영조 원장" }, en: { org: "British Council Korea", name: "Director Park" } },
         { ko: { org: "MadLab", name: "레이첼 터너" }, en: { org: "MadLab", name: "Rachael Turner" } },
         { ko: { org: "MadLab", name: "아사 칼로우" }, en: { org: "MadLab", name: "Asa Calow" } },
         { ko: { org: "Innovate UK", name: "제임스 휠" }, en: { org: "Innovate UK", name: "James Wheale" } },
-        { ko: { org: "보탬플러스 이사", name: "이상창" }, en: { org: "Director, Botem Plus", name: "Sangchang Lee" } },
+        { ko: { org: "보탬플러스 이사", name: "이상창" }, en: { org: "Director, Botam Plus", name: "Sangchang Lee" } },
         { ko: { org: "지역문화정책전문가", name: "노나 헌터" }, en: { org: "Policy Expert", name: "Nona Hurter" } }
     ];
 
@@ -369,7 +371,7 @@
             "t-part1-title": "한-영 장소만들기 국제포럼",
             "t-part2-title": "장소만들기 관련 워크샵",
             "t-loc-label1": "건국대학교 글로컬캠퍼스<br>중원도서관 숨스퀘어",
-            "t-loc-label2": "건국대학교 글로컬캠퍼스<br>중원도서관 숨스퀘어",
+            "t-loc-label2": "관아골 아트뱅크 등<br>원도심 일대",
             "t-speaker-title": "🎙️ 주요 연사",
             "t-map-title": "🗺️ 오시는 길",
             "t-map-btn": "중원도서관 숨스퀘어 지도보기",
@@ -383,7 +385,7 @@
             "t-survey-label": "의견을 남겨주세요",
             "btn-survey-submit": "제출하기 📨",
             "opt-5": "⭐⭐⭐⭐⭐ (매우 만족)", "opt-4": "⭐⭐⭐⭐ (만족)", "opt-3": "⭐⭐⭐ (보통)", "opt-2": "⭐⭐ (아쉬움)", "opt-1": "⭐ (별로)",
-            "t-nav-home": "홈", "t-nav-match": "매칭", "t-nav-talk": "소통", "t-nav-qr": "티켓", "t-nav-survey": "설문",
+            "t-nav-home": "홈", "t-nav-match": "사진 보내기", "t-nav-talk": "소통", "t-nav-qr": "티켓", "t-nav-survey": "설문",
             "t-modal-title": "대화 요청", "btn-reject": "거절", "btn-accept": "수락"
         },
         en: {
@@ -419,7 +421,7 @@
             "t-survey-label": "Feedback",
             "btn-survey-submit": "Submit 📨",
             "opt-5": "⭐⭐⭐⭐⭐ (Excellent)", "opt-4": "⭐⭐⭐⭐ (Good)", "opt-3": "⭐⭐⭐ (Average)", "opt-2": "⭐⭐ (Poor)", "opt-1": "⭐ (Bad)",
-            "t-nav-home": "Home", "t-nav-match": "Match", "t-nav-talk": "Talk", "t-nav-qr": "Ticket", "t-nav-survey": "Survey",
+            "t-nav-home": "Home", "t-nav-match": "Photo", "t-nav-talk": "Talk", "t-nav-qr": "Ticket", "t-nav-survey": "Survey",
             "t-modal-title": "Request Chat", "btn-reject": "Reject", "btn-accept": "Accept"
         }
     };
