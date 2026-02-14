@@ -12,7 +12,7 @@
         :root { --primary-blue: #003399; --accent-yellow: #FFDD00; --action-red: #FF3300; --white: #ffffff; --bg-gray: #f5f5f5; --admin-bg: #1a1a1a; }
         * { box-sizing: border-box; font-family: 'Pretendard', sans-serif; }
         body { margin: 0; padding: 0; background-color: var(--primary-blue); color: var(--white); overflow-x: hidden; padding-bottom: 80px; }
-        .container { max-width: 480px; margin: 0 auto; min-height: 100vh; position: relative; padding-top: 10px; } /* 상단 여백 추가 */
+        .container { max-width: 480px; margin: 0 auto; min-height: 100vh; position: relative; padding-top: 10px; }
         .hidden { display: none !important; }
         
         .btn { width: 100%; padding: 16px; border: none; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.1s; }
@@ -40,7 +40,6 @@
         #page-login, #page-qr { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; padding: 20px; text-align: center; position: relative; }
         #page-input, #page-home, #page-match, #page-talk, #page-admin, #page-survey { padding: 20px; padding-bottom: 100px; display: block; }
         
-        /* [수정] 헤더가 한/영 버튼과 겹치지 않게 여백 추가 */
         .main-header { display: flex; justify-content: space-between; align-items: flex-start; padding-top: 30px; margin-bottom: 10px; }
 
         .guide-section { background: rgba(255,255,255,0.1); border-radius: 16px; padding: 20px; margin: 15px 0; }
@@ -84,7 +83,6 @@
         .footer-info { margin-top: 40px; padding: 20px; background: rgba(0,0,0,0.2); border-radius: 12px; font-size: 11px; color: rgba(255,255,255,0.6); line-height: 1.6; text-align: center; word-break: keep-all; }
         .footer-info b { color: rgba(255,255,255,0.8); }
 
-        /* [수정] 언어 변환 버튼을 왼쪽 상단으로 이동 */
         .lang-btn { position: absolute; top: 15px; left: 15px; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 5px 10px; border-radius: 20px; font-size: 12px; cursor: pointer; z-index: 100; }
     </style>
 </head>
@@ -174,14 +172,8 @@
             </div>
 
             <h4 id="t-speaker-title" style="margin:25px 0 10px 0;">🎙️ 주요 연사</h4>
-            <div class="speaker-container">
-                <div class="speaker-card"><div class="speaker-org">British Council</div><div class="speaker-name">Sarah Deverall</div></div>
-                <div class="speaker-card"><div class="speaker-org">British Council Korea</div><div class="speaker-name">Director Park</div></div>
-                <div class="speaker-card"><div class="speaker-org">MadLab</div><div class="speaker-name">Rachael Turner</div></div>
-                <div class="speaker-card"><div class="speaker-org">MadLab</div><div class="speaker-name">Asa Calow</div></div>
-                <div class="speaker-card"><div class="speaker-org">Innovate UK</div><div class="speaker-name">James Wheale</div></div>
-                <div class="speaker-card"><div class="speaker-org">Policy Expert</div><div class="speaker-name">Nona Hurter</div></div>
-            </div>
+            <div class="speaker-container" id="speaker-list">
+                </div>
             
             <h4 id="t-map-title" style="margin:25px 0 10px 0;">🗺️ 오시는 길</h4>
             <button class="btn btn-dark" style="margin-bottom:20px; font-weight:normal;" onclick="window.open('https://map.kakao.com/link/search/건국대학교글로컬캠퍼스중원도서관')">
@@ -234,17 +226,17 @@
     <div id="page-survey" class="hidden">
         <h3 id="t-survey-title">📝 만족도 조사</h3>
         <div style="margin:20px 0;">
-            <label class="section-label">Feedback</label>
+            <label id="t-survey-label" class="section-label">의견을 남겨주세요</label>
             <select id="survey-score" class="input-box" style="background:#002266; margin-top:5px;">
-                <option value="5">⭐⭐⭐⭐⭐ (Excellent)</option>
-                <option value="4">⭐⭐⭐⭐ (Good)</option>
-                <option value="3">⭐⭐⭐ (Average)</option>
-                <option value="2">⭐⭐ (Poor)</option>
-                <option value="1">⭐ (Bad)</option>
+                <option value="5" id="opt-5">⭐⭐⭐⭐⭐ (매우 만족)</option>
+                <option value="4" id="opt-4">⭐⭐⭐⭐ (만족)</option>
+                <option value="3" id="opt-3">⭐⭐⭐ (보통)</option>
+                <option value="2" id="opt-2">⭐⭐ (아쉬움)</option>
+                <option value="1" id="opt-1">⭐ (별로)</option>
             </select>
         </div>
-        <input type="text" id="survey-comment" class="input-box" placeholder="Comment...">
-        <button class="btn btn-primary" onclick="submitSurvey()">Submit 📨</button>
+        <input type="text" id="survey-comment" class="input-box" placeholder="자유롭게 입력해주세요...">
+        <button class="btn btn-primary" id="btn-survey-submit" onclick="submitSurvey()">제출하기 📨</button>
     </div>
 
     <div id="page-admin" class="hidden" style="background:var(--admin-bg);">
@@ -284,11 +276,11 @@
 
     <div id="match-modal" class="hidden">
         <div class="modal-content">
-            <h3 style="color:#003399;">💌 Request</h3>
+            <h3 style="color:#003399;">💌 <span id="t-modal-title">대화 요청</span></h3>
             <p id="modal-msg" style="margin:20px 0;"></p>
             <div style="display:flex; gap:10px;">
-                <button class="btn btn-dark" style="margin:0;" onclick="respondMatch(false)">Reject</button>
-                <button class="btn btn-primary" style="margin:0;" onclick="respondMatch(true)">Accept</button>
+                <button class="btn btn-dark" style="margin:0;" onclick="respondMatch(false)" id="btn-reject">거절</button>
+                <button class="btn btn-primary" style="margin:0;" onclick="respondMatch(true)" id="btn-accept">수락</button>
             </div>
         </div>
     </div>
@@ -311,9 +303,18 @@
     let scannedUsers = [];
     let currentRequester = ""; 
     let matchedPartners = {}; 
-    let currentLang = "ko"; // 기본 언어 한국어
+    let currentLang = "ko"; 
 
-    // 다국어 데이터
+    // 연사 데이터 (한글/영어 분리)
+    const speakers = [
+        { ko: { org: "주한영국문화원", name: "사라 데브롤" }, en: { org: "British Council", name: "Sarah Deverall" } },
+        { ko: { org: "주한영국문화원", name: "박영조 원장" }, en: { org: "British Council Korea", name: "Director Park" } },
+        { ko: { org: "MadLab", name: "레이첼 터너" }, en: { org: "MadLab", name: "Rachael Turner" } },
+        { ko: { org: "MadLab", name: "아사 칼로우" }, en: { org: "MadLab", name: "Asa Calow" } },
+        { ko: { org: "Innovate UK", name: "제임스 휠" }, en: { org: "Innovate UK", name: "James Wheale" } },
+        { ko: { org: "지역문화정책전문가", name: "노나 헌터" }, en: { org: "Policy Expert", name: "Nona Hurter" } }
+    ];
+
     const langData = {
         ko: {
             "t-main-title": "충주진로 한-영<br>장소만들기 국제포럼",
@@ -340,7 +341,11 @@
             "t-match-msg": "님을 위한 네트워킹 제안",
             "t-qr-msg": "행사장 입구에서 QR코드를 제시해 주세요.",
             "t-survey-title": "📝 만족도 조사",
-            "t-nav-home": "홈", "t-nav-match": "매칭", "t-nav-talk": "소통", "t-nav-qr": "티켓", "t-nav-survey": "설문"
+            "t-survey-label": "의견을 남겨주세요",
+            "btn-survey-submit": "제출하기 📨",
+            "opt-5": "⭐⭐⭐⭐⭐ (매우 만족)", "opt-4": "⭐⭐⭐⭐ (만족)", "opt-3": "⭐⭐⭐ (보통)", "opt-2": "⭐⭐ (아쉬움)", "opt-1": "⭐ (별로)",
+            "t-nav-home": "홈", "t-nav-match": "매칭", "t-nav-talk": "소통", "t-nav-qr": "티켓", "t-nav-survey": "설문",
+            "t-modal-title": "대화 요청", "btn-reject": "거절", "btn-accept": "수락"
         },
         en: {
             "t-main-title": "UK-Korea Placemaking<br>International Forum",
@@ -367,7 +372,11 @@
             "t-match-msg": "'s Networking Suggestions",
             "t-qr-msg": "Please show this QR at the entrance.",
             "t-survey-title": "📝 Survey",
-            "t-nav-home": "Home", "t-nav-match": "Match", "t-nav-talk": "Talk", "t-nav-qr": "Ticket", "t-nav-survey": "Survey"
+            "t-survey-label": "Feedback",
+            "btn-survey-submit": "Submit 📨",
+            "opt-5": "⭐⭐⭐⭐⭐ (Excellent)", "opt-4": "⭐⭐⭐⭐ (Good)", "opt-3": "⭐⭐⭐ (Average)", "opt-2": "⭐⭐ (Poor)", "opt-1": "⭐ (Bad)",
+            "t-nav-home": "Home", "t-nav-match": "Match", "t-nav-talk": "Talk", "t-nav-qr": "Ticket", "t-nav-survey": "Survey",
+            "t-modal-title": "Request Chat", "btn-reject": "Reject", "btn-accept": "Accept"
         }
     };
 
@@ -376,11 +385,20 @@
         const data = langData[currentLang];
         for (const [key, value] of Object.entries(data)) {
             const el = document.getElementById(key);
-            if(el) el.innerHTML = value; // innerHTML로 태그 포함 텍스트 적용
-            // 클래스 기반 업데이트 (하단 탭)
+            if(el) el.innerHTML = value;
             const els = document.getElementsByClassName(key);
             for(let e of els) e.innerText = value;
         }
+        renderSpeakers(); // 연사 목록 새로고침
+        renderMatchingList(); // 매칭 리스트(버튼 언어) 새로고침
+    }
+
+    function renderSpeakers() {
+        const container = document.getElementById('speaker-list');
+        container.innerHTML = speakers.map(s => {
+            const info = s[currentLang];
+            return `<div class="speaker-card"><div class="speaker-org">${info.org}</div><div class="speaker-name">${info.name}</div></div>`;
+        }).join('');
     }
 
     // vCard 다운로드 함수
@@ -400,8 +418,8 @@ END:VCARD`;
         URL.revokeObjectURL(url);
     }
 
-    // 기존 함수들 (그대로 유지)
     window.onload = function() {
+        renderSpeakers(); // 초기 연사 렌더링
         const savedUser = localStorage.getItem('dynamite_user');
         if (savedUser) {
             userData = JSON.parse(savedUser);
@@ -536,10 +554,16 @@ END:VCARD`;
         const listDiv = document.getElementById('matching-list');
         const me = realUserList.find(u => u.name === userData.name && u.phone === userData.phone);
         
-        // 영어 모드일 때 메시지 변경
         const msgNeedCheck = currentLang === 'ko' ? "현장 출석 확인 필요" : "On-site Check-in Required";
         const msgWait = currentLang === 'ko' ? "행사 당일 안내데스크에서<br><b>QR 출석체크</b>를 완료하신 참가자만<br>네트워킹 매칭 기능을 이용할 수 있습니다." : "Only attendees who have completed<br><b>QR Check-in</b> can use this feature.";
         const msgNoUser = currentLang === 'ko' ? "현재 현장에 출석한 다른 참가자가 없습니다." : "No other attendees checked in yet.";
+        const lblPerfect = currentLang === 'ko' ? "천생연분" : "Perfect";
+        const lblGood = currentLang === 'ko' ? "추천" : "Good";
+        const lblMatch = currentLang === 'ko' ? "서로 니즈 일치" : "Match";
+        const lblGive = currentLang === 'ko' ? "나눌 수 있는 것" : "GIVE";
+        const btnCall = currentLang === 'ko' ? "전화하기" : "Call";
+        const btnSave = currentLang === 'ko' ? "저장" : "Save";
+        const btnReq = currentLang === 'ko' ? "대화 요청하기" : "Request Chat";
 
         if (!me || !String(me.status).includes("출석완료")) {
             listDiv.innerHTML = `
@@ -565,11 +589,11 @@ END:VCARD`;
             let score = 0, badge = "", matchType = ""; 
             if (iGiveTheyWantCount > 0 && theyGiveIWantCount > 0) {
                 score = 100 + iGiveTheyWantCount + theyGiveIWantCount;
-                badge = `<div class="match-badge badge-perfect">🔥 Perfect</div>`;
+                badge = `<div class="match-badge badge-perfect">🔥 ${lblPerfect}</div>`;
                 matchType = "perfect";
             } else if (theyGiveIWantCount > 0) {
                 score = 50 + theyGiveIWantCount;
-                badge = `<div class="match-badge badge-good">✨ Good</div>`;
+                badge = `<div class="match-badge badge-good">✨ ${lblGood}</div>`;
                 matchType = "good";
             }
             score += Math.random(); 
@@ -578,13 +602,12 @@ END:VCARD`;
 
         listDiv.innerHTML = sortedUsers.map(u => {
             const isMatched = matchedPartners[u.name];
-            // [NEW] 매칭되면 전화번호 + 저장 버튼 표시
             const btnHtml = isMatched 
                 ? `<div style="display:flex; gap:5px; margin-top:10px;">
                      <button class="btn btn-green btn-small" onclick="location.href='tel:0${isMatched}'">📞 0${isMatched}</button>
-                     <button class="btn btn-dark btn-small" onclick="downloadVCard('${u.name}', '${u.org}', '0${isMatched}')">💾 저장</button>
+                     <button class="btn btn-dark btn-small" onclick="downloadVCard('${u.name}', '${u.org}', '0${isMatched}')">💾 ${btnSave}</button>
                    </div>`
-                : `<button class="btn btn-red" style="margin-top:10px;" onclick="requestMatch('${u.name}')">💌 Request Chat</button>`;
+                : `<button class="btn btn-red" style="margin-top:10px;" onclick="requestMatch('${u.name}')">💌 ${btnReq}</button>`;
 
             return `
             <div class="match-card">
@@ -592,8 +615,8 @@ END:VCARD`;
                 <div style="font-weight:bold; font-size:18px;">${u.name} <span style="font-size:12px; color:#666;">| ${u.org}</span></div>
                 <div style="font-size:12px; color:#666; margin:5px 0;">${u.category}</div>
                 <div class="match-tags" style="margin-top:8px;">
-                    ${u.matchType === 'perfect' ? `<span class="highlight" style="background:#fff0f5; color:#ff0055;">❤️ Match</span>` : ''}
-                    <span class="highlight">나눌 수 있는 것: ${u.give}</span>
+                    ${u.matchType === 'perfect' ? `<span class="highlight" style="background:#fff0f5; color:#ff0055;">❤️ ${lblMatch}</span>` : ''}
+                    <span class="highlight">${lblGive}: ${u.give}</span>
                 </div>
                 <div id="btn-area-${u.name}">${btnHtml}</div>
             </div>`;
