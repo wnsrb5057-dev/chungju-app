@@ -26,9 +26,9 @@
 
         .input-box { width: 100%; padding: 15px; margin-bottom: 10px; border-radius: 8px; border: 2px solid var(--accent-yellow); background: transparent; color: white; font-size: 16px; }
         .tag-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
-        .tag-item { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); padding: 12px; border-radius: 8px; text-align: center; font-size: 13px; cursor: pointer; }
-        .tag-item.selected { background: var(--action-red); border-color: var(--action-red); font-weight: bold; }
-        .section-label { font-size: 14px; color: var(--accent-yellow); margin-top: 25px; display: block; }
+        .tag-item { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); padding: 12px; border-radius: 8px; text-align: center; font-size: 13px; cursor: pointer; transition: all 0.2s; }
+        .tag-item.selected { background: var(--action-red); border-color: var(--action-red); font-weight: bold; transform: scale(1.05); }
+        .section-label { font-size: 14px; color: var(--accent-yellow); margin-top: 25px; display: block; font-weight: bold; }
 
         .match-card { background: white; color: #333; border-radius: 16px; padding: 20px; margin: 15px 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); margin-bottom: 15px; position: relative; }
         .match-badge { position: absolute; top: 15px; right: 15px; font-size: 12px; font-weight: bold; padding: 4px 8px; border-radius: 8px; }
@@ -44,7 +44,6 @@
         .timeline-item { display: flex; margin-bottom: 15px; }
         .time { width: 90px; font-weight: bold; font-size:13px; color: var(--accent-yellow); } .event { flex: 1; opacity: 0.9; border-left: 2px solid var(--action-red); padding-left: 10px; font-size:13px; line-height: 1.4; }
         
-        /* 연사 슬라이드 */
         .speaker-container { display: flex; overflow-x: auto; gap: 10px; padding-bottom: 10px; scroll-snap-type: x mandatory; }
         .speaker-card { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 15px; border-radius: 12px; min-width: 140px; scroll-snap-align: start; text-align: left; }
         .speaker-org { font-size: 11px; color: var(--accent-yellow); margin-bottom: 4px; }
@@ -79,7 +78,6 @@
         #match-modal { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index: 2000; display: flex; align-items: center; justify-content: center; }
         .modal-content { background: white; color: black; padding: 30px; border-radius: 20px; text-align: center; width: 80%; max-width: 350px; }
 
-        /* 주최주관 푸터 */
         .footer-info { margin-top: 40px; padding: 20px; background: rgba(0,0,0,0.2); border-radius: 12px; font-size: 11px; color: rgba(255,255,255,0.6); line-height: 1.6; text-align: center; word-break: keep-all; }
         .footer-info b { color: rgba(255,255,255,0.8); }
     </style>
@@ -93,26 +91,43 @@
             <div style="font-size:26px; color:var(--accent-yellow); font-weight:900; margin-bottom:12px; line-height:1.3; word-break:keep-all;">충주진로 한-영<br>장소만들기 국제포럼</div>
             <h1 style="font-size:20px; font-style:italic; text-shadow:2px 2px 0 var(--action-red); margin:0; line-height:1;">DYNAMITE</h1>
         </div>
-        <div style="width:100%; margin-top:60px;">
+        <div style="width:100%; margin-top:50px;">
             <input type="text" id="userName" class="input-box" placeholder="이름 (실명 입력)">
             <input type="text" id="userOrg" class="input-box" placeholder="소속 (기관, 기업명 등)">
             <input type="tel" id="userPhone" class="input-box" placeholder="전화번호 (숫자만 입력)">
+            
+            <div style="text-align:left; margin-bottom:15px; margin-top:5px; background:rgba(0,0,0,0.2); padding:15px; border-radius:8px;">
+                <label style="display:flex; align-items:flex-start; gap:10px; cursor:pointer;">
+                    <input type="checkbox" id="agreePrivacy" style="width:18px; height:18px; margin-top:2px;">
+                    <div>
+                        <b style="font-size:14px; color:var(--accent-yellow);">[필수] 개인정보 수집 및 이용 동의</b>
+                        <div style="margin-top:5px; font-size:11px; color:#ccc; line-height:1.4; letter-spacing:-0.5px;">
+                            수집항목: 이름, 소속, 연락처<br>
+                            수집목적: 행사 출석 확인 및 참가자 간 네트워킹 매칭<br>
+                            보유기간: <b style="color:white;">행사 종료 후 즉시 안전하게 파기</b>
+                        </div>
+                    </div>
+                </label>
+            </div>
+
             <button class="btn btn-primary" onclick="checkLogin()" id="btn-login">입장하기 🚀</button>
         </div>
         <div class="creator-signature">Designed & Directed by 곤드레</div>
     </div>
 
     <div id="page-input" class="hidden">
-        <h3>프로필 설정</h3>
-        <p style="font-size:12px; color:#aaa;">* 실제 매칭에 사용될 정보입니다.</p>
-        <label class="section-label">1. 활동 분야 (1개 선택)</label>
+        <h3>네트워킹 프로필 설정</h3>
+        <p style="font-size:12px; color:#aaa;">* 현장에서 나와 꼭 맞는 참가자를 찾기 위한 정보입니다.</p>
+        
+        <label class="section-label">1. 주요 활동 분야 (1개 선택)</label>
         <div class="tag-grid" id="grid-category">
             <div class="tag-item" onclick="selectSingle(this)">F&B/제조</div>
             <div class="tag-item" onclick="selectSingle(this)">공간/스테이</div>
             <div class="tag-item" onclick="selectSingle(this)">공예/디자인</div>
             <div class="tag-item" onclick="selectSingle(this)">콘텐츠/미디어</div>
         </div>
-        <label class="section-label">2. Give (최대 2개)</label>
+        
+        <label class="section-label">💡 2. 내가 나눌 수 있는 것 (최대 2개)</label>
         <div class="tag-grid" id="grid-give">
             <div class="tag-item" onclick="selectMulti(this)">공간 제공</div>
             <div class="tag-item" onclick="selectMulti(this)">상품/제품</div>
@@ -121,7 +136,8 @@
             <div class="tag-item" onclick="selectMulti(this)">운영 노하우</div>
             <div class="tag-item" onclick="selectMulti(this)">단순 네트워킹</div>
         </div>
-        <label class="section-label">3. Get (최대 2개)</label>
+        
+        <label class="section-label">🤝 3. 내가 도움 받고 싶은 것 (최대 2개)</label>
         <div class="tag-grid" id="grid-get">
             <div class="tag-item" onclick="selectMulti(this)">공간 제공</div>
             <div class="tag-item" onclick="selectMulti(this)">상품/제품</div>
@@ -196,13 +212,13 @@
     <div id="page-match" class="hidden">
         <div class="main-header" style="margin-bottom:10px;">
             <h2 style="margin:0;">참가자 네트워킹 👥</h2>
-            <div style="font-size:12px; opacity:0.8;">Give & Get 기반 맞춤 추천</div>
+            <div style="font-size:12px; opacity:0.8;">나의 프로필 기반 맞춤 추천</div>
         </div>
         <div style="padding:0 20px;">
-            <h3><span id="display-name" style="color:var(--accent-yellow)">OOO</span>님을 위한 추천</h3>
+            <h3><span id="display-name" style="color:var(--accent-yellow)">OOO</span>님을 위한 네트워킹 제안</h3>
             <p style="font-size:12px; opacity:0.7;">* 매칭을 수락하면 서로의 연락처가 공개됩니다.</p>
             <div id="matching-list">
-                <div style="text-align:center; margin-top:50px;"><div class="loader"></div> <br>참가자 분석 중...</div>
+                <div style="text-align:center; margin-top:50px;"><div class="loader"></div> <br>현장 출석 현황 확인 중...</div>
             </div>
         </div>
     </div>
@@ -295,10 +311,9 @@
 </div>
 
 <script>
-    // ★ 기획자님의 구글 웹앱 주소! (그대로 둡니다)
+    // ★ 기획자님의 구글 웹앱 주소!
     const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzkvAVkT_hvjSe9ZZI5QXngMW5OKAjWB8jL9dH8LkL6Y1ZGgechfm1QHx_sufUR6-FaQw/exec"; 
 
-    // 전화번호 0 제거 함수 (앱에서도 제거해서 보냄)
     function normalizePhoneLocal(phone) {
         if (!phone) return "";
         let p = String(phone).replace(/[^0-9]/g, "").trim();
@@ -332,9 +347,16 @@
         const name = document.getElementById('userName').value.trim();
         const org = document.getElementById('userOrg').value.trim();
         const rawPhone = document.getElementById('userPhone').value;
-        const phone = normalizePhoneLocal(rawPhone); // [수정] 앱에서도 0 떼고 비교
+        const phone = normalizePhoneLocal(rawPhone); 
+        const agree = document.getElementById('agreePrivacy').checked; // 개인정보 동의 여부
 
         if(!name || !phone) { alert('이름과 전화번호를 정확히 입력해주세요!'); return; }
+        
+        if(name !== 'admin' && !agree) {
+            alert('개인정보 수집 및 이용에 동의해 주셔야 입장이 가능합니다.');
+            return;
+        }
+
         userData = { name, org, phone };
 
         if(name === 'admin') {
@@ -400,7 +422,7 @@
         fetch(GOOGLE_SCRIPT_URL, {
             method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain" }, body: JSON.stringify(dataPayload)
         }).then(() => {
-            alert("✅ 입장 완료!");
+            alert("✅ 프로필 등록이 완료되었습니다!");
             localStorage.setItem('dynamite_user', JSON.stringify(userData));
             initUserMode();
         }).catch(() => {
@@ -417,9 +439,11 @@
         showPage('home');
         document.getElementById('bottom-nav').classList.remove('hidden');
 
+        // [버그 수정] 앱이 켜져 있는 동안 주기적으로 서버에서 최신 정보(출석여부 등)를 가져옵니다.
         fetchMyMatches().then(() => {
             fetchRealUsers();
             setInterval(pollMatchStatus, 5000); 
+            setInterval(fetchRealUsers, 10000); // 10초마다 다른 참가자들의 출석 현황 실시간 업데이트
         });
     }
 
@@ -455,23 +479,21 @@
     function renderMatchingList() {
         const listDiv = document.getElementById('matching-list');
         
-        // [추가] 내 출석 상태 확인 (출석 안 했으면 리스트 안 보여줌)
         const me = realUserList.find(u => u.name === userData.name && u.phone === userData.phone);
         if (!me || !String(me.status).includes("출석완료")) {
             listDiv.innerHTML = `
                 <div style="text-align:center; padding:40px 10px; background:rgba(0,0,0,0.2); border-radius:12px; margin-top:20px;">
                     <div style="font-size:30px; margin-bottom:10px;">🛑</div>
                     <h3 style="color:var(--action-red); margin-top:0;">현장 출석 확인 필요</h3>
-                    <p style="font-size:13px; color:#ddd; line-height:1.5;">행사 당일 안내데스크에서<br><b>QR 출석체크</b>를 완료하신 참가자만<br>네트워킹 매칭 기능을 이용할 수 있습니다.</p>
+                    <p style="font-size:13px; color:#ddd; line-height:1.5;">행사 당일 안내데스크에서<br><b>QR 출석체크</b>를 완료하신 참가자만<br>네트워킹 매칭 기능을 이용할 수 있습니다.<br><br>(안내데스크에서 인증 후 자동으로 리스트가 나타납니다)</p>
                 </div>
             `;
             return;
         }
 
-        // [추가] 나를 제외하고 '출석완료'된 사람만 필터링
         const others = realUserList.filter(u => u.name !== userData.name && String(u.status).includes("출석완료"));
         
-        if (others.length === 0) { listDiv.innerHTML = "<p style='text-align:center; margin-top:50px; opacity:0.6;'>현재 출석한 다른 참가자가 없습니다.</p>"; return; }
+        if (others.length === 0) { listDiv.innerHTML = "<p style='text-align:center; margin-top:50px; opacity:0.6;'>현재 현장에 출석한 다른 참가자가 없습니다.</p>"; return; }
 
         const myGive = userData.give.split(', ').filter(x => x);
         const myGet = userData.get.split(', ').filter(x => x);
@@ -511,7 +533,7 @@
                 <div style="font-size:12px; color:#666; margin:5px 0;">${u.category}</div>
                 <div class="match-tags" style="margin-top:8px;">
                     ${u.matchType === 'perfect' ? `<span class="highlight" style="background:#fff0f5; color:#ff0055;">❤️ 서로 니즈 일치</span>` : ''}
-                    <span class="highlight">GIVE: ${u.give}</span>
+                    <span class="highlight">나눌 수 있는 것: ${u.give}</span>
                 </div>
                 <div id="btn-area-${u.name}">${btnHtml}</div>
             </div>`;
