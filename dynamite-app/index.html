@@ -42,6 +42,10 @@
         .match-tags span { background: #eee; padding: 4px 8px; border-radius: 4px; font-size: 11px; color: #555; margin-right: 4px; display: inline-block; margin-bottom: 4px;}
         .match-tags .highlight { background: var(--primary-blue); color: var(--accent-yellow); font-weight: bold; }
 
+        /* [수정] QR 카드 스타일 추가 (중앙 정렬) */
+        .qr-card { background: white; color: #333; border-radius: 20px; padding: 30px; text-align: center; width: 85%; max-width: 340px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        #qrcode img { margin: 0 auto; } /* QR 이미지 자체 중앙 정렬 */
+
         #page-login, #page-qr { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; padding: 20px; text-align: center; position: relative; }
         #page-input, #page-home, #page-match, #page-talk, #page-admin, #page-survey { padding: 20px; padding-bottom: 100px; display: block; }
         
@@ -245,7 +249,7 @@
         <div class="chat-box" id="qa-board"><div style="color:#999; text-align:center; margin-top:20px;">No messages yet.</div></div>
         <div style="display:flex; gap:10px; margin-top:10px;">
             <input type="text" id="chatInput" class="input-box" style="margin:0; background:rgba(255,255,255,0.2);" placeholder="Message...">
-            <button class="btn btn-primary" style="width:80px; margin:0;" onclick="postQuestion()" id="btn-chat-send">보내기</button>
+            <button class="btn btn-primary" style="width:100px; margin:0;" onclick="postQuestion()" id="btn-chat-send">보내기</button>
         </div>
     </div>
 
@@ -370,7 +374,7 @@
             "t-part1-title": "한-영 장소만들기 국제포럼",
             "t-part2-title": "장소만들기 관련 워크샵",
             "t-loc-label1": "건국대학교 글로컬캠퍼스<br>중원도서관 숨스퀘어",
-            "t-loc-label2": "건국대학교 글로컬캠퍼스<br>중원도서관 숨스퀘어", // [수정] 장소 업데이트
+            "t-loc-label2": "건국대학교 글로컬캠퍼스<br>중원도서관 숨스퀘어",
             "t-speaker-title": "🎙️ 주요 연사",
             "t-map-title": "🗺️ 오시는 길",
             "t-map-btn": "중원도서관 숨스퀘어 지도보기",
@@ -386,7 +390,7 @@
             "opt-5": "⭐⭐⭐⭐⭐ (매우 만족)", "opt-4": "⭐⭐⭐⭐ (만족)", "opt-3": "⭐⭐⭐ (보통)", "opt-2": "⭐⭐ (아쉬움)", "opt-1": "⭐ (별로)",
             "t-nav-home": "홈", "t-nav-match": "매칭", "t-nav-talk": "소통", "t-nav-qr": "티켓", "t-nav-survey": "설문",
             "t-modal-title": "대화 요청", "btn-reject": "거절", "btn-accept": "수락",
-            "btn-chat-send": "보내기" // [수정] 채팅 버튼 텍스트 추가
+            "btn-chat-send": "보내기"
         },
         en: {
             "t-main-title": "UK-Korea Placemaking<br>International Forum",
@@ -407,7 +411,7 @@
             "t-part1-title": "International Forum",
             "t-part2-title": "Placemaking Workshop",
             "t-loc-label1": "Jungwon Library, Konkuk Univ.",
-            "t-loc-label2": "Jungwon Library, Konkuk Univ.", // [수정] 장소 업데이트
+            "t-loc-label2": "Jungwon Library, Konkuk Univ.",
             "t-speaker-title": "🎙️ Speakers",
             "t-map-title": "🗺️ Location",
             "t-map-btn": "View Map (Jungwon Library)",
@@ -423,7 +427,7 @@
             "opt-5": "⭐⭐⭐⭐⭐ (Excellent)", "opt-4": "⭐⭐⭐⭐ (Good)", "opt-3": "⭐⭐⭐ (Average)", "opt-2": "⭐⭐ (Poor)", "opt-1": "⭐ (Bad)",
             "t-nav-home": "Home", "t-nav-match": "Match", "t-nav-talk": "Talk", "t-nav-qr": "Ticket", "t-nav-survey": "Survey",
             "t-modal-title": "Request Chat", "btn-reject": "Reject", "btn-accept": "Accept",
-            "btn-chat-send": "Send" // [수정] 채팅 버튼 텍스트 추가
+            "btn-chat-send": "Send"
         }
     };
 
