@@ -108,7 +108,7 @@
         </div>
         <div style="width:100%; margin-top:60px;">
             <input type="text" id="userName" class="input-box" placeholder="이름 (Name)">
-            <input type="text" id="userOrg" class="input-box" placeholder="소속 (Organization)">
+            <input type="text" id="userEngName" class="input-box" placeholder="영어 이름 (English Name)"> <input type="text" id="userOrg" class="input-box" placeholder="소속 (Organization)">
             <input type="tel" id="userPhone" class="input-box" placeholder="전화번호 (Phone Number)">
             
             <div style="text-align:left; margin-bottom:15px; margin-top:5px; background:rgba(0,0,0,0.2); padding:15px; border-radius:8px;">
@@ -331,7 +331,7 @@
 
 <script>
     // ★ 기획자님의 '새 주소'를 여기에 붙여넣으세요! ★
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyZYZwTJT2oo0-_C6ReG0I20yE8LPW1VfJFfBBJkSRR57AsNA_rCcdVMXhKTjq4Vijj1g/exec"; 
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwSs16pOkT1zTHRKMdP-YbhsAke7d-QZ-JHv_xFKf2zrQ5lQEIUZyAgFFtuEhs05ISKkw/exec"; 
 
     function normalizePhoneLocal(phone) {
         if (!phone) return "";
@@ -340,13 +340,13 @@
         return p;
     }
 
-    let userData = { name: "", org: "", phone: "", category: "", give: "", get: "", role: "user" };
+    let userData = { name: "", engName: "", org: "", phone: "", category: "", give: "", get: "", role: "user" };
     let realUserList = []; 
     let matchedPartners = {}; 
     let currentLang = "ko"; 
 
     const speakers = [
-        { ko: { org: "충주문화관광재단 센터장", name: "신재민" }, en: { org: "Head, CJ Culture City Center", name: "Shin Jaemin" } },
+        { ko: { org: "충주문화관광재단 문화도시센터장", name: "신재민" }, en: { org: "Head, CJ Culture City Center", name: "Shin Jaemin" } },
         { ko: { org: "충주문화관광재단 이사장", name: "백인욱" }, en: { org: "Chairperson, CJ Culture Foundation", name: "Paek Inuk" } },
         { ko: { org: "주한영국문화원 원장", name: "사라 데브롤" }, en: { org: "Director, British Council Korea", name: "Sarah Deverall" } },
         { ko: { org: "(주)보탬플러스 이사", name: "이상창" }, en: { org: "Director, Botam Plus", name: "Sangchang Lee" } },
@@ -497,15 +497,16 @@ END:VCARD`;
 
     function checkLogin() {
         const name = document.getElementById('userName').value.trim();
+        const engName = document.getElementById('userEngName').value.trim(); // [NEW] 영어 이름
         const org = document.getElementById('userOrg').value.trim();
         const rawPhone = document.getElementById('userPhone').value;
         const phone = normalizePhoneLocal(rawPhone); 
         const agree = document.getElementById('agreePrivacy').checked;
 
-        if(!name || !phone) { alert('이름과 전화번호를 정확히 입력해주세요!'); return; }
+        if(!name || !engName || !phone) { alert('이름, 영어 이름, 전화번호를 정확히 입력해주세요!'); return; }
         if(name !== 'admin' && !agree) { alert('개인정보 수집 및 이용에 동의해 주셔야 입장이 가능합니다.'); return; }
 
-        userData = { name, org, phone };
+        userData = { name, engName, org, phone };
 
         if(name === 'admin') {
             userData.role = 'admin';
@@ -565,6 +566,7 @@ END:VCARD`;
         const dataPayload = { 
             action: "signup", 
             name: userData.name, 
+            engName: userData.engName, // [NEW] 영어 이름 전송
             org: userData.org, 
             phone: userData.phone, 
             category: category, 
