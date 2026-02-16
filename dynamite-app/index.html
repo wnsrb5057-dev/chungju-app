@@ -12,11 +12,10 @@
         :root { --primary-blue: #003399; --accent-yellow: #FFDD00; --action-red: #FF3300; --white: #ffffff; --bg-gray: #f5f5f5; --admin-bg: #1a1a1a; }
         * { box-sizing: border-box; font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif; letter-spacing: -0.02em; }
         body { margin: 0; padding: 0; background-color: var(--primary-blue); color: var(--white); overflow-x: hidden; padding-bottom: 90px; }
-        .container { max-width: 480px; margin: 0 auto; min-height: 100vh; position: relative; padding-top: 10px; }
+        .container { max-width: 480px; margin: 0 auto; min-height: 100vh; position: relative; padding-top: 10px; display: flex; flex-direction: column; }
         .hidden { display: none !important; }
         
-        /* [Update] 버튼 인터랙션 고도화 */
-        .btn { width: 100%; padding: 16px; border: none; border-radius: 14px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: all 0.15s cubic-bezier(0.25, 0.8, 0.25, 1); box-shadow: 0 4px 6px rgba(0,0,0,0.1); position: relative; overflow: hidden; }
+        .btn { width: 100%; padding: 16px; border: none; border-radius: 14px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: all 0.15s cubic-bezier(0.25, 0.8, 0.25, 1); box-shadow: 0 4px 6px rgba(0,0,0,0.1); position: relative; overflow: hidden; z-index: 10; /* 버튼이 위에 오도록 z-index 추가 */ }
         .btn:active { transform: scale(0.96); box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
         .btn-primary { background: var(--accent-yellow); color: var(--primary-blue); }
         .btn-red { background: var(--action-red); color: white; }
@@ -49,8 +48,10 @@
         .qr-card { background: white; color: #333; border-radius: 24px; padding: 35px; text-align: center; width: 88%; max-width: 340px; box-shadow: 0 15px 40px rgba(0,0,0,0.3); margin: 0 auto; }
         #qrcode img { margin: 0 auto; }
 
-        #page-login, #page-qr { display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; text-align: center; position: relative; }
-        #page-input, #page-home, #page-match, #page-talk, #page-admin, #page-survey { padding: 20px; padding-bottom: 100px; display: block; }
+        /* [수정] 로그인 페이지 정렬 및 스크롤 문제 해결 */
+        #page-login { display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 20px; text-align: center; overflow-y: auto; justify-content: flex-start; }
+        #page-qr { display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; text-align: center; }
+        #page-input, #page-home, #page-match, #page-talk, #page-admin, #page-survey { padding: 20px; padding-bottom: 100px; display: block; flex: 1; }
         
         .main-header { display: flex; justify-content: space-between; align-items: flex-start; padding-top: 30px; margin-bottom: 10px; }
 
@@ -65,7 +66,18 @@
         .speaker-org { font-size: 11px; color: var(--accent-yellow); margin-bottom: 6px; font-weight:500; }
         .speaker-name { font-weight: 800; font-size: 17px; }
 
-        .creator-signature { position: absolute; bottom: 25px; font-size: 11px; color: rgba(255,255,255,0.3); font-style: italic; }
+        /* [수정] 서명 겹침 완벽 해결: margin-top: auto로 하단 배치 유도 및 여백 추가 */
+        .creator-signature { 
+            margin-top: 50px;   
+            margin-bottom: 30px; 
+            font-size: 11px; 
+            color: rgba(255,255,255,0.3); 
+            font-style: italic; 
+            width: 100%;
+            text-align: center;
+            position: relative;
+            z-index: 0;
+        }
 
         .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px; }
         .stat-box { background: #333; padding: 20px; border-radius: 12px; text-align: center; }
@@ -102,7 +114,6 @@
 
         .lang-btn { position: absolute; top: 15px; left: 15px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 6px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; z-index: 100; backdrop-filter: blur(4px); }
 
-        /* [NEW] 스켈레톤 UI (Skeleton Loading) */
         .skeleton { background: #eee; background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%); border-radius: 8px; background-size: 200% 100%; animation: 1.5s shimmer linear infinite; }
         @keyframes shimmer { to { background-position-x: -200%; } }
         .skeleton-card { height: 160px; display: flex; flex-direction: column; justify-content: space-between; }
@@ -121,7 +132,7 @@
             <div id="t-main-title" style="font-size:26px; color:var(--accent-yellow); font-weight:900; margin-bottom:12px; line-height:1.3; word-break:keep-all;">충주진로 한-영<br>장소만들기 국제포럼</div>
             <h1 style="font-size:20px; font-style:italic; text-shadow:2px 2px 0 var(--action-red); margin:0; line-height:1;">DYNAMITE</h1>
         </div>
-        <div style="width:100%; margin-top:60px;">
+        <div style="width:100%; margin-top:40px;">
             <input type="text" id="userName" class="input-box" placeholder="이름 (Name)">
             <input type="text" id="userEngName" class="input-box" placeholder="영어 이름 (English Name)">
             <input type="text" id="userOrg" class="input-box" placeholder="소속 (Organization)">
@@ -360,13 +371,14 @@
     let matchedPartners = {}; 
     let currentLang = "ko"; 
 
+    // [수정] 연사 순서 변경 (영국 -> 한국)
     const speakers = [
         { ko: { org: "주한영국문화원 원장", name: "사라 데브롤" }, en: { org: "Director, British Council Korea", name: "Sarah Deverall" } },
         { ko: { org: "MadLab", name: "레이첼 터너" }, en: { org: "MadLab", name: "Rachael Turner" } },
         { ko: { org: "MadLab", name: "아사 칼로우" }, en: { org: "MadLab", name: "Asa Calow" } },
         { ko: { org: "InnovateUK", name: "제임스 휠" }, en: { org: "Innovate UK", name: "James Wheale" } },
         { ko: { org: "충주문화관광재단 이사장", name: "백인욱" }, en: { org: "Chairperson, CJ Culture Foundation", name: "Paek Inuk" } },
-        { ko: { org: "충주문화관광재단 센터장", name: "신재민" }, en: { org: "Head, CJ Culture City Center", name: "Shin Jaemin" } }
+        { ko: { org: "충주문화관광재단 문화도시센터장", name: "신재민" }, en: { org: "Head, CJ Culture City Center", name: "Shin Jaemin" } },
         { ko: { org: "(주)보탬플러스 이사", name: "이상창" }, en: { org: "Director, Botam Plus", name: "Sangchang Lee" } },
         { ko: { org: "충주시청년센터 센터장", name: "남재우" }, en: { org: "Head, Chungju Youth Center", name: "Nam Jaewoo" } }
     ];
@@ -536,7 +548,7 @@ END:VCARD`;
         btn.innerHTML = '<div class="loader"></div> 확인 중...';
         btn.disabled = true;
 
-        const timeoutPromise = new Promise((resolve, reject) => { setTimeout(() => reject("Timeout"), 3000); });
+        const timeoutPromise = new Promise((resolve, reject) => { setTimeout(() => reject("Timeout"), 5000); }); // [수정] 타임아웃 5초로 증가
         const fetchPromise = fetch(GOOGLE_SCRIPT_URL + "?action=get_users").then(res => res.json());
 
         Promise.race([fetchPromise, timeoutPromise])
@@ -550,7 +562,10 @@ END:VCARD`;
                 showPage('input');
             }
         })
-        .catch(err => { showPage('input'); });
+        .catch(err => { 
+            // [수정] 에러 시 무조건 넘어가기보다 input 화면으로 안전하게 유도
+            showPage('input'); 
+        });
     }
 
     function selectSingle(el) { Array.from(el.parentElement.children).forEach(c => c.classList.remove('selected')); el.classList.add('selected'); }
