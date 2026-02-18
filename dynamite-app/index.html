@@ -125,12 +125,12 @@
         .spk-popup-org { font-size: 13px; color: var(--primary-blue); margin-bottom: 5px; font-weight: bold; transition: 0.3s; }
         .spk-popup-name { font-size: 22px; font-weight: 900; margin-bottom: 15px; color: #333; transition: 0.3s; }
         
-        /* [수정] 팝업 내부 스타일 개선 (헤드라인 강조) */
+        /* [수정] 팝업 내부 스타일 개선 */
         .spk-popup-desc { font-size: 14px; color: #555; line-height: 1.6; text-align: left; background: #f8f9fa; padding: 18px; border-radius: 12px; max-height: 250px; overflow-y: auto; transition: 0.3s; }
         
-        /* [New] 헤드라인용 스타일 */
-        .spk-headline { display: block; font-size: 19px; font-weight: 800; color: var(--primary-blue); margin-bottom: 12px; line-height: 1.4; word-break: keep-all; letter-spacing: -0.5px; }
-        .spk-body { display: block; font-size: 14px; color: #444; line-height: 1.7; }
+        /* [New] 가독성 개선: 글자 줄바꿈(keep-all) 및 폰트 사이즈 조정 */
+        .spk-headline { display: block; font-size: 17.5px; font-weight: 800; color: var(--primary-blue); margin-bottom: 12px; line-height: 1.5; word-break: keep-all; word-wrap: break-word; letter-spacing: -0.03em; }
+        .spk-body { display: block; font-size: 14px; color: #444; line-height: 1.7; word-break: keep-all; word-wrap: break-word; }
 
         .btn-org-info { background: #f0f4ff; color: var(--primary-blue); border: 1px solid var(--primary-blue); width: 100%; margin-top: 15px; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 14px; transition: 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .btn-org-info:hover { background: var(--primary-blue); color: white; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
@@ -620,13 +620,15 @@
             // 연사 정보 뷰
             orgLabel.innerText = info.org;
             nameLabel.innerText = info.name;
+            
             // [Design] 헤드라인(bolder) + 본문 분리 (desc가 객체인 경우 처리)
             if (typeof info.desc === 'object') {
                 descLabel.innerHTML = `<span class="spk-headline">${info.desc.headline}</span><span class="spk-body">${info.desc.body}</span>`;
             } else {
-                descLabel.innerText = info.desc; // 예외 처리
+                descLabel.innerText = info.desc; // 예외 처리 (혹시 모를 문자열 데이터 대비)
             }
             
+            // 단체 정보가 있는 경우에만 버튼 표시
             if (info.orgDetail) {
                 btnArea.innerHTML = `<button class="btn-org-info" onclick="toggleOrgInfo()">🏢 ${currentLang==='ko'?'소속 단체 정보 보기':'Show Organization Info'}</button>`;
             } else {
