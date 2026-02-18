@@ -15,7 +15,7 @@
         .container { max-width: 480px; margin: 0 auto; min-height: 100vh; position: relative; padding-top: 10px; display: flex; flex-direction: column; }
         .hidden { display: none !important; }
         
-        .btn { width: 100%; padding: 16px; border: none; border-radius: 14px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: all 0.15s cubic-bezier(0.25, 0.8, 0.25, 1); box-shadow: 0 4px 6px rgba(0,0,0,0.1); position: relative; overflow: hidden; z-index: 10; /* 버튼이 위에 오도록 z-index 추가 */ }
+        .btn { width: 100%; padding: 16px; border: none; border-radius: 14px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: all 0.15s cubic-bezier(0.25, 0.8, 0.25, 1); box-shadow: 0 4px 6px rgba(0,0,0,0.1); position: relative; overflow: hidden; z-index: 10; }
         .btn:active { transform: scale(0.96); box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
         .btn-primary { background: var(--accent-yellow); color: var(--primary-blue); }
         .btn-red { background: var(--action-red); color: white; }
@@ -48,7 +48,6 @@
         .qr-card { background: white; color: #333; border-radius: 24px; padding: 35px; text-align: center; width: 88%; max-width: 340px; box-shadow: 0 15px 40px rgba(0,0,0,0.3); margin: 0 auto; }
         #qrcode img { margin: 0 auto; }
 
-        /* [수정] 로그인 페이지 정렬 및 스크롤 문제 해결 */
         #page-login { display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 20px; text-align: center; overflow-y: auto; justify-content: flex-start; }
         #page-qr { display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; text-align: center; }
         #page-input, #page-home, #page-match, #page-talk, #page-admin, #page-survey { padding: 20px; padding-bottom: 100px; display: block; flex: 1; }
@@ -62,11 +61,11 @@
         .event { flex: 1; border-left: 2px solid var(--action-red); padding-left: 12px; font-size:14px; font-weight:600; line-height: 1.5; }
         
         .speaker-container { display: flex; overflow-x: auto; gap: 12px; padding-bottom: 15px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
-        .speaker-card { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 18px; border-radius: 14px; min-width: 150px; scroll-snap-align: start; text-align: left; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .speaker-card { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 18px; border-radius: 14px; min-width: 150px; scroll-snap-align: start; text-align: left; box-shadow: 0 4px 10px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.1s; }
+        .speaker-card:active { transform: scale(0.97); background: rgba(255,255,255,0.2); }
         .speaker-org { font-size: 11px; color: var(--accent-yellow); margin-bottom: 6px; font-weight:500; }
         .speaker-name { font-weight: 800; font-size: 17px; }
 
-        /* [수정] 서명 겹침 완벽 해결: margin-top: auto로 하단 배치 유도 및 여백 추가 */
         .creator-signature { 
             margin-top: 50px;   
             margin-bottom: 30px; 
@@ -105,8 +104,9 @@
 
         .loader { border: 4px solid rgba(255,255,255,0.1); border-top: 4px solid var(--accent-yellow); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; display: inline-block; vertical-align: middle; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        #match-modal { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index: 2000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
-        .modal-content { background: white; color: black; padding: 35px; border-radius: 24px; text-align: center; width: 85%; max-width: 350px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); animation: popUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        
+        #match-modal, #speaker-modal { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index: 2000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+        .modal-content { background: white; color: black; padding: 35px; border-radius: 24px; text-align: center; width: 85%; max-width: 350px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); animation: popUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; }
         @keyframes popUp { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
         .footer-info { margin-top: 50px; padding: 30px; background: rgba(0,0,0,0.2); border-radius: 16px; font-size: 11px; color: rgba(255,255,255,0.5); line-height: 1.7; text-align: center; word-break: keep-all; }
@@ -120,6 +120,14 @@
         .skeleton-text { height: 20px; width: 80%; margin-bottom: 10px; }
         .skeleton-text.short { width: 40%; }
         .skeleton-badge { width: 60px; height: 24px; border-radius: 12px; align-self: flex-end; }
+        
+        .close-modal-btn { position: absolute; top: 15px; right: 15px; font-size: 20px; color: #999; cursor: pointer; background: none; border: none; padding: 5px; }
+        .spk-popup-org { font-size: 13px; color: var(--primary-blue); margin-bottom: 5px; font-weight: bold; transition: 0.3s; }
+        .spk-popup-name { font-size: 22px; font-weight: 900; margin-bottom: 15px; color: #333; transition: 0.3s; }
+        .spk-popup-desc { font-size: 14px; color: #555; line-height: 1.6; text-align: left; background: #f8f9fa; padding: 15px; border-radius: 12px; max-height: 200px; overflow-y: auto; transition: 0.3s; }
+        /* [New] 단체 정보 버튼 스타일 */
+        .btn-org-info { background: #f0f4ff; color: var(--primary-blue); border: 1px solid var(--primary-blue); width: 100%; margin-top: 15px; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 13px; transition: 0.2s; }
+        .btn-org-info:hover { background: var(--primary-blue); color: white; }
     </style>
 </head>
 <body>
@@ -353,6 +361,16 @@
         </div>
     </div>
 
+    <div id="speaker-modal" class="hidden">
+        <div class="modal-content" style="text-align:left;">
+            <button class="close-modal-btn" onclick="closeSpeakerModal()">X</button>
+            <div class="spk-popup-org" id="spk-popup-org">소속</div>
+            <div class="spk-popup-name" id="spk-popup-name">이름</div>
+            <div class="spk-popup-desc" id="spk-popup-desc">상세 설명</div>
+            <div id="spk-org-btn-area"></div>
+        </div>
+    </div>
+
 </div>
 
 <script>
@@ -370,17 +388,61 @@
     let realUserList = []; 
     let matchedPartners = {}; 
     let currentLang = "ko"; 
+    let currentSpeakerIndex = -1; // 현재 열린 연사 팝업 인덱스
+    let isOrgView = false; // 현재 단체 정보 뷰인지 여부
 
-    // [수정] 연사 순서 변경 (영국 -> 한국)
+    // [New] 연사 데이터 + 단체 정보(orgDetail) 필드 추가
     const speakers = [
-        { ko: { org: "주한영국문화원 원장", name: "사라 데브롤" }, en: { org: "Director, British Council Korea", name: "Sarah Deverall" } },
-        { ko: { org: "MadLab", name: "레이첼 터너" }, en: { org: "MadLab", name: "Rachael Turner" } },
-        { ko: { org: "MadLab", name: "아사 칼로우" }, en: { org: "MadLab", name: "Asa Calow" } },
-        { ko: { org: "InnovateUK", name: "제임스 휠" }, en: { org: "Innovate UK", name: "James Wheale" } },
-        { ko: { org: "충주문화관광재단 이사장", name: "백인욱" }, en: { org: "Chairperson, CJ Culture Foundation", name: "Paek Inuk" } },
-        { ko: { org: "충주문화관광재단 센터장", name: "신재민" }, en: { org: "Head, CJ Culture City Center", name: "Shin Jaemin" } },
-        { ko: { org: "(주)보탬플러스 이사", name: "이상창" }, en: { org: "Director, Botam Plus", name: "Sangchang Lee" } },
-        { ko: { org: "충주시청년센터 센터장", name: "남재우" }, en: { org: "Head, Chungju Youth Center", name: "Nam Jaewoo" } }
+        { 
+            ko: { org: "주한영국문화원 원장", name: "사라 데브롤", desc: "한-영 문화 가교의 중심, 창의적 교류를 통해 도시의 미래를 잇다. 주한영국문화원장으로서 한국과 영국의 문화예술 교류를 총괄하며, 양국 문화 생태계의 동반 성장을 견인하고 있습니다." }, 
+            en: { org: "Director, British Council Korea", name: "Sarah Deverall", desc: "Director of the British Council in Korea, leading cultural and artistic exchanges between the UK and Korea, fostering mutual growth in the cultural ecosystem." } 
+        },
+        { 
+            ko: { 
+                org: "MadLab", name: "레이첼 터너", desc: "BBC·알자지라 출신의 미디어 전략가, 매드랩의 '냉철한 운영'을 이끄는 리더. 매드랩의 전략 수립부터 실행까지 총괄하며, 창의 산업 내 다양성 증진과 기술의 사회적 포용성을 확장하는 데 주력하고 있습니다.",
+                orgDetail: { headline: "시민이 기술과 예술로 도시를 바꾸는 '풀뿌리 혁신 실험실'", body: "맨체스터와 스톡포트를 거점으로 활동하는 커뮤니티 주도형 혁신 기관입니다. 시민 누구나 코딩, 바이오, 디지털 제작 기술을 실험할 수 있는 메이커스페이스를 운영하며, 소외 계층을 위한 디지털 교육과 '포용적 도시 재생' 프로젝트를 통해 기술이 지역 사회 모두의 자산이 되도록 돕고 있습니다." }
+            }, 
+            en: { 
+                org: "MadLab", name: "Rachael Turner", desc: "Media strategist from BBC & Al Jazeera, leading MadLab's operations. Focuses on diversity in creative industries and expanding social inclusion of technology.",
+                orgDetail: { headline: "Grassroots Innovation Lab transforming cities with citizens", body: "A community-led innovation organization based in Manchester and Stockport. Operates makerspaces for coding, bio, and digital fabrication, fostering inclusive regeneration." }
+            } 
+        },
+        { 
+            ko: { 
+                org: "MadLab", name: "아사 칼로우", desc: "FBI가 주목한 괴짜 기술자, 상상을 현실로 만드는 '창조적 혼돈'의 설계자. 시민 생물학(DIYBio) 프로젝트를 주도하며 초밥 DNA 분석, 박테리아 배양 등 기상천외한 실험으로 시민 과학의 가능성을 증명했습니다.",
+                orgDetail: { headline: "시민이 기술과 예술로 도시를 바꾸는 '풀뿌리 혁신 실험실'", body: "맨체스터와 스톡포트를 거점으로 활동하는 커뮤니티 주도형 혁신 기관입니다. 시민 누구나 코딩, 바이오, 디지털 제작 기술을 실험할 수 있는 메이커스페이스를 운영하며, 소외 계층을 위한 디지털 교육과 '포용적 도시 재생' 프로젝트를 통해 기술이 지역 사회 모두의 자산이 되도록 돕고 있습니다." }
+            }, 
+            en: { 
+                org: "MadLab", name: "Asa Calow", desc: "Technologist noted by the FBI, architect of 'Creative Chaos'. Leads DIYBio projects proving the potential of citizen science through unique experiments.",
+                orgDetail: { headline: "Grassroots Innovation Lab transforming cities with citizens", body: "A community-led innovation organization based in Manchester and Stockport. Operates makerspaces for coding, bio, and digital fabrication, fostering inclusive regeneration." }
+            } 
+        },
+        { 
+            ko: { 
+                org: "InnovateUK", name: "제임스 휠", desc: "기술과 예술의 경계를 허무는 몰입형 콘텐츠(Immersive Tech) 혁신가. Innovate UK의 혁신 리드로서 디지털 스토리텔링과 실감형 미디어 분야를 개척하며, 영국의 창의적 기술 생태계 발전에 핵심적인 역할을 수행하고 있습니다.",
+                orgDetail: { headline: "영국의 혁신 성장을 견인하는 국가 R&D 지원의 심장", body: "영국 연구혁신기구(UKRI) 산하의 핵심 기관으로, 기업들의 혁신적인 아이디어가 실제 비즈니스로 성장할 수 있도록 자금과 네트워크를 지원합니다. 특히 창의 산업과 몰입형 기술 분야에서 연구와 산업의 가교 역할을 수행하며, 영국 경제의 지속 가능한 미래를 설계하고 있습니다." }
+            }, 
+            en: { 
+                org: "Innovate UK", name: "James Wheale", desc: "Immersive Tech innovator bridging art and technology. As Innovation Lead at Innovate UK, he pioneers digital storytelling and immersive media ecosystems.",
+                orgDetail: { headline: "The heart of national R&D support driving UK's innovation growth", body: "A core agency under UKRI, supporting businesses to grow innovative ideas into real businesses through funding and networking. Bridges research and industry in creative sectors." }
+            } 
+        },
+        { 
+            ko: { org: "충주문화관광재단 이사장", name: "백인욱", desc: "충주 관광 르네상스를 이끄는 리더, 문화도시의 든든한 버팀목. 충주문화관광재단의 이사장으로서 대한민국 문화도시 충주의 비전을 제시하고, 시민과 방문객 모두가 즐길 수 있는 매력적인 도시 브랜드를 구축하는 데 앞장서고 있습니다." }, 
+            en: { org: "Chairperson, CJ Culture Foundation", name: "Paek Inuk", desc: "Leader of Chungju's tourism renaissance. Presents the vision of Chungju as a Cultural City and builds an attractive city brand for citizens and visitors." } 
+        },
+        { 
+            ko: { org: "충주문화관광재단 센터장", name: "신재민", desc: "데이터로 문화를 디자인하는 12년 차 축제 기획자, 충주의 로컬 생태계를 지휘하다. '충주본색' 등 혁신적 프로젝트를 총괄하며, AI와 데이터 분석을 접목한 스마트 문화 기획을 선도하고 있습니다." }, 
+            en: { org: "Head, CJ Culture City Center", name: "Shin Jaemin", desc: "12-year festival planner designing culture with data. Leads Chungju's local ecosystem and smart cultural planning using AI and data analytics." } 
+        },
+        { 
+            ko: { org: "(주)보탬플러스 이사", name: "이상창", desc: "버려진 골목에 숨결을 불어넣은 '관아골의 기적', 사람을 잇는 따뜻한 기획자. 10년 넘게 방치된 빈집을 복합문화공간 '세상상회'로 변신시키며 관아골 재생을 이끌었습니다." }, 
+            en: { org: "Director, Botam Plus", name: "Sangchang Lee", desc: "The warm planner behind the 'Miracle of Gwanagol'. Transformed abandoned houses into cultural spaces, leading the regeneration of the local alleyways." } 
+        },
+        { 
+            ko: { org: "충주시청년센터 센터장", name: "남재우", desc: "빅데이터로 청년의 미래를 그리는 교수님, 지역 정착의 길을 열다. 정보학과 공공빅데이터 AI 전문성을 바탕으로 청년들이 지역 자원을 활용해 스스로 자립할 수 있는 비즈니스 모델을 만들도록 돕고 있습니다." }, 
+            en: { org: "Head, Chungju Youth Center", name: "Nam Jaewoo", desc: "Professor drawing the future of youth with big data. Helps youth create self-reliant business models using local resources based on AI expertise." } 
+        }
     ];
 
     const langData = {
@@ -483,10 +545,57 @@
 
     function renderSpeakers() {
         const container = document.getElementById('speaker-list');
-        container.innerHTML = speakers.map(s => {
+        container.innerHTML = speakers.map((s, index) => {
             const info = s[currentLang];
-            return `<div class="speaker-card"><div class="speaker-org">${info.org}</div><div class="speaker-name">${info.name}</div></div>`;
+            return `<div class="speaker-card" onclick="openSpeakerModal(${index})"><div class="speaker-org">${info.org}</div><div class="speaker-name">${info.name}</div></div>`;
         }).join('');
+    }
+
+    // [New] 연사 팝업 열기 (초기화)
+    function openSpeakerModal(index) {
+        currentSpeakerIndex = index;
+        isOrgView = false; // 항상 연사 정보부터 시작
+        renderModalContent();
+        document.getElementById('speaker-modal').classList.remove('hidden');
+    }
+
+    // [New] 팝업 내용 렌더링 (연사 <-> 단체 전환)
+    function renderModalContent() {
+        const info = speakers[currentSpeakerIndex][currentLang];
+        const btnArea = document.getElementById('spk-org-btn-area');
+        const orgLabel = document.getElementById('spk-popup-org');
+        const nameLabel = document.getElementById('spk-popup-name');
+        const descLabel = document.getElementById('spk-popup-desc');
+
+        if (isOrgView && info.orgDetail) {
+            // 단체 정보 뷰
+            orgLabel.innerText = "About Organization";
+            nameLabel.innerText = info.org; // 단체명
+            descLabel.innerHTML = `<b>${info.orgDetail.headline}</b><br><br>${info.orgDetail.body}`;
+            btnArea.innerHTML = `<button class="btn-org-info" onclick="toggleOrgInfo()">👤 ${currentLang==='ko'?'연사 정보 보기':'Show Speaker Info'}</button>`;
+        } else {
+            // 연사 정보 뷰
+            orgLabel.innerText = info.org;
+            nameLabel.innerText = info.name;
+            descLabel.innerText = info.desc;
+            
+            // 단체 정보가 있는 경우에만 버튼 표시
+            if (info.orgDetail) {
+                btnArea.innerHTML = `<button class="btn-org-info" onclick="toggleOrgInfo()">🏢 ${currentLang==='ko'?'소속 단체 정보 보기':'Show Organization Info'}</button>`;
+            } else {
+                btnArea.innerHTML = "";
+            }
+        }
+    }
+
+    // [New] 토글 함수
+    function toggleOrgInfo() {
+        isOrgView = !isOrgView;
+        renderModalContent();
+    }
+
+    function closeSpeakerModal() {
+        document.getElementById('speaker-modal').classList.add('hidden');
     }
 
     function downloadVCard(name, org, phone) {
@@ -548,7 +657,7 @@ END:VCARD`;
         btn.innerHTML = '<div class="loader"></div> 확인 중...';
         btn.disabled = true;
 
-        const timeoutPromise = new Promise((resolve, reject) => { setTimeout(() => reject("Timeout"), 5000); }); // [수정] 타임아웃 5초로 증가
+        const timeoutPromise = new Promise((resolve, reject) => { setTimeout(() => reject("Timeout"), 5000); }); 
         const fetchPromise = fetch(GOOGLE_SCRIPT_URL + "?action=get_users").then(res => res.json());
 
         Promise.race([fetchPromise, timeoutPromise])
@@ -562,10 +671,7 @@ END:VCARD`;
                 showPage('input');
             }
         })
-        .catch(err => { 
-            // [수정] 에러 시 무조건 넘어가기보다 input 화면으로 안전하게 유도
-            showPage('input'); 
-        });
+        .catch(err => { showPage('input'); });
     }
 
     function selectSingle(el) { Array.from(el.parentElement.children).forEach(c => c.classList.remove('selected')); el.classList.add('selected'); }
@@ -645,7 +751,6 @@ END:VCARD`;
     }
 
     function fetchMyMatches() {
-        // [New] 매칭 리스트 로딩 전 스켈레톤 보여주기
         const listDiv = document.getElementById('matching-list');
         if(!listDiv.innerHTML.trim() || listDiv.innerHTML.includes('Loading')) {
             listDiv.innerHTML = `
