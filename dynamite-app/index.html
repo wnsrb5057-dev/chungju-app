@@ -124,10 +124,16 @@
         .close-modal-btn { position: absolute; top: 15px; right: 15px; font-size: 20px; color: #999; cursor: pointer; background: none; border: none; padding: 5px; }
         .spk-popup-org { font-size: 13px; color: var(--primary-blue); margin-bottom: 5px; font-weight: bold; transition: 0.3s; }
         .spk-popup-name { font-size: 22px; font-weight: 900; margin-bottom: 15px; color: #333; transition: 0.3s; }
-        .spk-popup-desc { font-size: 14px; color: #555; line-height: 1.6; text-align: left; background: #f8f9fa; padding: 15px; border-radius: 12px; max-height: 200px; overflow-y: auto; transition: 0.3s; }
-        /* [New] 단체 정보 버튼 스타일 */
-        .btn-org-info { background: #f0f4ff; color: var(--primary-blue); border: 1px solid var(--primary-blue); width: 100%; margin-top: 15px; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 13px; transition: 0.2s; }
-        .btn-org-info:hover { background: var(--primary-blue); color: white; }
+        
+        /* [수정] 팝업 내부 스타일 개선 (헤드라인 강조) */
+        .spk-popup-desc { font-size: 14px; color: #555; line-height: 1.6; text-align: left; background: #f8f9fa; padding: 18px; border-radius: 12px; max-height: 250px; overflow-y: auto; transition: 0.3s; }
+        
+        /* [New] 헤드라인용 스타일 */
+        .spk-headline { display: block; font-size: 19px; font-weight: 800; color: var(--primary-blue); margin-bottom: 12px; line-height: 1.4; word-break: keep-all; letter-spacing: -0.5px; }
+        .spk-body { display: block; font-size: 14px; color: #444; line-height: 1.7; }
+
+        .btn-org-info { background: #f0f4ff; color: var(--primary-blue); border: 1px solid var(--primary-blue); width: 100%; margin-top: 15px; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 14px; transition: 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .btn-org-info:hover { background: var(--primary-blue); color: white; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
     </style>
 </head>
 <body>
@@ -391,57 +397,93 @@
     let currentSpeakerIndex = -1; // 현재 열린 연사 팝업 인덱스
     let isOrgView = false; // 현재 단체 정보 뷰인지 여부
 
-    // [New] 연사 데이터 + 단체 정보(orgDetail) 필드 추가
+    // [New] 연사 데이터 구조 개선: desc를 { headline, body } 객체로 분리
     const speakers = [
         { 
-            ko: { org: "주한영국문화원 원장", name: "사라 데브롤", desc: "한-영 문화 가교의 중심, 창의적 교류를 통해 도시의 미래를 잇다. 주한영국문화원장으로서 한국과 영국의 문화예술 교류를 총괄하며, 양국 문화 생태계의 동반 성장을 견인하고 있습니다." }, 
-            en: { org: "Director, British Council Korea", name: "Sarah Deverall", desc: "Director of the British Council in Korea, leading cultural and artistic exchanges between the UK and Korea, fostering mutual growth in the cultural ecosystem." } 
-        },
-        { 
             ko: { 
-                org: "MadLab", name: "레이첼 터너", desc: "BBC·알자지라 출신의 미디어 전략가, 매드랩의 '냉철한 운영'을 이끄는 리더. 매드랩의 전략 수립부터 실행까지 총괄하며, 창의 산업 내 다양성 증진과 기술의 사회적 포용성을 확장하는 데 주력하고 있습니다.",
-                orgDetail: { headline: "시민이 기술과 예술로 도시를 바꾸는 '풀뿌리 혁신 실험실'", body: "맨체스터와 스톡포트를 거점으로 활동하는 커뮤니티 주도형 혁신 기관입니다. 시민 누구나 코딩, 바이오, 디지털 제작 기술을 실험할 수 있는 메이커스페이스를 운영하며, 소외 계층을 위한 디지털 교육과 '포용적 도시 재생' 프로젝트를 통해 기술이 지역 사회 모두의 자산이 되도록 돕고 있습니다." }
+                org: "주한영국문화원 원장", name: "사라 데브롤", 
+                desc: { headline: "한-영 문화 가교의 중심, 창의적 교류를 통해 도시의 미래를 잇다", body: "주한영국문화원장으로서 한국과 영국의 문화예술 교류를 총괄하며, 양국 문화 생태계의 동반 성장을 견인하고 있습니다." }
             }, 
             en: { 
-                org: "MadLab", name: "Rachael Turner", desc: "Media strategist from BBC & Al Jazeera, leading MadLab's operations. Focuses on diversity in creative industries and expanding social inclusion of technology.",
-                orgDetail: { headline: "Grassroots Innovation Lab transforming cities with citizens", body: "A community-led innovation organization based in Manchester and Stockport. Operates makerspaces for coding, bio, and digital fabrication, fostering inclusive regeneration." }
+                org: "Director, British Council Korea", name: "Sarah Deverall", 
+                desc: { headline: "Leading the cultural bridge between the UK and Korea", body: "Director of the British Council in Korea, leading cultural and artistic exchanges between the UK and Korea." }
             } 
         },
         { 
             ko: { 
-                org: "MadLab", name: "아사 칼로우", desc: "FBI가 주목한 괴짜 기술자, 상상을 현실로 만드는 '창조적 혼돈'의 설계자. 시민 생물학(DIYBio) 프로젝트를 주도하며 초밥 DNA 분석, 박테리아 배양 등 기상천외한 실험으로 시민 과학의 가능성을 증명했습니다.",
-                orgDetail: { headline: "시민이 기술과 예술로 도시를 바꾸는 '풀뿌리 혁신 실험실'", body: "맨체스터와 스톡포트를 거점으로 활동하는 커뮤니티 주도형 혁신 기관입니다. 시민 누구나 코딩, 바이오, 디지털 제작 기술을 실험할 수 있는 메이커스페이스를 운영하며, 소외 계층을 위한 디지털 교육과 '포용적 도시 재생' 프로젝트를 통해 기술이 지역 사회 모두의 자산이 되도록 돕고 있습니다." }
+                org: "MadLab", name: "레이첼 터너", 
+                desc: { headline: "BBC·알자지라 출신의 미디어 전략가, 매드랩의 '냉철한 운영'을 이끄는 리더", body: "매드랩의 전략 수립부터 실행까지 총괄하며, 창의 산업 내 다양성 증진과 기술의 사회적 포용성을 확장하는 데 주력하고 있습니다." },
+                orgDetail: { headline: "시민이 기술과 예술로 도시를 바꾸는 '풀뿌리 혁신 실험실'", body: "맨체스터와 스톡포트를 거점으로 활동하는 커뮤니티 주도형 혁신 기관입니다. 시민 누구나 메이커스페이스를 이용하며 기술이 지역 사회 모두의 자산이 되도록 돕고 있습니다." }
             }, 
             en: { 
-                org: "MadLab", name: "Asa Calow", desc: "Technologist noted by the FBI, architect of 'Creative Chaos'. Leads DIYBio projects proving the potential of citizen science through unique experiments.",
-                orgDetail: { headline: "Grassroots Innovation Lab transforming cities with citizens", body: "A community-led innovation organization based in Manchester and Stockport. Operates makerspaces for coding, bio, and digital fabrication, fostering inclusive regeneration." }
+                org: "MadLab", name: "Rachael Turner", 
+                desc: { headline: "Operational Powerhouse of MadLab, Media Strategist from BBC & Al Jazeera", body: "Leads MadLab's operations, focusing on diversity in creative industries and expanding social inclusion of technology." },
+                orgDetail: { headline: "Grassroots Innovation Lab transforming cities with citizens", body: "A community-led innovation organization operating makerspaces for coding, bio, and digital fabrication." }
             } 
         },
         { 
             ko: { 
-                org: "InnovateUK", name: "제임스 휠", desc: "기술과 예술의 경계를 허무는 몰입형 콘텐츠(Immersive Tech) 혁신가. Innovate UK의 혁신 리드로서 디지털 스토리텔링과 실감형 미디어 분야를 개척하며, 영국의 창의적 기술 생태계 발전에 핵심적인 역할을 수행하고 있습니다.",
-                orgDetail: { headline: "영국의 혁신 성장을 견인하는 국가 R&D 지원의 심장", body: "영국 연구혁신기구(UKRI) 산하의 핵심 기관으로, 기업들의 혁신적인 아이디어가 실제 비즈니스로 성장할 수 있도록 자금과 네트워크를 지원합니다. 특히 창의 산업과 몰입형 기술 분야에서 연구와 산업의 가교 역할을 수행하며, 영국 경제의 지속 가능한 미래를 설계하고 있습니다." }
+                org: "MadLab", name: "아사 칼로우", 
+                desc: { headline: "FBI가 주목한 괴짜 기술자, 상상을 현실로 만드는 '창조적 혼돈'의 설계자", body: "시민 생물학(DIYBio) 프로젝트를 주도하며 초밥 DNA 분석, 박테리아 배양 등 기상천외한 실험으로 시민 과학의 가능성을 증명했습니다." },
+                orgDetail: { headline: "시민이 기술과 예술로 도시를 바꾸는 '풀뿌리 혁신 실험실'", body: "맨체스터와 스톡포트를 거점으로 활동하는 커뮤니티 주도형 혁신 기관입니다. 시민 누구나 메이커스페이스를 이용하며 기술이 지역 사회 모두의 자산이 되도록 돕고 있습니다." }
             }, 
             en: { 
-                org: "Innovate UK", name: "James Wheale", desc: "Immersive Tech innovator bridging art and technology. As Innovation Lead at Innovate UK, he pioneers digital storytelling and immersive media ecosystems.",
-                orgDetail: { headline: "The heart of national R&D support driving UK's innovation growth", body: "A core agency under UKRI, supporting businesses to grow innovative ideas into real businesses through funding and networking. Bridges research and industry in creative sectors." }
+                org: "MadLab", name: "Asa Calow", 
+                desc: { headline: "Technologist noted by the FBI, architect of 'Creative Chaos'", body: "Leads DIYBio projects proving the potential of citizen science through unique experiments." },
+                orgDetail: { headline: "Grassroots Innovation Lab transforming cities with citizens", body: "A community-led innovation organization operating makerspaces for coding, bio, and digital fabrication." }
             } 
         },
         { 
-            ko: { org: "충주문화관광재단 이사장", name: "백인욱", desc: "충주 관광 르네상스를 이끄는 리더, 문화도시의 든든한 버팀목. 충주문화관광재단의 이사장으로서 대한민국 문화도시 충주의 비전을 제시하고, 시민과 방문객 모두가 즐길 수 있는 매력적인 도시 브랜드를 구축하는 데 앞장서고 있습니다." }, 
-            en: { org: "Chairperson, CJ Culture Foundation", name: "Paek Inuk", desc: "Leader of Chungju's tourism renaissance. Presents the vision of Chungju as a Cultural City and builds an attractive city brand for citizens and visitors." } 
+            ko: { 
+                org: "InnovateUK", name: "제임스 휠", 
+                desc: { headline: "기술과 예술의 경계를 허무는 몰입형 콘텐츠(Immersive Tech) 혁신가", body: "Innovate UK의 혁신 리드로서 디지털 스토리텔링과 실감형 미디어 분야를 개척하며, 영국의 창의적 기술 생태계 발전에 핵심적인 역할을 수행하고 있습니다." },
+                orgDetail: { headline: "영국의 혁신 성장을 견인하는 국가 R&D 지원의 심장", body: "영국 연구혁신기구(UKRI) 산하의 핵심 기관으로, 기업들의 혁신적인 아이디어가 실제 비즈니스로 성장할 수 있도록 자금과 네트워크를 지원합니다." }
+            }, 
+            en: { 
+                org: "Innovate UK", name: "James Wheale", 
+                desc: { headline: "Immersive Tech innovator bridging art and technology", body: "As Innovation Lead at Innovate UK, he pioneers digital storytelling and immersive media ecosystems." },
+                orgDetail: { headline: "The heart of national R&D support driving UK's innovation growth", body: "A core agency under UKRI, supporting businesses to grow innovative ideas into real businesses through funding and networking." }
+            } 
         },
         { 
-            ko: { org: "충주문화관광재단 센터장", name: "신재민", desc: "데이터로 문화를 디자인하는 12년 차 축제 기획자, 충주의 로컬 생태계를 지휘하다. '충주본색' 등 혁신적 프로젝트를 총괄하며, AI와 데이터 분석을 접목한 스마트 문화 기획을 선도하고 있습니다." }, 
-            en: { org: "Head, CJ Culture City Center", name: "Shin Jaemin", desc: "12-year festival planner designing culture with data. Leads Chungju's local ecosystem and smart cultural planning using AI and data analytics." } 
+            ko: { 
+                org: "충주문화관광재단 이사장", name: "백인욱", 
+                desc: { headline: "충주 관광 르네상스를 이끄는 리더, 문화도시의 든든한 버팀목", body: "충주문화관광재단의 이사장으로서 대한민국 문화도시 충주의 비전을 제시하고, 시민과 방문객 모두가 즐길 수 있는 매력적인 도시 브랜드를 구축하는 데 앞장서고 있습니다." }
+            }, 
+            en: { 
+                org: "Chairperson, CJ Culture Foundation", name: "Paek Inuk", 
+                desc: { headline: "Leader of Chungju's tourism renaissance", body: "Presents the vision of Chungju as a Cultural City and builds an attractive city brand for citizens and visitors." }
+            } 
         },
         { 
-            ko: { org: "(주)보탬플러스 이사", name: "이상창", desc: "버려진 골목에 숨결을 불어넣은 '관아골의 기적', 사람을 잇는 따뜻한 기획자. 10년 넘게 방치된 빈집을 복합문화공간 '세상상회'로 변신시키며 관아골 재생을 이끌었습니다." }, 
-            en: { org: "Director, Botam Plus", name: "Sangchang Lee", desc: "The warm planner behind the 'Miracle of Gwanagol'. Transformed abandoned houses into cultural spaces, leading the regeneration of the local alleyways." } 
+            ko: { 
+                org: "충주문화관광재단 센터장", name: "신재민", 
+                desc: { headline: "데이터로 문화를 디자인하는 12년 차 축제 기획자, 충주의 로컬 생태계를 지휘하다", body: "'충주본색' 등 혁신적 프로젝트를 총괄하며, AI와 데이터 분석을 접목한 스마트 문화 기획을 선도하고 있습니다." }
+            }, 
+            en: { 
+                org: "Head, CJ Culture City Center", name: "Shin Jaemin", 
+                desc: { headline: "12-year festival planner designing culture with data", body: "Leads Chungju's local ecosystem and smart cultural planning using AI and data analytics." }
+            } 
         },
         { 
-            ko: { org: "충주시청년센터 센터장", name: "남재우", desc: "빅데이터로 청년의 미래를 그리는 교수님, 지역 정착의 길을 열다. 정보학과 공공빅데이터 AI 전문성을 바탕으로 청년들이 지역 자원을 활용해 스스로 자립할 수 있는 비즈니스 모델을 만들도록 돕고 있습니다." }, 
-            en: { org: "Head, Chungju Youth Center", name: "Nam Jaewoo", desc: "Professor drawing the future of youth with big data. Helps youth create self-reliant business models using local resources based on AI expertise." } 
+            ko: { 
+                org: "(주)보탬플러스 이사", name: "이상창", 
+                desc: { headline: "버려진 골목에 숨결을 불어넣은 '관아골의 기적', 사람을 잇는 따뜻한 기획자", body: "10년 넘게 방치된 빈집을 복합문화공간 '세상상회'로 변신시키며 관아골 재생을 이끌었습니다." }
+            }, 
+            en: { 
+                org: "Director, Botam Plus", name: "Sangchang Lee", 
+                desc: { headline: "The warm planner behind the 'Miracle of Gwanagol'", body: "Transformed abandoned houses into cultural spaces, leading the regeneration of the local alleyways." }
+            } 
+        },
+        { 
+            ko: { 
+                org: "충주시청년센터 센터장", name: "남재우", 
+                desc: { headline: "빅데이터로 청년의 미래를 그리는 교수님, 지역 정착의 길을 열다", body: "정보학과 공공빅데이터 AI 전문성을 바탕으로 청년들이 지역 자원을 활용해 스스로 자립할 수 있는 비즈니스 모델을 만들도록 돕고 있습니다." }
+            }, 
+            en: { 
+                org: "Head, Chungju Youth Center", name: "Nam Jaewoo", 
+                desc: { headline: "Professor drawing the future of youth with big data", body: "Helps youth create self-reliant business models using local resources based on AI expertise." }
+            } 
         }
     ];
 
@@ -559,7 +601,7 @@
         document.getElementById('speaker-modal').classList.remove('hidden');
     }
 
-    // [New] 팝업 내용 렌더링 (연사 <-> 단체 전환)
+    // [New] 팝업 내용 렌더링 (가시성 강화된 헤드라인/본문 구조 적용)
     function renderModalContent() {
         const info = speakers[currentSpeakerIndex][currentLang];
         const btnArea = document.getElementById('spk-org-btn-area');
@@ -571,15 +613,20 @@
             // 단체 정보 뷰
             orgLabel.innerText = "About Organization";
             nameLabel.innerText = info.org; // 단체명
-            descLabel.innerHTML = `<b>${info.orgDetail.headline}</b><br><br>${info.orgDetail.body}`;
+            // [Design] 헤드라인(bolder) + 본문 분리
+            descLabel.innerHTML = `<span class="spk-headline">${info.orgDetail.headline}</span><span class="spk-body">${info.orgDetail.body}</span>`;
             btnArea.innerHTML = `<button class="btn-org-info" onclick="toggleOrgInfo()">👤 ${currentLang==='ko'?'연사 정보 보기':'Show Speaker Info'}</button>`;
         } else {
             // 연사 정보 뷰
             orgLabel.innerText = info.org;
             nameLabel.innerText = info.name;
-            descLabel.innerText = info.desc;
+            // [Design] 헤드라인(bolder) + 본문 분리 (desc가 객체인 경우 처리)
+            if (typeof info.desc === 'object') {
+                descLabel.innerHTML = `<span class="spk-headline">${info.desc.headline}</span><span class="spk-body">${info.desc.body}</span>`;
+            } else {
+                descLabel.innerText = info.desc; // 예외 처리
+            }
             
-            // 단체 정보가 있는 경우에만 버튼 표시
             if (info.orgDetail) {
                 btnArea.innerHTML = `<button class="btn-org-info" onclick="toggleOrgInfo()">🏢 ${currentLang==='ko'?'소속 단체 정보 보기':'Show Organization Info'}</button>`;
             } else {
@@ -588,7 +635,6 @@
         }
     }
 
-    // [New] 토글 함수
     function toggleOrgInfo() {
         isOrgView = !isOrgView;
         renderModalContent();
