@@ -61,13 +61,11 @@
         .event { flex: 1; border-left: 2px solid var(--action-red); padding-left: 12px; font-size:14px; font-weight:600; line-height: 1.5; }
         
         .speaker-container { display: flex; overflow-x: auto; gap: 12px; padding-bottom: 15px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
-        /* [Update] 연사 카드 커서 추가 및 클릭 인터랙션 */
         .speaker-card { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 18px; border-radius: 14px; min-width: 150px; scroll-snap-align: start; text-align: left; box-shadow: 0 4px 10px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.2s; }
         .speaker-card:active { transform: scale(0.97); }
         .speaker-org { font-size: 11px; color: var(--accent-yellow); margin-bottom: 6px; font-weight:500; }
         .speaker-name { font-weight: 800; font-size: 17px; }
 
-        /* [Update] 아코디언 버튼 스타일 */
         .accordion-btn { background: rgba(0,0,0,0.2); border-radius: 10px; padding: 12px; text-align: center; font-size: 13px; color: var(--accent-yellow); font-weight: bold; cursor: pointer; margin-top: 15px; transition: 0.2s; border: 1px solid rgba(255,255,255,0.2); }
         .accordion-btn:active { transform: scale(0.98); }
         .accordion-content { overflow: hidden; transition: max-height 0.3s ease-out; max-height: 0; }
@@ -103,7 +101,7 @@
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         
         .modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index: 2000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
-        .modal-content { background: white; color: black; padding: 35px; border-radius: 24px; text-align: center; width: 85%; max-width: 350px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); animation: popUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative;}
+        .modal-content { background: white; color: black; padding: 35px; border-radius: 24px; text-align: center; width: 85%; max-width: 350px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); animation: popUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; max-height:80vh; overflow-y:auto;}
         @keyframes popUp { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
         .footer-info { margin-top: 50px; padding: 30px; background: rgba(0,0,0,0.2); border-radius: 16px; font-size: 11px; color: rgba(255,255,255,0.5); line-height: 1.7; text-align: center; word-break: keep-all; }
@@ -118,8 +116,13 @@
         .skeleton-text.short { width: 40%; }
         .skeleton-badge { width: 60px; height: 24px; border-radius: 12px; align-self: flex-end; }
 
-        /* 모달 닫기 버튼 */
         .close-modal-btn { position:absolute; top:15px; right:15px; background:rgba(0,0,0,0.05); border:none; width:30px; height:30px; border-radius:15px; font-size:14px; font-weight:bold; cursor:pointer; color:#555;}
+        
+        /* [NEW] 모달 내부 탭 스위치 UI */
+        .spk-tabs { display:flex; gap:10px; margin-bottom:20px; border-bottom:1px solid #ddd; padding-bottom:10px; }
+        .spk-tab { font-size:14px; color:#aaa; font-weight:bold; cursor:pointer; transition:0.2s; padding-bottom:5px; position:relative; }
+        .spk-tab.active { color:var(--primary-blue); }
+        .spk-tab.active::after { content:''; position:absolute; bottom:-11px; left:0; width:100%; height:3px; background:var(--primary-blue); border-radius:2px; }
     </style>
 </head>
 <body>
@@ -240,7 +243,7 @@
                 <div class="accordion-btn" onclick="toggleTimetable()" id="t-timetable-btn">⬇️ 워크샵 상세 일정 보기</div>
                 <div id="workshop-timetable" class="accordion-content">
                     <div class="timeline-item"><div class="time">14:00</div><div class="event" id="t-ws-1" style="font-weight:normal; font-size:13px;">오프닝 & 아이스브레이킹</div></div>
-                    <div class="timeline-item"><div class="time">14:10</div><div class="event" id="t-ws-2" style="font-weight:normal; font-size:13px;">플레이스메이킹 정의 및 핵심요소 합의</div></div>
+                    <div class="timeline-item"><div class="time">14:10</div><div class="event" id="t-ws-2" style="font-weight:normal; font-size:13px;">플레이스메이킹 정의 및 핵심요소 도출</div></div>
                     <div class="timeline-item"><div class="time">14:35</div><div class="event" id="t-ws-3" style="font-weight:normal; font-size:13px;">사례 선정 및 커뮤니티 매핑</div></div>
                     <div class="timeline-item"><div class="time">15:15</div><div class="event" id="t-ws-4" style="font-weight:normal; font-size:13px;">매핑 결과 분석 및 Role Play 공유</div></div>
                     <div class="timeline-item"><div class="time">16:00</div><div class="event" id="t-ws-5" style="font-weight:normal; font-size:13px;">플레이스의 존재 목표 정의</div></div>
@@ -275,6 +278,12 @@
             <button class="close-modal-btn" onclick="document.getElementById('speaker-modal').classList.add('hidden')">✕</button>
             <div id="spk-modal-org" style="color:var(--primary-blue); font-size:12px; font-weight:bold; margin-bottom:5px;"></div>
             <div id="spk-modal-name" style="font-size:24px; font-weight:900; margin-bottom:15px; color:#222;"></div>
+            
+            <div id="spk-tabs" class="spk-tabs hidden">
+                <div id="tab-person" class="spk-tab active" onclick="switchSpkTab('person')">연사 소개</div>
+                <div id="tab-org" class="spk-tab" onclick="switchSpkTab('org')">기관 소개</div>
+            </div>
+
             <div id="spk-modal-desc" style="font-size:14px; color:#444; line-height:1.6; word-break:keep-all;"></div>
         </div>
     </div>
@@ -390,27 +399,46 @@
     let realUserList = []; 
     let matchedPartners = {}; 
     let currentLang = "ko"; 
+    let currentSpeakerIndex = -1; // 모달을 위한 현재 연사 인덱스 저장
 
-    // [수정] 연사 리스트에 '심병철' 추가 및 상세 설명(desc) 적용
+    // [완전수정] PDF 기반 상세 내용 및 기관 소개(orgDesc) 추가 
     const speakers = [
-        { ko: { org: "주한영국문화원 원장", name: "사라 데브롤", desc: "이번 한-영 문화도시 교류 포럼의 환영사를 통해 양국의 크리에이티브 생태계 동반 성장을 향한 메시지를 전합니다." }, 
-          en: { org: "Director, British Council Korea", name: "Sarah Deverall", desc: "She will deliver the welcoming remarks for this UK-Korea City of Culture Exchange Forum, sending a message for the mutual growth of the creative ecosystems of both countries." } },
-        { ko: { org: "MadLab", name: "레이첼 터너", desc: "커뮤니티 기반의 기술·창작 생태계 구축을 선도하는 문화 기술 전문가입니다. 시민 참여형 프로젝트와 디지털 교육을 통해 매드랩을 영국 대표 기관으로 성장시켰습니다." }, 
-          en: { org: "MadLab", name: "Rachael Turner", desc: "A cultural technology expert leading the establishment of a community-based technology and creative ecosystem. She has grown MadLab into a leading UK institution through citizen participatory projects and digital education." } },
-        { ko: { org: "MadLab", name: "아사 칼로우", desc: "기술 개발자이자 연구자로, MadLab의 실험적 프로젝트를 주도합니다. 프로그래밍, 전자공학, 바이오아트 등 학제 간 경계를 넘나드는 혁신을 시도합니다." }, 
-          en: { org: "MadLab", name: "Asa Calow", desc: "A technology developer and researcher leading MadLab's experimental projects. He attempts innovations crossing interdisciplinary boundaries including programming, electronics, and bio-art." } },
-        { ko: { org: "InnovateUK", name: "제임스 휠", desc: "기술과 예술의 경계를 허무는 프로젝트를 다수 이끌어온 창의 기술 전문가입니다. 몰입형 기술(Immersive Technology) 및 디지털 창의 산업의 혁신 프로젝트를 지원해 왔습니다." }, 
-          en: { org: "Innovate UK", name: "James Wheale", desc: "A creative technology expert who has led numerous projects breaking the boundaries between technology and art. He has supported innovative projects in immersive technology and the digital creative industry." } },
-        { ko: { org: "충주문화관광재단 이사장", name: "백인욱", desc: "충주문화관광재단 이사장으로서 환영사를 통해 대한민국 문화도시 충주의 비전과 지속 가능한 발전 방향을 제시합니다." }, 
-          en: { org: "Chairperson, CJ Culture Foundation", name: "Paek Inuk", desc: "As the Chairperson of the CJ Culture Tourism Foundation, he will present the vision and sustainable development direction of Chungju, the Cultural City of Korea, through his welcoming remarks." } },
-        { ko: { org: "충주문화관광재단 센터장", name: "신재민", desc: "충주문화관광재단 문화도시센터장으로, GS칼텍스 예울마루 개관, 정동극장 상설 공연 제작과 포항 대표 축제의 팀장을 역임하며 지역문화기획자로서의 역량을 쌓아왔습니다. 그는 지역의 고유 서사와 한국 전통 예술의 현대적 감각으로 재해석하는 '우리 문화의 현대화'에 깊은 관심을 기울여왔습니다." }, 
-          en: { org: "Head, CJ Culture City Center", name: "Shin Jaemin", desc: "As the Head of the CJ Culture City Center, he is an expert who has proven his outstanding planning ability encompassing central stages and local festivals, having served as the producer of Jeongdong Theater's regular performances and the general planner of Pohang's representative festival. He has paid deep attention to the 'modernization of our culture', reinterpreting local narratives and Korean traditional arts with a modern sense. In particular, he plays a pivotal role in leading global cooperation projects with overseas partners, including the UK, and guiding Chungju's local contents to gain global competitiveness." } },
-        { ko: { org: "(주)보탬플러스 이사", name: "이상창", desc: "충주 관아골의 부활을 이끈 로컬 크리에이터입니다. 10년 이상 방치된 빈집을 복합문화공간으로 개조해 쇠퇴하던 골목에 활력을 불어넣었으며, '담장마켓' 등 커뮤니티 주도형 프로젝트를 기획하며 골목길 재생 생태계를 구축하고 있습니다." }, 
-          en: { org: "Director, Botam Plus", name: "Sangchang Lee", desc: "A local creator who led the revival of Gwanagol, Chungju. He converted an abandoned house into a complex cultural space, revitalizing the declining alley, and plans community-led projects like 'Damjang Market' to build an alleyway regeneration ecosystem." } },
-        { ko: { org: "충북창조경제혁신센터 책임", name: "심병철", desc: "2018년부터 혁신적인 로컬 창업가들을 발굴해 생태계의 그릇을 만들고 거버넌스를 조직해 온 현장 밀착형 전문가입니다. 개별 창업가의 성장을 넘어 '스스로 존립하는 온전한 지역 생태계' 구축을 철학으로 삼고 있습니다." }, 
-          en: { org: "Senior Researcher, CCEI", name: "Sim Byoungchul", desc: "A field-oriented expert who has discovered innovative local entrepreneurs and organized governance since 2018. He aims to establish a 'self-sustaining local ecosystem' beyond the growth of individual entrepreneurs." } },
-        { ko: { org: "충주시청년센터 센터장", name: "남재우", desc: "데이터 기반의 학술적 전문성(공공빅데이터 AI)과 현장 감각을 아우르며 지역 청년들의 자립을 이끄는 실천적 혁신가입니다. 청년들이 로컬 자원을 기반으로 비즈니스 모델을 구체화하도록 적극 돕고 있습니다." }, 
-          en: { org: "Head, Chungju Youth Center", name: "Nam Jaewoo", desc: "A practical innovator who leads the independence of local youth by combining data-based academic expertise (public big data AI) with a sense of the field. He actively helps youth to materialize business models based on local resources." } }
+        { 
+          ko: { org: "주한영국문화원 원장", name: "사라 데브롤", desc: "이번 한-영 문화도시 교류 포럼의 환영사를 통해 양국의 크리에이티브 생태계 동반 성장을 향한 메시지를 전합니다." }, 
+          en: { org: "Director, British Council Korea", name: "Sarah Deverall", desc: "She will deliver the welcoming remarks for this UK-Korea City of Culture Exchange Forum, sending a message for the mutual growth of the creative ecosystems of both countries." } 
+        },
+        { 
+          ko: { org: "MadLab", name: "레이첼 터너", desc: "커뮤니티 기반의 기술·창작 생태계 구축을 선도하는 문화 기술 전문가다. 시민 참여형 프로젝트와 디지털 교육을 통해 매드랩을 영국 대표 기관으로 성장시켰으며, 공공 및 문화 기관과 협력하여 기술의 사회적 포용성을 확장하는 데 주력하고 있다.", orgDesc: "MadLab은 영국 그레이터 맨체스터에 기반한 커뮤니티 주도 디지털·창의 혁신 기관으로, 시민들이 기술을 배우고 예술을 만들며 새로운 아이디어를 실험할 수 있는 메이커 공간을 제공한다. 최근 스톡포트 시내 중심가로 활동을 확장해 지역 재생 프로젝트를 통한 긍정적 변화를 이루어냈다." }, 
+          en: { org: "MadLab", name: "Rachael Turner", desc: "A cultural technology expert leading the establishment of a community-based tech and creative ecosystem. She grew MadLab into a leading UK institution through citizen projects and digital education.", orgDesc: "MadLab is a community-led digital and creative innovation organization based in Greater Manchester, UK. It provides a makerspace where citizens can learn tech, create art, and experiment with new ideas. Recently, it expanded to Stockport, driving positive change through local regeneration projects." } 
+        },
+        { 
+          ko: { org: "MadLab", name: "아사 칼로우", desc: "기술 개발자이자 연구자로, MadLab의 실험적 프로젝트를 주도한다. 프로그래밍, 전자공학, 바이오아트 등 학제 간 경계를 넘나드는 혁신을 시도하며, 기술을 활용한 창의적 문제 해결 모델을 제시해 국제적인 주목을 받고 있다.", orgDesc: "MadLab은 영국 그레이터 맨체스터에 기반한 커뮤니티 주도 디지털·창의 혁신 기관으로, 시민들이 기술을 배우고 예술을 만들며 새로운 아이디어를 실험할 수 있는 메이커 공간을 제공한다. 최근 스톡포트 시내 중심가로 활동을 확장해 지역 재생 프로젝트를 통한 긍정적 변화를 이루어냈다." }, 
+          en: { org: "MadLab", name: "Asa Calow", desc: "A tech developer and researcher who leads MadLab's experimental projects. He attempts innovations crossing interdisciplinary boundaries like programming, electronics, and bio-art, presenting creative problem-solving models.", orgDesc: "MadLab is a community-led digital and creative innovation organization based in Greater Manchester, UK. It provides a makerspace where citizens can learn tech, create art, and experiment with new ideas. Recently, it expanded to Stockport, driving positive change through local regeneration projects." } 
+        },
+        { 
+          ko: { org: "InnovateUK", name: "제임스 휠", desc: "기술과 예술의 경계를 허무는 프로젝트를 다수 이끌어온 창의 기술(Creative Technology) 전문가다. 디지털 크리에이터이자 프로젝트 디렉터로서 인터랙티브 미디어, 디지털 스토리텔링, 실감형 콘텐츠 분야에서 두각을 나타냈다. Innovate UK의 Innovation Lead로 활동하며 몰입형 기술 및 디지털 창의 산업의 혁신 프로젝트를 지원했다.", orgDesc: "Innovate UK는 UKRI 소속의 영국 정부 산하 국가 혁신 지원 기관이다. 기업과 연구자가 새로운 기술 및 서비스를 개발하고 상용화할 수 있도록 돕는 역할을 수행하며, 창의 기술, 실감형 콘텐츠 분야의 R&D 프로젝트를 평가·지원하고 산업·문화·기술 협력을 촉진한다." }, 
+          en: { org: "Innovate UK", name: "James Wheale", desc: "A Creative Technology expert who has led numerous projects breaking boundaries between tech and art. As a digital creator and project director, he stood out in interactive media, digital storytelling, and immersive content. He supported innovation projects as an Innovation Lead at Innovate UK.", orgDesc: "Innovate UK is the UK's national innovation agency under UKRI. It helps businesses and researchers develop and commercialize new technologies and services, supporting R&D projects in creative tech and immersive content while promoting industry-culture-tech collaboration." } 
+        },
+        { 
+          ko: { org: "충주문화관광재단 이사장", name: "백인욱", desc: "충주문화관광재단 이사장으로서 환영사를 통해 대한민국 문화도시 충주의 비전과 지속 가능한 발전 방향을 제시합니다." }, 
+          en: { org: "Chairperson, CJ Culture Foundation", name: "Paek Inuk", desc: "As the Chairperson of the CJ Culture Tourism Foundation, he will present the vision and sustainable development direction of Chungju, the Cultural City of Korea, through his welcoming remarks." } 
+        },
+        { 
+          ko: { org: "충주문화관광재단 센터장", name: "신재민", desc: "충주문화관광재단 문화도시센터장으로, GS칼텍스 예울마루 개관, 정동극장 상설 공연 제작과 포항 대표 축제의 팀장을 역임하며 지역문화기획자로서의 역량을 쌓아왔습니다. 그는 지역의 고유 서사와 한국 전통 예술의 현대적 감각으로 재해석하는 '우리 문화의 현대화'에 깊은 관심을 기울여왔습니다. 특히 영국을 비롯한 해외 파트너들과의 글로벌 협력 프로젝트를 주도하며, 충주의 로컬 콘텐츠가 세계적인 경쟁력을 갖추도록 이끄는 중추적인 역할을 맡고 있습니다." }, 
+          en: { org: "Head, CJ Culture City Center", name: "Shin Jaemin", desc: "As the Head of the CJ Culture City Center, he is an expert who proved his outstanding planning ability encompassing central stages and local festivals, serving as a producer for Jeongdong Theater and general planner for Pohang's representative festival. He focuses on the 'modernization of our culture', reinterpreting local narratives and traditional arts. He plays a pivotal role in leading global cooperation projects to give Chungju's local contents global competitiveness." } 
+        },
+        { 
+          ko: { org: "(주)보탬플러스 이사", name: "이상창", desc: "충주 관아골의 부활을 이끈 로컬 크리에이터이자 복합문화공간 '세상상회' 대표, (주)보탬플러스 이사다. 10년 이상 방치된 빈집을 매입하고 문화 공간으로 개조해 쇠퇴하던 골목에 활력을 불어넣었다. 공간 운영을 넘어 지역 청년들을 하나로 연결하는 협동조합을 설립하고 커뮤니티 주도형 프로젝트를 기획하며 사람 중심의 골목길 재생 생태계를 구축하고 있다.", orgDesc: "보탬플러스는 충주 원도심인 관아골을 중심으로 청년 창업자와 로컬 크리에이터들이 자발적으로 결성한 지역 혁신형 주식회사다. 쇠퇴하던 구도심 골목에 창의적인 콘텐츠를 불어넣어, 지역 주민과 상인들이 함께 성장하는 지속 가능한 '플레이스 메이킹'을 실천하며 웜플(Warm Place)을 지향한다." }, 
+          en: { org: "Director, Botam Plus", name: "Sangchang Lee", desc: "A local creator who led the revival of Gwanagol, Chungju, and the director of Botam Plus. He bought an abandoned house left for over 10 years and renovated it into a cultural space, revitalizing a declining alley. He established a cooperative to connect local youth and plans community-led projects to build a people-centered alleyway regeneration ecosystem.", orgDesc: "Botam Plus is a local innovative company formed voluntarily by young entrepreneurs and local creators around Gwanagol, Chungju's original downtown. They breathe creative content into declining old downtown alleys, practicing sustainable 'placemaking' where local residents and merchants grow together, aiming for a 'Warm Place'." } 
+        },
+        { 
+          ko: { org: "충북창조경제혁신센터  책임연구원", name: "심병철", desc: "충북창조경제혁신센터에서 로컬 크리에이터 생태계 조성을 총괄하는 책임연구원(파트장)이다. 2018년부터 혁신적인 로컬 창업가들을 찾아내 생태계의 그릇을 만들고 거버넌스를 조직해 왔으며, 강한 현장 밀착형 실행력을 지녔다. 소규모 그룹화를 통한 '스스로 존립하는 온전한 지역 생태계' 구축을 철학으로 삼고 있다.", orgDesc: "충북창조경제혁신센터는 지역에 영향력 있는 우수한 창업자를 발굴·육성하고 투자를 지원하는 공공 엑셀러레이터다. 특히 지역 자원과 특성을 기반으로 비즈니스 모델을 창출하는 '로컬 크리에이터'를 전국에서 가장 선도적으로 육성하며 충북형 로컬 창업 생태계의 기반을 다져왔다." }, 
+          en: { org: "Senior Researcher, CCEI", name: "Sim Byoungchul", desc: "A senior researcher overseeing the creation of a local creator ecosystem at the Chungbuk Center for Creative Economy & Innovation. Since 2018, he has discovered innovative local entrepreneurs, built the foundation of the ecosystem, and organized governance with strong field-oriented execution. His philosophy is building a 'self-sustaining local ecosystem' through small grouping.", orgDesc: "CCEI is a public accelerator that discovers, nurtures, and supports investments for influential excellent entrepreneurs in the region. In particular, it has been leading the nation in nurturing 'local creators' who create business models based on local resources and characteristics, laying the foundation for the Chungbuk-style local startup ecosystem." } 
+        },
+        { 
+          ko: { org: "충주시청년센터 센터장", name: "남재우", desc: "충주시청년센터장이자 건국대학교 글로컬캠퍼스 문헌정보학과 부교수로 재직 중인 남재우 센터장은, 데이터 기반의 학술적 전문성(공공빅데이터 AI)과 현장 감각을 아우르며 지역 청년들의 자립을 이끄는 실천적 혁신가이다. 청년들이 정책 수혜자에 머물지 않고 능동적인 주체가 되도록 돕고 있다.", orgDesc: "충주시청년센터는 2025년 10월 개소하여 지역 청년들의 취·창업, 주거 등 전방위적인 지원을 수행하고 당당한 자립을 돕는 핵심 허브 공간이다. 청년 정책 네트워크를 운영하며 청년 주도의 참여를 이끌어내고, 로컬 관광 및 문화 자산을 기반으로 비즈니스 모델을 구체화하도록 돕고 있다." }, 
+          en: { org: "Head, Chungju Youth Center", name: "Nam Jaewoo", desc: "Head of the Chungju Youth Center and Associate Professor at Konkuk University Glocal Campus, Nam Jaewoo is a practical innovator leading the independence of local youth, combining data-based academic expertise (public big data AI) and field sense. He helps youth become active subjects rather than mere policy beneficiaries.", orgDesc: "Opened in October 2025, the Chungju Youth Center is a core hub space providing all-around support such as employment, startup, and housing for local youth. It operates a youth policy network to encourage youth-led participation and helps concretize business models based on local tourism and cultural assets." } 
+        }
     ];
 
     const langData = {
@@ -461,7 +489,9 @@
             "t-host-label": "주최",
             "t-host-desc": "충주시, 충주문화관광재단 문화도시센터",
             "t-cohost-label": "공동주관",
-            "t-cohost-desc": "주한영국문화원, 충북창조경제혁신센터, 충주청년센터"
+            "t-cohost-desc": "주한영국문화원, 충북창조경제혁신센터, 충주청년센터",
+            "t-tab-person": "연사 소개",
+            "t-tab-org": "기관 소개"
         },
         en: {
             "t-main-title": "UK-Korea Placemaking<br>International Forum",
@@ -487,7 +517,7 @@
             "t-ws-3": "Case Selection & Community Mapping",
             "t-ws-4": "Mapping Analysis & Role Play",
             "t-ws-5": "Defining the Goal of 'Place'",
-            "t-ws-6": "Current/Future Resource Mapping (Next Step)",
+            "t-ws-6": "Current/Future Resource Mapping",
             "t-ws-7": "Final Result Sharing & Vision Integration",
             "t-loc-label1": "Jungwon Library, Konkuk Univ.",
             "t-loc-label2": "Jungwon Library, Konkuk Univ.",
@@ -510,7 +540,9 @@
             "t-host-label": "HOST",
             "t-host-desc": "Chungju City, Chungju Culture Tourism Foundation Cultural City Center",
             "t-cohost-label": "CO-HOST",
-            "t-cohost-desc": "British Council, CCEI, Chungju Youth Center"
+            "t-cohost-desc": "British Council, CCEI, Chungju Youth Center",
+            "t-tab-person": "Speaker Info",
+            "t-tab-org": "Organization Info"
         }
     };
 
@@ -525,9 +557,13 @@
         }
         renderSpeakers(); 
         renderMatchingList(); 
+        
+        // 모달창이 열려있다면 내용 갱신
+        if(!document.getElementById('speaker-modal').classList.contains('hidden')) {
+            openSpeakerModal(currentSpeakerIndex);
+        }
     }
 
-    // [수정] 연사 카드 클릭 시 모달 열리도록 수정
     function renderSpeakers() {
         const container = document.getElementById('speaker-list');
         container.innerHTML = speakers.map((s, index) => {
@@ -539,15 +575,47 @@
         }).join('');
     }
 
+    // [NEW] 연사 상세 팝업 오픈 함수
     function openSpeakerModal(index) {
+        currentSpeakerIndex = index;
         const info = speakers[index][currentLang];
+        
         document.getElementById('spk-modal-org').innerText = info.org;
         document.getElementById('spk-modal-name').innerText = info.name;
-        document.getElementById('spk-modal-desc').innerText = info.desc;
+        
+        // 기관 설명(orgDesc)이 있으면 탭 메뉴 보이기, 없으면 숨기기
+        const tabs = document.getElementById('spk-tabs');
+        if (info.orgDesc) {
+            tabs.classList.remove('hidden');
+            // 기본은 '연사 소개' 탭 활성화
+            switchSpkTab('person');
+        } else {
+            tabs.classList.add('hidden');
+            // 기관 정보가 없으므로 연사 정보만 출력
+            document.getElementById('spk-modal-desc').innerText = info.desc;
+        }
+
         document.getElementById('speaker-modal').classList.remove('hidden');
     }
 
-    // [NEW] 타임테이블 아코디언 토글
+    // [NEW] 탭 전환 함수
+    function switchSpkTab(tabName) {
+        const info = speakers[currentSpeakerIndex][currentLang];
+        const tabPerson = document.getElementById('tab-person');
+        const tabOrg = document.getElementById('tab-org');
+        const descBox = document.getElementById('spk-modal-desc');
+
+        if (tabName === 'person') {
+            tabPerson.classList.add('active');
+            tabOrg.classList.remove('active');
+            descBox.innerText = info.desc;
+        } else if (tabName === 'org') {
+            tabOrg.classList.add('active');
+            tabPerson.classList.remove('active');
+            descBox.innerText = info.orgDesc;
+        }
+    }
+
     function toggleTimetable() {
         const content = document.getElementById('workshop-timetable');
         content.classList.toggle('expanded');
@@ -571,8 +639,8 @@
             userData = JSON.parse(savedUser);
             if (userData.role === 'admin') {
                 showPage('admin');
-                setInterval(fetchStats, 10000); // 10초로 부하 완화
-                setInterval(fetchQuestions, 15000); // 15초로 부하 완화
+                setInterval(fetchStats, 10000); 
+                setInterval(fetchQuestions, 15000);
             } else {
                 initUserMode();
             }
@@ -685,7 +753,6 @@
 
         fetchMyMatches().then(() => {
             fetchRealUsers();
-            // [수정] 폴링 주기를 15초 이상으로 늘려 100명 동시접속 부하 해결
             setInterval(pollMatchStatus, 15000); 
             setInterval(fetchRealUsers, 30000);
         });
@@ -837,13 +904,13 @@
         const input = document.getElementById('chatInput');
         if(!input.value) return;
         const board = document.getElementById('qa-board');
-        // 로딩 느낌 부여
+        
         const tempMsg = `<div class="chat-msg" style="opacity:0.5;"><b>${userData.name}:</b> 전송/번역 중...</div>`;
         board.innerHTML += tempMsg;
         
         fetch(GOOGLE_SCRIPT_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain" }, body: JSON.stringify({ action: "ask", name: userData.name, question: input.value }) }).then(() => {
             input.value = '';
-            setTimeout(fetchQuestions, 1000); // 1초 후 새로고침하여 번역된 내용 불러오기
+            setTimeout(fetchQuestions, 1000); 
         });
     }
     function fetchQuestions() {
@@ -851,11 +918,9 @@
             const feed = document.getElementById('admin-qa-feed'); const bigFeed = document.getElementById('big-qa-feed');
             if(data.length === 0) { if(feed) feed.innerHTML = "<div style='padding:10px; color:#aaa;'>등록된 질문이 없습니다.</div>"; return; }
             
-            // 일반 채팅창
             const board = document.getElementById('qa-board');
             if(board) board.innerHTML = data.map(q => `<div class="chat-msg"><b>${q.name}:</b><br>${q.text}</div>`).join('');
             
-            // 관리자 화면
             if(feed) feed.innerHTML = data.reverse().map(q => `<div style="background:#444; padding:10px; margin-bottom:5px; border-radius:5px; font-size:14px;"><span style="color:var(--accent-yellow)">[${q.name}]</span><br>${q.text}</div>`).join('');
             if(bigFeed) bigFeed.innerHTML = data.map(q => `<div class="big-qa-item"><span class="big-qa-author">[${q.name}]:</span><br>${q.text}</div>`).join('');
         });
