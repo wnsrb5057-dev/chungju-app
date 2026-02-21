@@ -35,7 +35,7 @@
         .check-group { display: flex; flex-direction: column; gap: 12px; background: rgba(255,255,255,0.1); padding: 18px; border-radius: 12px; margin-top: 10px; }
         .check-item { display: flex; align-items: center; gap: 12px; font-size: 15px; cursor: pointer; }
         .check-item input { width: 20px; height: 20px; accent-color: var(--accent-yellow); }
-        .warn-text { color: #ff6b6b; font-size: 12px; margin-left: 6px; font-weight: bold; }
+        .warn-text { color: #ff6b6b; font-size: 11px; margin-left: 6px; font-weight: bold; }
 
         .match-card { background: white; color: #333; border-radius: 18px; padding: 24px; margin: 15px 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.15); margin-bottom: 20px; position: relative; transition: transform 0.2s; }
         .match-card:active { transform: scale(0.99); }
@@ -61,22 +61,19 @@
         .event { flex: 1; border-left: 2px solid var(--action-red); padding-left: 12px; font-size:14px; font-weight:600; line-height: 1.5; }
         
         .speaker-container { display: flex; overflow-x: auto; gap: 12px; padding-bottom: 15px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
-        .speaker-card { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 18px; border-radius: 14px; min-width: 150px; scroll-snap-align: start; text-align: left; box-shadow: 0 4px 10px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.1s; }
-        .speaker-card:active { transform: scale(0.97); background: rgba(255,255,255,0.2); }
+        /* [Update] 연사 카드 커서 추가 및 클릭 인터랙션 */
+        .speaker-card { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 18px; border-radius: 14px; min-width: 150px; scroll-snap-align: start; text-align: left; box-shadow: 0 4px 10px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.2s; }
+        .speaker-card:active { transform: scale(0.97); }
         .speaker-org { font-size: 11px; color: var(--accent-yellow); margin-bottom: 6px; font-weight:500; }
         .speaker-name { font-weight: 800; font-size: 17px; }
 
-        .creator-signature { 
-            margin-top: 50px;   
-            margin-bottom: 30px; 
-            font-size: 11px; 
-            color: rgba(255,255,255,0.3); 
-            font-style: italic; 
-            width: 100%;
-            text-align: center;
-            position: relative;
-            z-index: 0;
-        }
+        /* [Update] 아코디언 버튼 스타일 */
+        .accordion-btn { background: rgba(0,0,0,0.2); border-radius: 10px; padding: 12px; text-align: center; font-size: 13px; color: var(--accent-yellow); font-weight: bold; cursor: pointer; margin-top: 15px; transition: 0.2s; border: 1px solid rgba(255,255,255,0.2); }
+        .accordion-btn:active { transform: scale(0.98); }
+        .accordion-content { overflow: hidden; transition: max-height 0.3s ease-out; max-height: 0; }
+        .accordion-content.expanded { max-height: 500px; margin-top: 15px; border-top: 1px dashed rgba(255,255,255,0.2); padding-top: 15px; }
+
+        .creator-signature { margin-top: 50px; margin-bottom: 30px; font-size: 11px; color: rgba(255,255,255,0.3); font-style: italic; width: 100%; text-align: center; position: relative; z-index: 0; }
 
         .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px; }
         .stat-box { background: #333; padding: 20px; border-radius: 12px; text-align: center; }
@@ -90,11 +87,11 @@
         #winner-display { font-size: 30px; font-weight: bold; color: var(--accent-yellow); margin: 20px 0; min-height: 40px; text-shadow: 2px 2px 0 #000; }
         .admin-qa-list { background: #333; padding: 10px; border-radius: 8px; height: 200px; overflow-y: auto; }
         .chat-box { height: 400px; background: rgba(255,255,255,0.95); border-radius: 16px; padding: 18px; overflow-y: auto; margin: 20px; color: #333; box-shadow: inset 0 2px 10px rgba(0,0,0,0.05); }
-        .chat-msg { background: white; padding: 10px 14px; border-radius: 12px; margin-bottom: 10px; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); color:#333; border: 1px solid #eee; }
+        .chat-msg { background: white; padding: 10px 14px; border-radius: 12px; margin-bottom: 10px; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); color:#333; border: 1px solid #eee; white-space: pre-wrap; }
         #big-screen-mode { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: black; color: white; z-index: 9999; padding: 40px; overflow-y: hidden; display: flex; flex-direction: column; }
         .big-title { font-size: 40px; font-weight: bold; color: var(--accent-yellow); margin-bottom: 30px; text-align: center; border-bottom: 3px solid var(--action-red); padding-bottom: 20px; }
         .big-qa-list { flex: 1; overflow-y: auto; padding: 20px; }
-        .big-qa-item { background: #222; padding: 25px; margin-bottom: 20px; border-radius: 15px; font-size: 28px; line-height: 1.4; border-left: 8px solid var(--primary-blue); }
+        .big-qa-item { background: #222; padding: 25px; margin-bottom: 20px; border-radius: 15px; font-size: 28px; line-height: 1.4; border-left: 8px solid var(--primary-blue); white-space: pre-wrap; }
         .close-big-btn { position: absolute; top: 20px; right: 20px; font-size: 20px; background: transparent; border: 1px solid #555; color: #555; cursor: pointer; }
 
         .bottom-nav { position: fixed; bottom: 0; width: 100%; max-width: 480px; height: 75px; background: #001a4d; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid rgba(255,255,255,0.1); z-index: 1000; box-shadow: 0 -5px 20px rgba(0,0,0,0.3); padding-bottom: 10px; }
@@ -105,8 +102,8 @@
         .loader { border: 4px solid rgba(255,255,255,0.1); border-top: 4px solid var(--accent-yellow); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; display: inline-block; vertical-align: middle; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         
-        #match-modal, #speaker-modal { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index: 2000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
-        .modal-content { background: white; color: black; padding: 35px; border-radius: 24px; text-align: center; width: 85%; max-width: 350px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); animation: popUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; }
+        .modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index: 2000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+        .modal-content { background: white; color: black; padding: 35px; border-radius: 24px; text-align: center; width: 85%; max-width: 350px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); animation: popUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative;}
         @keyframes popUp { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
         .footer-info { margin-top: 50px; padding: 30px; background: rgba(0,0,0,0.2); border-radius: 16px; font-size: 11px; color: rgba(255,255,255,0.5); line-height: 1.7; text-align: center; word-break: keep-all; }
@@ -120,20 +117,9 @@
         .skeleton-text { height: 20px; width: 80%; margin-bottom: 10px; }
         .skeleton-text.short { width: 40%; }
         .skeleton-badge { width: 60px; height: 24px; border-radius: 12px; align-self: flex-end; }
-        
-        .close-modal-btn { position: absolute; top: 15px; right: 15px; font-size: 20px; color: #999; cursor: pointer; background: none; border: none; padding: 5px; }
-        .spk-popup-org { font-size: 13px; color: var(--primary-blue); margin-bottom: 5px; font-weight: bold; transition: 0.3s; }
-        .spk-popup-name { font-size: 22px; font-weight: 900; margin-bottom: 15px; color: #333; transition: 0.3s; }
-        
-        /* [수정] 팝업 내부 스타일 개선 */
-        .spk-popup-desc { font-size: 14px; color: #555; line-height: 1.6; text-align: left; background: #f8f9fa; padding: 18px; border-radius: 12px; max-height: 250px; overflow-y: auto; transition: 0.3s; }
-        
-        /* [New] 가독성 개선: 글자 줄바꿈(keep-all) 및 폰트 사이즈 조정 */
-        .spk-headline { display: block; font-size: 17.5px; font-weight: 800; color: var(--primary-blue); margin-bottom: 12px; line-height: 1.5; word-break: keep-all; word-wrap: break-word; letter-spacing: -0.03em; }
-        .spk-body { display: block; font-size: 14px; color: #444; line-height: 1.7; word-break: keep-all; word-wrap: break-word; }
 
-        .btn-org-info { background: #f0f4ff; color: var(--primary-blue); border: 1px solid var(--primary-blue); width: 100%; margin-top: 15px; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 14px; transition: 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .btn-org-info:hover { background: var(--primary-blue); color: white; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+        /* 모달 닫기 버튼 */
+        .close-modal-btn { position:absolute; top:15px; right:15px; background:rgba(0,0,0,0.05); border:none; width:30px; height:30px; border-radius:15px; font-size:14px; font-weight:bold; cursor:pointer; color:#555;}
     </style>
 </head>
 <body>
@@ -250,9 +236,20 @@
                     <div class="time">14:00~</div>
                     <div class="event" id="t-loc-label2">건국대학교 글로컬캠퍼스<br>중원도서관 숨스퀘어</div>
                 </div>
+                
+                <div class="accordion-btn" onclick="toggleTimetable()" id="t-timetable-btn">⬇️ 워크샵 상세 일정 보기</div>
+                <div id="workshop-timetable" class="accordion-content">
+                    <div class="timeline-item"><div class="time">14:00</div><div class="event" id="t-ws-1" style="font-weight:normal; font-size:13px;">오프닝 & 아이스브레이킹</div></div>
+                    <div class="timeline-item"><div class="time">14:10</div><div class="event" id="t-ws-2" style="font-weight:normal; font-size:13px;">플레이스메이킹 정의 및 핵심요소 합의</div></div>
+                    <div class="timeline-item"><div class="time">14:35</div><div class="event" id="t-ws-3" style="font-weight:normal; font-size:13px;">사례 선정 및 커뮤니티 매핑</div></div>
+                    <div class="timeline-item"><div class="time">15:15</div><div class="event" id="t-ws-4" style="font-weight:normal; font-size:13px;">매핑 결과 분석 및 Role Play 공유</div></div>
+                    <div class="timeline-item"><div class="time">16:00</div><div class="event" id="t-ws-5" style="font-weight:normal; font-size:13px;">플레이스의 존재 목표 정의</div></div>
+                    <div class="timeline-item"><div class="time">16:15</div><div class="event" id="t-ws-6" style="font-weight:normal; font-size:13px;">현재/미래 자원 매핑 (Next Step 구상)</div></div>
+                    <div class="timeline-item"><div class="time">17:15</div><div class="event" id="t-ws-7" style="font-weight:normal; font-size:13px;">최종 결과 공유 및 비전 통합</div></div>
+                </div>
             </div>
 
-            <h4 id="t-speaker-title" style="margin:25px 0 10px 0;">🎙️ 주요 연사</h4>
+            <h4 id="t-speaker-title" style="margin:25px 0 10px 0;">🎙️ 주요 연사 <span style="font-size:11px; font-weight:normal; color:#aaa;">(Click!)</span></h4>
             <div class="speaker-container" id="speaker-list">
                 </div>
             
@@ -270,6 +267,15 @@
                 <b id="t-cohost-label">CO-HOST</b><br>
                 <span id="t-cohost-desc">주한영국문화원, 충북창조경제혁신센터, 충주청년센터</span>
             </div>
+        </div>
+    </div>
+
+    <div id="speaker-modal" class="modal-overlay hidden">
+        <div class="modal-content" style="text-align:left;">
+            <button class="close-modal-btn" onclick="document.getElementById('speaker-modal').classList.add('hidden')">✕</button>
+            <div id="spk-modal-org" style="color:var(--primary-blue); font-size:12px; font-weight:bold; margin-bottom:5px;"></div>
+            <div id="spk-modal-name" style="font-size:24px; font-weight:900; margin-bottom:15px; color:#222;"></div>
+            <div id="spk-modal-desc" style="font-size:14px; color:#444; line-height:1.6; word-break:keep-all;"></div>
         </div>
     </div>
 
@@ -344,7 +350,7 @@
 
     <div id="big-screen-mode" class="hidden">
         <button class="close-big-btn" onclick="closeBigScreen()">X</button>
-        <div class="big-title">💬 Live Q&A</div>
+        <div class="big-title">💬 Live Q&A <span style="font-size:14px; color:#aaa;">(Auto-translated)</span></div>
         <div class="big-qa-list" id="big-qa-feed"></div>
     </div>
 
@@ -356,10 +362,10 @@
         <div class="nav-item" onclick="switchTab('survey', this)"><span>📝</span><span class="t-nav-survey">설문</span></div>
     </div>
 
-    <div id="match-modal" class="hidden">
+    <div id="match-modal" class="modal-overlay hidden">
         <div class="modal-content">
-            <h3 style="color:#003399;">💌 <span id="t-modal-title">대화 요청</span></h3>
-            <p id="modal-msg" style="margin:20px 0;"></p>
+            <h3 style="color:#003399; margin-top:0;">💌 <span id="t-modal-title">대화 요청</span></h3>
+            <p id="modal-msg" style="margin:20px 0; font-size:16px;"></p>
             <div style="display:flex; gap:10px;">
                 <button class="btn btn-dark" style="margin:0;" onclick="respondMatch(false)" id="btn-reject">거절</button>
                 <button class="btn btn-primary" style="margin:0;" onclick="respondMatch(true)" id="btn-accept">수락</button>
@@ -367,21 +373,11 @@
         </div>
     </div>
 
-    <div id="speaker-modal" class="hidden">
-        <div class="modal-content" style="text-align:left;">
-            <button class="close-modal-btn" onclick="closeSpeakerModal()">X</button>
-            <div class="spk-popup-org" id="spk-popup-org">소속</div>
-            <div class="spk-popup-name" id="spk-popup-name">이름</div>
-            <div class="spk-popup-desc" id="spk-popup-desc">상세 설명</div>
-            <div id="spk-org-btn-area"></div>
-        </div>
-    </div>
-
 </div>
 
 <script>
     // ★ 기획자님의 '새 주소'를 여기에 붙여넣으세요! ★
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwSs16pOkT1zTHRKMdP-YbhsAke7d-QZ-JHv_xFKf2zrQ5lQEIUZyAgFFtuEhs05ISKkw/exec"; 
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby5Hb8tiu8sxunXZUQbRW8ASulwCIuWAToYmFTo0FZcJnLG26l7-2Sc8gc7MNAvQ9zwxg/exec"; 
 
     function normalizePhoneLocal(phone) {
         if (!phone) return "";
@@ -394,97 +390,27 @@
     let realUserList = []; 
     let matchedPartners = {}; 
     let currentLang = "ko"; 
-    let currentSpeakerIndex = -1; // 현재 열린 연사 팝업 인덱스
-    let isOrgView = false; // 현재 단체 정보 뷰인지 여부
 
-    // [New] 연사 데이터 구조 개선: desc를 { headline, body } 객체로 분리
+    // [수정] 연사 리스트에 '심병철' 추가 및 상세 설명(desc) 적용
     const speakers = [
-        { 
-            ko: { 
-                org: "주한영국문화원 원장", name: "사라 데브롤", 
-                desc: { headline: "한-영 문화 가교의 중심, 창의적 교류를 통해 도시의 미래를 잇다", body: "주한영국문화원장으로서 한국과 영국의 문화예술 교류를 총괄하며, 양국 문화 생태계의 동반 성장을 견인하고 있습니다." }
-            }, 
-            en: { 
-                org: "Director, British Council Korea", name: "Sarah Deverall", 
-                desc: { headline: "Leading the cultural bridge between the UK and Korea", body: "Director of the British Council in Korea, leading cultural and artistic exchanges between the UK and Korea." }
-            } 
-        },
-        { 
-            ko: { 
-                org: "MadLab", name: "레이첼 터너", 
-                desc: { headline: "BBC·알자지라 출신의 미디어 전략가, 매드랩의 '냉철한 운영'을 이끄는 리더", body: "매드랩의 전략 수립부터 실행까지 총괄하며, 창의 산업 내 다양성 증진과 기술의 사회적 포용성을 확장하는 데 주력하고 있습니다." },
-                orgDetail: { headline: "시민이 기술과 예술로 도시를 바꾸는 '풀뿌리 혁신 실험실'", body: "맨체스터와 스톡포트를 거점으로 활동하는 커뮤니티 주도형 혁신 기관입니다. 시민 누구나 메이커스페이스를 이용하며 기술이 지역 사회 모두의 자산이 되도록 돕고 있습니다." }
-            }, 
-            en: { 
-                org: "MadLab", name: "Rachael Turner", 
-                desc: { headline: "Operational Powerhouse of MadLab, Media Strategist from BBC & Al Jazeera", body: "Leads MadLab's operations, focusing on diversity in creative industries and expanding social inclusion of technology." },
-                orgDetail: { headline: "Grassroots Innovation Lab transforming cities with citizens", body: "A community-led innovation organization operating makerspaces for coding, bio, and digital fabrication." }
-            } 
-        },
-        { 
-            ko: { 
-                org: "MadLab", name: "아사 칼로우", 
-                desc: { headline: "FBI가 주목한 괴짜 기술자, 상상을 현실로 만드는 '창조적 혼돈'의 설계자", body: "시민 생물학(DIYBio) 프로젝트를 주도하며 초밥 DNA 분석, 박테리아 배양 등 기상천외한 실험으로 시민 과학의 가능성을 증명했습니다." },
-                orgDetail: { headline: "시민이 기술과 예술로 도시를 바꾸는 '풀뿌리 혁신 실험실'", body: "맨체스터와 스톡포트를 거점으로 활동하는 커뮤니티 주도형 혁신 기관입니다. 시민 누구나 메이커스페이스를 이용하며 기술이 지역 사회 모두의 자산이 되도록 돕고 있습니다." }
-            }, 
-            en: { 
-                org: "MadLab", name: "Asa Calow", 
-                desc: { headline: "Technologist noted by the FBI, architect of 'Creative Chaos'", body: "Leads DIYBio projects proving the potential of citizen science through unique experiments." },
-                orgDetail: { headline: "Grassroots Innovation Lab transforming cities with citizens", body: "A community-led innovation organization operating makerspaces for coding, bio, and digital fabrication." }
-            } 
-        },
-        { 
-            ko: { 
-                org: "InnovateUK", name: "제임스 휠", 
-                desc: { headline: "기술과 예술의 경계를 허무는 몰입형 콘텐츠(Immersive Tech) 혁신가", body: "Innovate UK의 혁신 리드로서 디지털 스토리텔링과 실감형 미디어 분야를 개척하며, 영국의 창의적 기술 생태계 발전에 핵심적인 역할을 수행하고 있습니다." },
-                orgDetail: { headline: "영국의 혁신 성장을 견인하는 국가 R&D 지원의 심장", body: "영국 연구혁신기구(UKRI) 산하의 핵심 기관으로, 기업들의 혁신적인 아이디어가 실제 비즈니스로 성장할 수 있도록 자금과 네트워크를 지원합니다." }
-            }, 
-            en: { 
-                org: "Innovate UK", name: "James Wheale", 
-                desc: { headline: "Immersive Tech innovator bridging art and technology", body: "As Innovation Lead at Innovate UK, he pioneers digital storytelling and immersive media ecosystems." },
-                orgDetail: { headline: "The heart of national R&D support driving UK's innovation growth", body: "A core agency under UKRI, supporting businesses to grow innovative ideas into real businesses through funding and networking." }
-            } 
-        },
-        { 
-            ko: { 
-                org: "충주문화관광재단 이사장", name: "백인욱", 
-                desc: { headline: "충주 관광 르네상스를 이끄는 리더, 문화도시의 든든한 버팀목", body: "충주문화관광재단의 이사장으로서 대한민국 문화도시 충주의 비전을 제시하고, 시민과 방문객 모두가 즐길 수 있는 매력적인 도시 브랜드를 구축하는 데 앞장서고 있습니다." }
-            }, 
-            en: { 
-                org: "Chairperson, CJ Culture Foundation", name: "Paek Inuk", 
-                desc: { headline: "Leader of Chungju's tourism renaissance", body: "Presents the vision of Chungju as a Cultural City and builds an attractive city brand for citizens and visitors." }
-            } 
-        },
-        { 
-            ko: { 
-                org: "충주문화관광재단 센터장", name: "신재민", 
-                desc: { headline: "데이터로 문화를 디자인하는 12년 차 축제 기획자, 충주의 로컬 생태계를 지휘하다", body: "'충주본색' 등 혁신적 프로젝트를 총괄하며, AI와 데이터 분석을 접목한 스마트 문화 기획을 선도하고 있습니다." }
-            }, 
-            en: { 
-                org: "Head, CJ Culture City Center", name: "Shin Jaemin", 
-                desc: { headline: "12-year festival planner designing culture with data", body: "Leads Chungju's local ecosystem and smart cultural planning using AI and data analytics." }
-            } 
-        },
-        { 
-            ko: { 
-                org: "(주)보탬플러스 이사", name: "이상창", 
-                desc: { headline: "버려진 골목에 숨결을 불어넣은 '관아골의 기적', 사람을 잇는 따뜻한 기획자", body: "10년 넘게 방치된 빈집을 복합문화공간 '세상상회'로 변신시키며 관아골 재생을 이끌었습니다." }
-            }, 
-            en: { 
-                org: "Director, Botam Plus", name: "Sangchang Lee", 
-                desc: { headline: "The warm planner behind the 'Miracle of Gwanagol'", body: "Transformed abandoned houses into cultural spaces, leading the regeneration of the local alleyways." }
-            } 
-        },
-        { 
-            ko: { 
-                org: "충주시청년센터 센터장", name: "남재우", 
-                desc: { headline: "빅데이터로 청년의 미래를 그리는 교수님, 지역 정착의 길을 열다", body: "정보학과 공공빅데이터 AI 전문성을 바탕으로 청년들이 지역 자원을 활용해 스스로 자립할 수 있는 비즈니스 모델을 만들도록 돕고 있습니다." }
-            }, 
-            en: { 
-                org: "Head, Chungju Youth Center", name: "Nam Jaewoo", 
-                desc: { headline: "Professor drawing the future of youth with big data", body: "Helps youth create self-reliant business models using local resources based on AI expertise." }
-            } 
-        }
+        { ko: { org: "주한영국문화원 원장", name: "사라 데브롤", desc: "이번 한-영 문화도시 교류 포럼의 환영사를 통해 양국의 크리에이티브 생태계 동반 성장을 향한 메시지를 전합니다." }, 
+          en: { org: "Director, British Council Korea", name: "Sarah Deverall", desc: "She will deliver the welcoming remarks for this UK-Korea City of Culture Exchange Forum, sending a message for the mutual growth of the creative ecosystems of both countries." } },
+        { ko: { org: "MadLab", name: "레이첼 터너", desc: "커뮤니티 기반의 기술·창작 생태계 구축을 선도하는 문화 기술 전문가입니다. 시민 참여형 프로젝트와 디지털 교육을 통해 매드랩을 영국 대표 기관으로 성장시켰습니다." }, 
+          en: { org: "MadLab", name: "Rachael Turner", desc: "A cultural technology expert leading the establishment of a community-based technology and creative ecosystem. She has grown MadLab into a leading UK institution through citizen participatory projects and digital education." } },
+        { ko: { org: "MadLab", name: "아사 칼로우", desc: "기술 개발자이자 연구자로, MadLab의 실험적 프로젝트를 주도합니다. 프로그래밍, 전자공학, 바이오아트 등 학제 간 경계를 넘나드는 혁신을 시도합니다." }, 
+          en: { org: "MadLab", name: "Asa Calow", desc: "A technology developer and researcher leading MadLab's experimental projects. He attempts innovations crossing interdisciplinary boundaries including programming, electronics, and bio-art." } },
+        { ko: { org: "InnovateUK", name: "제임스 휠", desc: "기술과 예술의 경계를 허무는 프로젝트를 다수 이끌어온 창의 기술 전문가입니다. 몰입형 기술(Immersive Technology) 및 디지털 창의 산업의 혁신 프로젝트를 지원해 왔습니다." }, 
+          en: { org: "Innovate UK", name: "James Wheale", desc: "A creative technology expert who has led numerous projects breaking the boundaries between technology and art. He has supported innovative projects in immersive technology and the digital creative industry." } },
+        { ko: { org: "충주문화관광재단 이사장", name: "백인욱", desc: "충주문화관광재단 이사장으로서 환영사를 통해 대한민국 문화도시 충주의 비전과 지속 가능한 발전 방향을 제시합니다." }, 
+          en: { org: "Chairperson, CJ Culture Foundation", name: "Paek Inuk", desc: "As the Chairperson of the CJ Culture Tourism Foundation, he will present the vision and sustainable development direction of Chungju, the Cultural City of Korea, through his welcoming remarks." } },
+        { ko: { org: "충주문화관광재단 센터장", name: "신재민", desc: "충주문화관광재단 문화도시센터장으로, GS칼텍스 예울마루 개관, 정동극장 상설 공연 제작과 포항 대표 축제의 팀장을 역임하며 지역문화기획자로서의 역량을 쌓아왔습니다. 그는 지역의 고유 서사와 한국 전통 예술의 현대적 감각으로 재해석하는 '우리 문화의 현대화'에 깊은 관심을 기울여왔습니다." }, 
+          en: { org: "Head, CJ Culture City Center", name: "Shin Jaemin", desc: "As the Head of the CJ Culture City Center, he is an expert who has proven his outstanding planning ability encompassing central stages and local festivals, having served as the producer of Jeongdong Theater's regular performances and the general planner of Pohang's representative festival. He has paid deep attention to the 'modernization of our culture', reinterpreting local narratives and Korean traditional arts with a modern sense. In particular, he plays a pivotal role in leading global cooperation projects with overseas partners, including the UK, and guiding Chungju's local contents to gain global competitiveness." } },
+        { ko: { org: "(주)보탬플러스 이사", name: "이상창", desc: "충주 관아골의 부활을 이끈 로컬 크리에이터입니다. 10년 이상 방치된 빈집을 복합문화공간으로 개조해 쇠퇴하던 골목에 활력을 불어넣었으며, '담장마켓' 등 커뮤니티 주도형 프로젝트를 기획하며 골목길 재생 생태계를 구축하고 있습니다." }, 
+          en: { org: "Director, Botam Plus", name: "Sangchang Lee", desc: "A local creator who led the revival of Gwanagol, Chungju. He converted an abandoned house into a complex cultural space, revitalizing the declining alley, and plans community-led projects like 'Damjang Market' to build an alleyway regeneration ecosystem." } },
+        { ko: { org: "충북창조경제혁신센터 책임", name: "심병철", desc: "2018년부터 혁신적인 로컬 창업가들을 발굴해 생태계의 그릇을 만들고 거버넌스를 조직해 온 현장 밀착형 전문가입니다. 개별 창업가의 성장을 넘어 '스스로 존립하는 온전한 지역 생태계' 구축을 철학으로 삼고 있습니다." }, 
+          en: { org: "Senior Researcher, CCEI", name: "Sim Byoungchul", desc: "A field-oriented expert who has discovered innovative local entrepreneurs and organized governance since 2018. He aims to establish a 'self-sustaining local ecosystem' beyond the growth of individual entrepreneurs." } },
+        { ko: { org: "충주시청년센터 센터장", name: "남재우", desc: "데이터 기반의 학술적 전문성(공공빅데이터 AI)과 현장 감각을 아우르며 지역 청년들의 자립을 이끄는 실천적 혁신가입니다. 청년들이 로컬 자원을 기반으로 비즈니스 모델을 구체화하도록 적극 돕고 있습니다." }, 
+          en: { org: "Head, Chungju Youth Center", name: "Nam Jaewoo", desc: "A practical innovator who leads the independence of local youth by combining data-based academic expertise (public big data AI) with a sense of the field. He actively helps youth to materialize business models based on local resources." } }
     ];
 
     const langData = {
@@ -492,7 +418,7 @@
             "t-main-title": "충주진로 한-영<br>장소만들기 국제포럼",
             "btn-login": "입장하기 🚀",
             "t-privacy-title": "[필수] 개인정보 수집 및 이용 동의",
-            "t-privacy-desc": "수집항목: 이름, 소속, 연락처<br>수집목적: 행사 출석 확인 및 네트워킹 매칭<br>보유기간: 행사 종료 후 즉시 파기",
+            "t-privacy-desc": "수집항목: 이름, 영어이름, 소속, 연락처<br>수집목적: 행사 출석 확인 및 네트워킹 매칭<br>보유기간: 행사 종료 후 즉시 파기",
             "t-profile-title": "네트워킹 프로필 설정",
             "t-label-apply": "0. 참가 신청 (중복 선택 가능)",
             "t-opt-forum": "포럼 (09:30~11:10)",
@@ -506,9 +432,17 @@
             "t-info-title": "📅 행사 개요",
             "t-part1-title": "한-영 장소만들기 국제포럼",
             "t-part2-title": "장소만들기 관련 워크샵",
+            "t-timetable-btn": "⬇️ 워크샵 상세 일정 보기",
+            "t-ws-1": "오프닝 & 아이스브레이킹",
+            "t-ws-2": "플레이스메이킹 정의 및 핵심요소 도출",
+            "t-ws-3": "사례 선정 및 커뮤니티 매핑",
+            "t-ws-4": "매핑 결과 분석 및 Role Play 공유",
+            "t-ws-5": "플레이스의 존재 목표 정의",
+            "t-ws-6": "현재/미래 자원 매핑 (Next Step 구상)",
+            "t-ws-7": "최종 결과 공유 및 비전 통합",
             "t-loc-label1": "건국대학교 글로컬캠퍼스<br>중원도서관 숨스퀘어",
             "t-loc-label2": "건국대학교 글로컬캠퍼스<br>중원도서관 숨스퀘어",
-            "t-speaker-title": "🎙️ 주요 연사",
+            "t-speaker-title": "🎙️ 주요 연사 <span style='font-size:11px; font-weight:normal; color:#aaa;'>(Click!)</span>",
             "t-map-title": "🗺️ 오시는 길",
             "t-map-btn": "중원도서관 숨스퀘어 지도보기",
             "t-file-title": "📂 자료실",
@@ -533,7 +467,7 @@
             "t-main-title": "UK-Korea Placemaking<br>International Forum",
             "btn-login": "Enter 🚀",
             "t-privacy-title": "[Required] Privacy Policy Consent",
-            "t-privacy-desc": "Items: Name, Org, Phone<br>Purpose: Attendance & Networking<br>Retention: Deleted immediately after event",
+            "t-privacy-desc": "Items: Name, EN Name, Org, Phone<br>Purpose: Attendance & Networking<br>Retention: Deleted immediately after event",
             "t-profile-title": "Set Networking Profile",
             "t-label-apply": "0. Apply for (Multiple Choice)",
             "t-opt-forum": "Forum (09:30~11:10)",
@@ -547,9 +481,17 @@
             "t-info-title": "📅 Overview",
             "t-part1-title": "International Forum",
             "t-part2-title": "Placemaking Workshop",
+            "t-timetable-btn": "⬇️ View Workshop Timetable",
+            "t-ws-1": "Opening & Icebreaking",
+            "t-ws-2": "Defining Placemaking & Core Elements",
+            "t-ws-3": "Case Selection & Community Mapping",
+            "t-ws-4": "Mapping Analysis & Role Play",
+            "t-ws-5": "Defining the Goal of 'Place'",
+            "t-ws-6": "Current/Future Resource Mapping (Next Step)",
+            "t-ws-7": "Final Result Sharing & Vision Integration",
             "t-loc-label1": "Jungwon Library, Konkuk Univ.",
             "t-loc-label2": "Jungwon Library, Konkuk Univ.",
-            "t-speaker-title": "🎙️ Speakers",
+            "t-speaker-title": "🎙️ Speakers <span style='font-size:11px; font-weight:normal; color:#aaa;'>(Click!)</span>",
             "t-map-title": "🗺️ Location",
             "t-map-btn": "View Map (Jungwon Library)",
             "t-file-title": "📂 Materials",
@@ -585,74 +527,34 @@
         renderMatchingList(); 
     }
 
+    // [수정] 연사 카드 클릭 시 모달 열리도록 수정
     function renderSpeakers() {
         const container = document.getElementById('speaker-list');
         container.innerHTML = speakers.map((s, index) => {
             const info = s[currentLang];
-            return `<div class="speaker-card" onclick="openSpeakerModal(${index})"><div class="speaker-org">${info.org}</div><div class="speaker-name">${info.name}</div></div>`;
+            return `<div class="speaker-card" onclick="openSpeakerModal(${index})">
+                        <div class="speaker-org">${info.org}</div>
+                        <div class="speaker-name">${info.name}</div>
+                    </div>`;
         }).join('');
     }
 
-    // [New] 연사 팝업 열기 (초기화)
     function openSpeakerModal(index) {
-        currentSpeakerIndex = index;
-        isOrgView = false; // 항상 연사 정보부터 시작
-        renderModalContent();
+        const info = speakers[index][currentLang];
+        document.getElementById('spk-modal-org').innerText = info.org;
+        document.getElementById('spk-modal-name').innerText = info.name;
+        document.getElementById('spk-modal-desc').innerText = info.desc;
         document.getElementById('speaker-modal').classList.remove('hidden');
     }
 
-    // [New] 팝업 내용 렌더링 (가시성 강화된 헤드라인/본문 구조 적용)
-    function renderModalContent() {
-        const info = speakers[currentSpeakerIndex][currentLang];
-        const btnArea = document.getElementById('spk-org-btn-area');
-        const orgLabel = document.getElementById('spk-popup-org');
-        const nameLabel = document.getElementById('spk-popup-name');
-        const descLabel = document.getElementById('spk-popup-desc');
-
-        if (isOrgView && info.orgDetail) {
-            // 단체 정보 뷰
-            orgLabel.innerText = "About Organization";
-            nameLabel.innerText = info.org; // 단체명
-            // [Design] 헤드라인(bolder) + 본문 분리
-            descLabel.innerHTML = `<span class="spk-headline">${info.orgDetail.headline}</span><span class="spk-body">${info.orgDetail.body}</span>`;
-            btnArea.innerHTML = `<button class="btn-org-info" onclick="toggleOrgInfo()">👤 ${currentLang==='ko'?'연사 정보 보기':'Show Speaker Info'}</button>`;
-        } else {
-            // 연사 정보 뷰
-            orgLabel.innerText = info.org;
-            nameLabel.innerText = info.name;
-            
-            // [Design] 헤드라인(bolder) + 본문 분리 (desc가 객체인 경우 처리)
-            if (typeof info.desc === 'object') {
-                descLabel.innerHTML = `<span class="spk-headline">${info.desc.headline}</span><span class="spk-body">${info.desc.body}</span>`;
-            } else {
-                descLabel.innerText = info.desc; // 예외 처리 (혹시 모를 문자열 데이터 대비)
-            }
-            
-            // 단체 정보가 있는 경우에만 버튼 표시
-            if (info.orgDetail) {
-                btnArea.innerHTML = `<button class="btn-org-info" onclick="toggleOrgInfo()">🏢 ${currentLang==='ko'?'소속 단체 정보 보기':'Show Organization Info'}</button>`;
-            } else {
-                btnArea.innerHTML = "";
-            }
-        }
-    }
-
-    function toggleOrgInfo() {
-        isOrgView = !isOrgView;
-        renderModalContent();
-    }
-
-    function closeSpeakerModal() {
-        document.getElementById('speaker-modal').classList.add('hidden');
+    // [NEW] 타임테이블 아코디언 토글
+    function toggleTimetable() {
+        const content = document.getElementById('workshop-timetable');
+        content.classList.toggle('expanded');
     }
 
     function downloadVCard(name, org, phone) {
-        const vcard = `BEGIN:VCARD
-VERSION:3.0
-FN:${name}
-ORG:${org}
-TEL;TYPE=CELL:${phone}
-END:VCARD`;
+        const vcard = `BEGIN:VCARD\nVERSION:3.0\nFN:${name}\nORG:${org}\nTEL;TYPE=CELL:${phone}\nEND:VCARD`;
         const blob = new Blob([vcard], { type: "text/vcard" });
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
@@ -669,8 +571,8 @@ END:VCARD`;
             userData = JSON.parse(savedUser);
             if (userData.role === 'admin') {
                 showPage('admin');
-                setInterval(fetchStats, 5000); 
-                setInterval(fetchQuestions, 3000);
+                setInterval(fetchStats, 10000); // 10초로 부하 완화
+                setInterval(fetchQuestions, 15000); // 15초로 부하 완화
             } else {
                 initUserMode();
             }
@@ -696,8 +598,8 @@ END:VCARD`;
             userData.role = 'admin';
             localStorage.setItem('dynamite_user', JSON.stringify(userData));
             showPage('admin');
-            setInterval(fetchStats, 5000);
-            setInterval(fetchQuestions, 3000); 
+            setInterval(fetchStats, 10000);
+            setInterval(fetchQuestions, 15000); 
             return;
         }
 
@@ -705,7 +607,7 @@ END:VCARD`;
         btn.innerHTML = '<div class="loader"></div> 확인 중...';
         btn.disabled = true;
 
-        const timeoutPromise = new Promise((resolve, reject) => { setTimeout(() => reject("Timeout"), 5000); }); 
+        const timeoutPromise = new Promise((resolve, reject) => { setTimeout(() => reject("Timeout"), 6000); }); 
         const fetchPromise = fetch(GOOGLE_SCRIPT_URL + "?action=get_users").then(res => res.json());
 
         Promise.race([fetchPromise, timeoutPromise])
@@ -719,7 +621,10 @@ END:VCARD`;
                 showPage('input');
             }
         })
-        .catch(err => { showPage('input'); });
+        .catch(err => { 
+            btn.innerHTML = '입장하기 🚀'; btn.disabled = false;
+            showPage('input'); 
+        });
     }
 
     function selectSingle(el) { Array.from(el.parentElement.children).forEach(c => c.classList.remove('selected')); el.classList.add('selected'); }
@@ -780,8 +685,9 @@ END:VCARD`;
 
         fetchMyMatches().then(() => {
             fetchRealUsers();
-            setInterval(pollMatchStatus, 5000); 
-            setInterval(fetchRealUsers, 10000);
+            // [수정] 폴링 주기를 15초 이상으로 늘려 100명 동시접속 부하 해결
+            setInterval(pollMatchStatus, 15000); 
+            setInterval(fetchRealUsers, 30000);
         });
     }
 
@@ -931,15 +837,27 @@ END:VCARD`;
         const input = document.getElementById('chatInput');
         if(!input.value) return;
         const board = document.getElementById('qa-board');
-        board.innerHTML += `<div class="chat-msg"><b>${userData.name}:</b> ${input.value}</div>`;
-        fetch(GOOGLE_SCRIPT_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain" }, body: JSON.stringify({ action: "ask", name: userData.name, question: input.value }) }).then(() => input.value = '');
+        // 로딩 느낌 부여
+        const tempMsg = `<div class="chat-msg" style="opacity:0.5;"><b>${userData.name}:</b> 전송/번역 중...</div>`;
+        board.innerHTML += tempMsg;
+        
+        fetch(GOOGLE_SCRIPT_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain" }, body: JSON.stringify({ action: "ask", name: userData.name, question: input.value }) }).then(() => {
+            input.value = '';
+            setTimeout(fetchQuestions, 1000); // 1초 후 새로고침하여 번역된 내용 불러오기
+        });
     }
     function fetchQuestions() {
         fetch(GOOGLE_SCRIPT_URL + "?action=get_questions").then(res => res.json()).then(data => {
             const feed = document.getElementById('admin-qa-feed'); const bigFeed = document.getElementById('big-qa-feed');
-            if(data.length === 0) { feed.innerHTML = "<div style='padding:10px; color:#aaa;'>등록된 질문이 없습니다.</div>"; return; }
-            feed.innerHTML = data.reverse().map(q => `<div style="background:#444; padding:10px; margin-bottom:5px; border-radius:5px; font-size:14px;"><span style="color:var(--accent-yellow)">[${q.name}]</span> ${q.text}</div>`).join('');
-            bigFeed.innerHTML = data.map(q => `<div class="big-qa-item"><span class="big-qa-author">[${q.name}]:</span><br>${q.text}</div>`).join('');
+            if(data.length === 0) { if(feed) feed.innerHTML = "<div style='padding:10px; color:#aaa;'>등록된 질문이 없습니다.</div>"; return; }
+            
+            // 일반 채팅창
+            const board = document.getElementById('qa-board');
+            if(board) board.innerHTML = data.map(q => `<div class="chat-msg"><b>${q.name}:</b><br>${q.text}</div>`).join('');
+            
+            // 관리자 화면
+            if(feed) feed.innerHTML = data.reverse().map(q => `<div style="background:#444; padding:10px; margin-bottom:5px; border-radius:5px; font-size:14px;"><span style="color:var(--accent-yellow)">[${q.name}]</span><br>${q.text}</div>`).join('');
+            if(bigFeed) bigFeed.innerHTML = data.map(q => `<div class="big-qa-item"><span class="big-qa-author">[${q.name}]:</span><br>${q.text}</div>`).join('');
         });
     }
     function fetchStats() {
