@@ -35,7 +35,6 @@
         .check-group { display: flex; flex-direction: column; gap: 12px; background: rgba(255,255,255,0.1); padding: 18px; border-radius: 12px; margin-top: 10px; }
         .check-item { display: flex; align-items: center; gap: 12px; font-size: 15px; cursor: pointer; }
         .check-item input { width: 20px; height: 20px; accent-color: var(--accent-yellow); }
-        .warn-text { color: #ff6b6b; font-size: 12px; margin-left: 6px; font-weight: bold; }
 
         .match-card { background: white; color: #333; border-radius: 18px; padding: 24px; margin: 15px 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.15); margin-bottom: 20px; position: relative; transition: transform 0.2s; }
         .match-card:active { transform: scale(0.99); }
@@ -56,15 +55,27 @@
 
         .guide-section { background: rgba(255,255,255,0.1); border-radius: 16px; padding: 24px; margin: 15px 0; backdrop-filter: blur(10px); }
         .section-header { font-size: 17px; font-weight: 800; color: var(--accent-yellow); margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.15); padding-bottom: 10px; }
-        .timeline-item { display: flex; margin-bottom: 14px; }
-        .time { width: 65px; font-weight: bold; font-size:13px; color: rgba(255,255,255,0.7); } 
+        .timeline-item { display: flex; margin-bottom: 14px; align-items: flex-start; }
+        .time { width: 65px; font-weight: bold; font-size:13px; color: rgba(255,255,255,0.7); padding-top:2px;} 
         .event { flex: 1; border-left: 2px solid var(--action-red); padding-left: 12px; font-size:14px; font-weight:600; line-height: 1.5; }
+        .event-highlight { background: rgba(255,221,0,0.2); padding: 8px 12px; border-radius: 8px; border-left: none; color: var(--accent-yellow); margin-bottom: 15px;}
         
         .speaker-container { display: flex; overflow-x: auto; gap: 12px; padding-bottom: 15px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
         .speaker-card { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 18px; border-radius: 14px; min-width: 150px; scroll-snap-align: start; text-align: left; box-shadow: 0 4px 10px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.2s; }
         .speaker-card:active { transform: scale(0.97); }
         .speaker-org { font-size: 11px; color: var(--accent-yellow); margin-bottom: 6px; font-weight:500; }
         .speaker-name { font-weight: 800; font-size: 17px; }
+
+        .lunch-container { display: flex; overflow-x: auto; gap: 15px; padding-bottom: 15px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+        .lunch-card { background: white; color: #333; border-radius: 16px; min-width: 250px; scroll-snap-align: start; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.15); display:flex; flex-direction: column;}
+        .lunch-photos { display: flex; height: 130px; background:#ddd; }
+        .lunch-photos img { width: 50%; height: 100%; object-fit: cover; border-right: 2px solid white; }
+        .lunch-photos img:last-child { border-right: none; }
+        .lunch-info { padding: 15px; display:flex; flex-direction: column; flex: 1; justify-content: space-between; }
+        .lunch-title { font-weight: 900; font-size: 16px; margin-bottom: 6px; color: var(--primary-blue); }
+        .lunch-tags { font-size: 12px; color: #666; margin-bottom: 12px; line-height: 1.4; }
+        .btn-kakao { width: 100%; padding: 10px; background: #fee500; color: #3c1e1e; border: none; border-radius: 8px; font-weight: bold; font-size: 13px; cursor: pointer; transition: 0.1s; }
+        .btn-kakao:active { transform: scale(0.97); }
 
         .accordion-btn { background: rgba(0,0,0,0.2); border-radius: 10px; padding: 12px; text-align: center; font-size: 13px; color: var(--accent-yellow); font-weight: bold; cursor: pointer; margin-top: 15px; transition: 0.2s; border: 1px solid rgba(255,255,255,0.2); }
         .accordion-btn:active { transform: scale(0.98); }
@@ -73,33 +84,14 @@
 
         .creator-signature { margin-top: 50px; margin-bottom: 30px; font-size: 11px; color: rgba(255,255,255,0.3); font-style: italic; width: 100%; text-align: center; position: relative; z-index: 0; }
 
-        .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px; }
-        .stat-box { background: #333; padding: 20px; border-radius: 12px; text-align: center; }
-        .stat-value { font-size: 28px; font-weight: bold; color: var(--white); }
-        .control-panel { background: #222; padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #444; }
-        #reader { width: 100%; background: black; border-radius: 10px; margin-top: 10px; display: none; }
-        #scan-result { margin-top: 10px; font-weight: bold; color: var(--accent-yellow); text-align: center; min-height: 24px;}
-        .manual-checkin-box { background: #444; padding: 15px; border-radius: 8px; margin-top: 20px; border: 1px dashed #666; }
-        .manual-input { width: 70%; padding: 10px; border-radius: 5px; border: none; font-size: 14px; }
-        .lucky-draw-box { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 15px; margin-top: 20px; text-align: center; border: 2px solid #fff; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
-        #winner-display { font-size: 30px; font-weight: bold; color: var(--accent-yellow); margin: 20px 0; min-height: 40px; text-shadow: 2px 2px 0 #000; }
-        .admin-qa-list { background: #333; padding: 10px; border-radius: 8px; height: 200px; overflow-y: auto; }
         .chat-box { height: 400px; background: rgba(255,255,255,0.95); border-radius: 16px; padding: 18px; overflow-y: auto; margin: 20px; color: #333; box-shadow: inset 0 2px 10px rgba(0,0,0,0.05); }
         .chat-msg { background: white; padding: 10px 14px; border-radius: 12px; margin-bottom: 10px; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); color:#333; border: 1px solid #eee; white-space: pre-wrap; }
-        #big-screen-mode { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: black; color: white; z-index: 9999; padding: 40px; overflow-y: hidden; display: flex; flex-direction: column; }
-        .big-title { font-size: 40px; font-weight: bold; color: var(--accent-yellow); margin-bottom: 30px; text-align: center; border-bottom: 3px solid var(--action-red); padding-bottom: 20px; }
-        .big-qa-list { flex: 1; overflow-y: auto; padding: 20px; }
-        .big-qa-item { background: #222; padding: 25px; margin-bottom: 20px; border-radius: 15px; font-size: 28px; line-height: 1.4; border-left: 8px solid var(--primary-blue); white-space: pre-wrap; }
-        .close-big-btn { position: absolute; top: 20px; right: 20px; font-size: 20px; background: transparent; border: 1px solid #555; color: #555; cursor: pointer; }
 
         .bottom-nav { position: fixed; bottom: 0; width: 100%; max-width: 480px; height: 75px; background: #001a4d; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid rgba(255,255,255,0.1); z-index: 1000; box-shadow: 0 -5px 20px rgba(0,0,0,0.3); padding-bottom: 10px; }
         .nav-item { font-size: 10px; color: rgba(255,255,255,0.5); text-align: center; cursor: pointer; flex: 1; display:flex; flex-direction: column; gap:6px; transition:0.2s; }
         .nav-item.active { color: var(--accent-yellow); font-weight: bold; transform: translateY(-2px); }
         .nav-item span:first-child { font-size: 20px; }
 
-        .loader { border: 4px solid rgba(255,255,255,0.1); border-top: 4px solid var(--accent-yellow); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; display: inline-block; vertical-align: middle; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        
         .modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index: 2000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
         .modal-content { background: white; color: black; padding: 35px 25px; border-radius: 24px; text-align: left; width: 85%; max-width: 350px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); animation: popUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; max-height:85vh; overflow-y:auto;}
         @keyframes popUp { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
@@ -108,21 +100,12 @@
         .footer-info b { color: rgba(255,255,255,0.7); font-size: 12px; }
 
         .lang-btn { position: absolute; top: 15px; left: 15px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 6px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; z-index: 100; backdrop-filter: blur(4px); }
-
-        .skeleton { background: #eee; background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%); border-radius: 8px; background-size: 200% 100%; animation: 1.5s shimmer linear infinite; }
-        @keyframes shimmer { to { background-position-x: -200%; } }
-        .skeleton-card { height: 160px; display: flex; flex-direction: column; justify-content: space-between; }
-        .skeleton-text { height: 20px; width: 80%; margin-bottom: 10px; }
-        .skeleton-text.short { width: 40%; }
-        .skeleton-badge { width: 60px; height: 24px; border-radius: 12px; align-self: flex-end; }
-
         .close-modal-btn { position:absolute; top:20px; right:20px; background:rgba(0,0,0,0.05); border:none; width:30px; height:30px; border-radius:15px; font-size:14px; font-weight:bold; cursor:pointer; color:#555;}
         
         .spk-tabs { display:flex; gap:10px; margin-bottom:20px; border-bottom:1px solid #ddd; padding-bottom:10px; }
         .spk-tab { font-size:14px; color:#aaa; font-weight:bold; cursor:pointer; transition:0.2s; padding-bottom:5px; position:relative; }
         .spk-tab.active { color:var(--primary-blue); }
         .spk-tab.active::after { content:''; position:absolute; bottom:-11px; left:0; width:100%; height:3px; background:var(--primary-blue); border-radius:2px; }
-
         .spk-headline { font-size: 16px; font-weight: 800; color: var(--action-red); margin-bottom: 12px; line-height: 1.4; word-break: keep-all; }
         .spk-desc-text { font-size: 14px; color: #444; line-height: 1.7; word-break: keep-all; }
     </style>
@@ -156,7 +139,6 @@
                     </div>
                 </label>
             </div>
-
             <button class="btn btn-primary" onclick="checkLogin()" id="btn-login">입장하기 🚀</button>
         </div>
         <div class="creator-signature">Designed & Directed by 곤드레</div>
@@ -164,19 +146,11 @@
 
     <div id="page-input" class="hidden">
         <h3 id="t-profile-title">네트워킹 프로필 설정</h3>
-        
         <label id="t-label-apply" class="section-label">0. 참가 신청 (중복 선택 가능)</label>
         <div class="check-group">
-            <label class="check-item">
-                <input type="checkbox" name="applyType" value="포럼">
-                <span id="t-opt-forum">포럼 (09:30~11:10)</span>
-            </label>
-            <label class="check-item">
-                <input type="checkbox" name="applyType" value="워크샵">
-                <span><span id="t-opt-workshop">워크샵 (14:00~18:00)</span> <span id="t-warn-workshop" class="warn-text">* 선착순 선정 (Limited)</span></span>
-            </label>
+            <label class="check-item"><input type="checkbox" name="applyType" value="포럼"><span id="t-opt-forum">포럼 (09:00~12:00)</span></label>
+            <label class="check-item"><input type="checkbox" name="applyType" value="워크샵"><span><span id="t-opt-workshop">워크샵 (13:30~18:00)</span></span></label>
         </div>
-
         <label id="t-label-cat" class="section-label">1. 주요 활동 분야 (1개 선택)</label>
         <div class="tag-grid" id="grid-category">
             <div class="tag-item" onclick="selectSingle(this)">F&B/제조</div>
@@ -186,29 +160,19 @@
             <div class="tag-item" onclick="selectSingle(this)">공공/행정</div> 
             <div class="tag-item" onclick="selectSingle(this)">기타</div>
         </div>
-        
         <label id="t-label-give" class="section-label">💡 2. 내가 나눌 수 있는 것 (최대 3개)</label>
         <div class="tag-grid" id="grid-give">
-            <div class="tag-item" onclick="selectMulti(this)">공간 제공</div>
-            <div class="tag-item" onclick="selectMulti(this)">상품/제품</div>
-            <div class="tag-item" onclick="selectMulti(this)">홍보/마케팅</div>
-            <div class="tag-item" onclick="selectMulti(this)">판매 채널</div>
-            <div class="tag-item" onclick="selectMulti(this)">운영 노하우</div>
-            <div class="tag-item" onclick="selectMulti(this)">공공 문서</div>
-            <div class="tag-item" onclick="selectMulti(this)">문화 기획</div>
-            <div class="tag-item" onclick="selectMulti(this)">단순 네트워킹</div>
+            <div class="tag-item" onclick="selectMulti(this)">공간 제공</div><div class="tag-item" onclick="selectMulti(this)">상품/제품</div>
+            <div class="tag-item" onclick="selectMulti(this)">홍보/마케팅</div><div class="tag-item" onclick="selectMulti(this)">판매 채널</div>
+            <div class="tag-item" onclick="selectMulti(this)">운영 노하우</div><div class="tag-item" onclick="selectMulti(this)">공공 문서</div>
+            <div class="tag-item" onclick="selectMulti(this)">문화 기획</div><div class="tag-item" onclick="selectMulti(this)">단순 네트워킹</div>
         </div>
-        
         <label id="t-label-get" class="section-label">🤝 3. 내가 도움 받고 싶은 것 (최대 3개)</label>
         <div class="tag-grid" id="grid-get">
-            <div class="tag-item" onclick="selectMulti(this)">공간 제공</div>
-            <div class="tag-item" onclick="selectMulti(this)">상품/제품</div>
-            <div class="tag-item" onclick="selectMulti(this)">홍보/마케팅</div>
-            <div class="tag-item" onclick="selectMulti(this)">판매 채널</div>
-            <div class="tag-item" onclick="selectMulti(this)">운영 노하우</div>
-            <div class="tag-item" onclick="selectMulti(this)">공공 문서</div>
-            <div class="tag-item" onclick="selectMulti(this)">문화 기획</div>
-            <div class="tag-item" onclick="selectMulti(this)">단순 네트워킹</div>
+            <div class="tag-item" onclick="selectMulti(this)">공간 제공</div><div class="tag-item" onclick="selectMulti(this)">상품/제품</div>
+            <div class="tag-item" onclick="selectMulti(this)">홍보/마케팅</div><div class="tag-item" onclick="selectMulti(this)">판매 채널</div>
+            <div class="tag-item" onclick="selectMulti(this)">운영 노하우</div><div class="tag-item" onclick="selectMulti(this)">공공 문서</div>
+            <div class="tag-item" onclick="selectMulti(this)">문화 기획</div><div class="tag-item" onclick="selectMulti(this)">단순 네트워킹</div>
         </div>
         <button class="btn btn-primary" onclick="completeSignup()" id="btn-signup"><span>완료 및 저장 ✨</span></button>
     </div>
@@ -230,7 +194,7 @@
                     <span id="t-part1-title">한-영 장소만들기 국제포럼</span>
                 </div>
                 <div class="timeline-item">
-                    <div class="time">09:30~</div>
+                    <div class="time">09:00~</div>
                     <div class="event" id="t-loc-label1">건국대학교 글로컬캠퍼스<br>중원도서관 숨스퀘어</div>
                 </div>
                 
@@ -245,18 +209,22 @@
                     <div class="timeline-item"><div class="time">11:40</div><div class="event" id="t-fm-7" style="font-weight:normal; font-size:13px;">이노베이트(InnovateUK)관련 질의 응답</div></div>
                 </div>
 
-                <div style="margin:15px 0; border-bottom:1px dashed rgba(255,255,255,0.1);"></div>
+                <div class="timeline-item event-highlight" style="margin-top:15px;">
+                    <div class="time" style="color:var(--primary-blue);">12:00~</div>
+                    <div class="event" id="t-lunch-break" style="border:none; padding-left:0; color:var(--primary-blue);">🍽️ 점심식사 및 이동 (Lunch Break)</div>
+                </div>
                 
                 <div class="section-header" style="color:var(--accent-yellow); margin-top:5px;">
                     <span id="t-part2-title">장소만들기 관련 워크샵</span>
                 </div>
                 <div class="timeline-item">
-                    <div class="time">14:00~</div>
+                    <div class="time">13:30~</div>
                     <div class="event" id="t-loc-label2">건국대학교 글로컬캠퍼스<br>중원도서관 숨스퀘어</div>
                 </div>
                 
                 <div class="accordion-btn" onclick="toggleWorkshopTimetable()" id="t-timetable-btn">⬇️ 워크샵 상세 일정 보기</div>
                 <div id="workshop-timetable" class="accordion-content">
+                    <div class="timeline-item"><div class="time">13:30</div><div class="event" id="t-ws-0" style="font-weight:normal; font-size:13px;">사전 준비 및 워크숍 브리핑</div></div>
                     <div class="timeline-item"><div class="time">14:00</div><div class="event" id="t-ws-1" style="font-weight:normal; font-size:13px;">오프닝 & 아이스브레이킹</div></div>
                     <div class="timeline-item"><div class="time">14:10</div><div class="event" id="t-ws-2" style="font-weight:normal; font-size:13px;">플레이스메이킹 정의 및 핵심요소 도출</div></div>
                     <div class="timeline-item"><div class="time">14:35</div><div class="event" id="t-ws-3" style="font-weight:normal; font-size:13px;">사례 선정 및 커뮤니티 매핑</div></div>
@@ -267,6 +235,71 @@
                 </div>
             </div>
 
+            <h4 id="t-lunch-title" style="margin:25px 0 10px 0;">🍔 주변 맛집 가이드 <span style="font-size:11px; font-weight:normal; color:#aaa;">(Swipe & Click!)</span></h4>
+            <div class="lunch-container" id="lunch-list">
+                
+                <div class="lunch-card">
+                    <div class="lunch-photos">
+                        <img src="사진경로입력요망" alt="막국수1">
+                        <img src="사진경로입력요망" alt="막국수2">
+                    </div>
+                    <div class="lunch-info">
+                        <div class="lunch-title" id="t-r-1-title">원조중앙탑막국수 단월점</div>
+                        <div class="lunch-tags" id="t-r-1-desc">#메밀막국수 #메밀후라이드치킨<br>🚗 차량 3분 (향토음식)</div>
+                        <button class="btn-kakao" onclick="window.open('https://map.kakao.com/link/search/충주 원조중앙탑막국수 단월점')">📍 카카오맵 길찾기</button>
+                    </div>
+                </div>
+
+                <div class="lunch-card">
+                    <div class="lunch-photos">
+                        <img src="사진경로입력요망" alt="공아춘1">
+                        <img src="사진경로입력요망" alt="공아춘2">
+                    </div>
+                    <div class="lunch-info">
+                        <div class="lunch-title" id="t-r-2-title">공아춘</div>
+                        <div class="lunch-tags" id="t-r-2-desc">#빠른회전율 #실패없는_중식<br>🚗 차량 3분</div>
+                        <button class="btn-kakao" onclick="window.open('https://map.kakao.com/link/search/충주 공아춘')">📍 카카오맵 길찾기</button>
+                    </div>
+                </div>
+
+                <div class="lunch-card">
+                    <div class="lunch-photos">
+                        <img src="사진경로입력요망" alt="커피단월1">
+                        <img src="사진경로입력요망" alt="커피단월2">
+                    </div>
+                    <div class="lunch-info">
+                        <div class="lunch-title" id="t-r-3-title">커피단월</div>
+                        <div class="lunch-tags" id="t-r-3-desc">#대형로스터리 #베이커리 #네트워킹<br>🚗 차량 3분 (달천강 뷰)</div>
+                        <button class="btn-kakao" onclick="window.open('https://map.kakao.com/link/search/충주 커피단월')">📍 카카오맵 길찾기</button>
+                    </div>
+                </div>
+
+                <div class="lunch-card">
+                    <div class="lunch-photos">
+                        <img src="사진경로입력요망" alt="포카라고1">
+                        <img src="사진경로입력요망" alt="포카라고2">
+                    </div>
+                    <div class="lunch-info">
+                        <div class="lunch-title" id="t-r-4-title">포카라고</div>
+                        <div class="lunch-tags" id="t-r-4-desc">#양식 #분위기맛집<br>🚗 차량 이동</div>
+                        <button class="btn-kakao" onclick="window.open('https://map.kakao.com/link/search/충주 포카라고')">📍 카카오맵 길찾기</button>
+                    </div>
+                </div>
+
+                <div class="lunch-card">
+                    <div class="lunch-photos">
+                        <img src="사진경로입력요망" alt="장수촌1">
+                        <img src="사진경로입력요망" alt="장수촌2">
+                    </div>
+                    <div class="lunch-info">
+                        <div class="lunch-title" id="t-r-5-title">장수촌</div>
+                        <div class="lunch-tags" id="t-r-5-desc">#누룽지백숙 #든든한한끼<br>🚗 차량 이동</div>
+                        <button class="btn-kakao" onclick="window.open('https://map.kakao.com/link/search/충주 장수촌')">📍 카카오맵 길찾기</button>
+                    </div>
+                </div>
+
+            </div>
+
             <h4 id="t-speaker-title" style="margin:25px 0 10px 0;">🎙️ 주요 연사 <span style="font-size:11px; font-weight:normal; color:#aaa;">(Click!)</span></h4>
             <div class="speaker-container" id="speaker-list">
                 </div>
@@ -275,9 +308,6 @@
             <button class="btn btn-dark" style="margin-bottom:20px; font-weight:normal;" onclick="window.open('https://map.kakao.com/link/search/건국대학교글로컬캠퍼스중원도서관')">
                 📍 <span id="t-map-btn">중원도서관 숨스퀘어 지도보기</span>
             </button>
-
-            <h4 id="t-file-title" style="margin:25px 0 10px 0;">📂 자료실</h4>
-            <button class="btn btn-dark" style="font-weight:normal;" onclick="alert('준비 중입니다.')">📄 <span id="t-file-btn">[포럼 자료집] 다운로드</span></button>
 
             <div class="footer-info">
                 <b id="t-host-label">HOST</b><br>
@@ -311,8 +341,7 @@
         </div>
         <div style="padding:0 20px;">
             <h3><span id="display-name" style="color:var(--accent-yellow)">OOO</span><span id="t-match-msg">님을 위한 네트워킹 제안</span></h3>
-            <div id="matching-list">
-                </div>
+            <div id="matching-list"></div>
         </div>
     </div>
 
@@ -431,36 +460,36 @@
                 headline: "커뮤니티 기반의 기술·창작 생태계 구축을 선도하는 문화 기술 전문가", 
                 desc: "시민 참여형 프로젝트와 디지털 교육을 통해 매드랩을 영국 대표 기관으로 성장시켰으며, 공공 및 문화 기관과 협력하여 기술의 사회적 포용성을 확장하는 데 주력하고 있다.", 
                 orgHeadline: "영국 그레이터 맨체스터에 기반한 커뮤니티 주도 디지털·창의 혁신 기관", 
-                orgDesc: "시민들이 기술을 배우고 예술을 만들며 새로운 아이디어를 실험할 수 있는 환경을 제공한다. 특히 3D 프린터, 전자기기, 디지털 제작 장비 등을 갖춘 메이커 공간(makerspace)을 운영하며, 기술 접근성이 낮은 지역의 청소년과 시민들에게 실질적인 창작·학습 기회를 제공해 왔다. 2009년 맨체스터 노던 쿼터에서 시작된 MadLab은 빠르게 영국에서 가장 활발한 메이커 공간 중 하나로 성장했고, 이후 스톡포트 시내 중심가로 활동을 확장했다. 산업 쇠퇴와 도심 침체로 오랫동안 활력이 부족한 도시로 인식되던 스톡포트는 MadLab의 창의적 개입과 지역 재생 프로젝트를 통해 긍정적 변화를 이루었으며, 2021년 스톡포트 시의회를 대신해 263만 파운드를 확보하며 스톡포트 크리에이티브 캠퍼스 프로젝트를 시작했다." }, 
+                orgDesc: "시민들이 기술을 배우고 예술을 만들며 새로운 아이디어를 실험할 수 있는 환경을 제공한다. 특히 3D 프린터, 전자기기, 디지털 제작 장비 등을 갖춘 메이커 공간(makerspace)을 운영하며, 기술 접근성이 낮은 지역의 청소년과 시민들에게 실질적인 창작·학습 기회를 제공해 왔다." }, 
           en: { org: "MadLab", name: "Rachael Turner", 
                 headline: "A cultural technology expert leading community-based tech and creative ecosystems", 
                 desc: "She grew MadLab into a leading UK institution through citizen participatory projects and digital education, focusing on expanding social inclusivity of technology in cooperation with public and cultural institutions.", 
                 orgHeadline: "A community-led digital and creative innovation organization based in Greater Manchester, UK", 
-                orgDesc: "It provides an environment where citizens can learn technology, create art, and experiment with new ideas. Operating a makerspace equipped with 3D printers and digital fabrication tools, it offers practical creative learning opportunities to youth and citizens in areas with low tech accessibility. Starting in Manchester's Northern Quarter in 2009, MadLab rapidly grew into one of the most active makerspaces in the UK, later expanding to Stockport town centre. Stockport, long perceived as lacking vitality due to industrial decline, achieved positive change through MadLab's creative intervention and local regeneration projects. In 2021, on behalf of Stockport Council, they secured £2.63M to launch the Stockport Creative Campus project." } 
+                orgDesc: "It provides an environment where citizens can learn technology, create art, and experiment with new ideas. Operating a makerspace equipped with 3D printers and digital fabrication tools, it offers practical creative learning opportunities to youth and citizens in areas with low tech accessibility." } 
         },
         { 
           ko: { org: "MadLab", name: "아사 칼로우", 
                 headline: "학제 간 경계를 넘나드는 혁신을 시도하는 기술 개발자이자 연구자", 
                 desc: "MadLab의 실험적 프로젝트를 주도한다. 프로그래밍, 전자공학, 바이오아트 등 학제 간 경계를 넘나드는 혁신을 시도하며, 기술을 활용한 창의적 문제 해결 모델을 제시해 국제적인 주목을 받고 있다.", 
                 orgHeadline: "영국 그레이터 맨체스터에 기반한 커뮤니티 주도 디지털·창의 혁신 기관", 
-                orgDesc: "시민들이 기술을 배우고 예술을 만들며 새로운 아이디어를 실험할 수 있는 환경을 제공한다. 특히 3D 프린터, 전자기기, 디지털 제작 장비 등을 갖춘 메이커 공간(makerspace)을 운영하며, 기술 접근성이 낮은 지역의 청소년과 시민들에게 실질적인 창작·학습 기회를 제공해 왔다. 2009년 맨체스터 노던 쿼터에서 시작된 MadLab은 빠르게 영국에서 가장 활발한 메이커 공간 중 하나로 성장했고, 이후 스톡포트 시내 중심가로 활동을 확장했다. 산업 쇠퇴와 도심 침체로 오랫동안 활력이 부족한 도시로 인식되던 스톡포트는 MadLab의 창의적 개입과 지역 재생 프로젝트를 통해 긍정적 변화를 이루었으며, 2021년 스톡포트 시의회를 대신해 263만 파운드를 확보하며 스톡포트 크리에이티브 캠퍼스 프로젝트를 시작했다." }, 
+                orgDesc: "시민들이 기술을 배우고 예술을 만들며 새로운 아이디어를 실험할 수 있는 환경을 제공한다. 2009년 맨체스터 노던 쿼터에서 시작된 MadLab은 빠르게 영국에서 가장 활발한 메이커 공간 중 하나로 성장했고, 이후 스톡포트 시내 중심가로 활동을 확장했다." }, 
           en: { org: "MadLab", name: "Asa Calow", 
                 headline: "A tech developer and researcher attempting cross-disciplinary innovations", 
                 desc: "He leads MadLab's experimental projects. Attempting innovations across interdisciplinary boundaries such as programming, electronics, and bio-art, he presents creative problem-solving models utilizing technology, gaining international attention.", 
                 orgHeadline: "A community-led digital and creative innovation organization based in Greater Manchester, UK", 
-                orgDesc: "It provides an environment where citizens can learn technology, create art, and experiment with new ideas. Operating a makerspace equipped with 3D printers and digital fabrication tools, it offers practical creative learning opportunities to youth and citizens in areas with low tech accessibility. Starting in Manchester's Northern Quarter in 2009, MadLab rapidly grew into one of the most active makerspaces in the UK, later expanding to Stockport town centre. Stockport, long perceived as lacking vitality due to industrial decline, achieved positive change through MadLab's creative intervention and local regeneration projects. In 2021, on behalf of Stockport Council, they secured £2.63M to launch the Stockport Creative Campus project." } 
+                orgDesc: "It provides an environment where citizens can learn technology, create art, and experiment with new ideas. Starting in Manchester's Northern Quarter in 2009, MadLab rapidly grew into one of the most active makerspaces in the UK, later expanding to Stockport town centre." } 
         },
         { 
           ko: { org: "InnovateUK", name: "제임스 휠", 
                 headline: "기술과 예술의 경계를 허무는 프로젝트를 다수 이끌어온 창의 기술 전문가", 
-                desc: "디지털 크리에이터이자 프로젝트 디렉터로서 인터랙티브 미디어, 디지털 스토리텔링, 실감형 콘텐츠 분야에서 두각을 나타냈다. Innovate UK의 Innovation Lead로 활동하며 몰입형 기술(Immersive Technology) 및 디지털 창의 산업의 혁신 프로젝트를 지원했다. 연구기관과 문화기관 등 다양한 이해관계자를 연결하며 R&D와 산업 협력을 촉진하는 등 영국 기술·창의 생태계 발전에 핵심적인 역할을 수행했다.", 
+                desc: "디지털 크리에이터이자 프로젝트 디렉터로서 인터랙티브 미디어, 디지털 스토리텔링, 실감형 콘텐츠 분야에서 두각을 나타냈다. Innovate UK의 Innovation Lead로 활동하며 몰입형 기술(Immersive Technology) 및 디지털 창의 산업의 혁신 프로젝트를 지원했다.", 
                 orgHeadline: "기업과 연구자의 기술 상용화를 돕는 영국 정부 산하 국가 혁신 지원 기관", 
-                orgDesc: "Innovate UK는 UK Research and Innovation (UKRI) 소속의 영국 정부 산하 국가 혁신 지원 기관이다. 기업과 연구자가 새로운 기술 및 서비스를 개발하고 상용화할 수 있도록 돕는 혁신 촉진의 핵심 역할을 수행한다. 스타트업부터 대기업, 대학에 이르기까지 다양한 파트너와 협력하며 R&D 자금 지원, 기술 상용화 프로그램, 국제 협력 사업을 전개한다. 주요 역할로는 혁신 프로젝트 기획 및 관리, 산업·문화·기술 협력 촉진, 창의 기술 산업 발전을 위한 전략 개발 및 글로벌 지원 등이 있다." }, 
+                orgDesc: "Innovate UK는 UK Research and Innovation (UKRI) 소속의 영국 정부 산하 국가 혁신 지원 기관이다. 기업과 연구자가 새로운 기술 및 서비스를 개발하고 상용화할 수 있도록 돕는 혁신 촉진의 핵심 역할을 수행한다." }, 
           en: { org: "Innovate UK", name: "James Wheale", 
                 headline: "A Creative Technology expert leading projects that break the boundaries of tech and art", 
-                desc: "As a digital creator and project director, he stood out in interactive media, digital storytelling, and immersive content. Acting as an Innovation Lead at Innovate UK, he supported innovation projects in immersive technology and the digital creative industry. He played a key role in developing the UK's tech and creative ecosystem by connecting various stakeholders such as research and cultural institutions to promote R&D and industry collaboration.", 
+                desc: "As a digital creator and project director, he stood out in interactive media, digital storytelling, and immersive content. Acting as an Innovation Lead at Innovate UK, he supported innovation projects in immersive technology and the digital creative industry.", 
                 orgHeadline: "The UK's national innovation agency helping businesses and researchers commercialize technology", 
-                orgDesc: "Innovate UK is a national innovation agency under the UK government, part of UK Research and Innovation (UKRI). It plays a core role in facilitating innovation by helping businesses and researchers develop and commercialize new technologies and services. Collaborating with various partners from startups to large corporations and universities, it conducts R&D funding, tech commercialization programs, and international cooperation projects. Key roles include planning and managing innovation projects, promoting industry-culture-tech collaboration, and developing strategies and global support for the creative tech industry." } 
+                orgDesc: "Innovate UK is a national innovation agency under the UK government, part of UK Research and Innovation (UKRI). It plays a core role in facilitating innovation by helping businesses and researchers develop and commercialize new technologies and services." } 
         },
         { 
           ko: { org: "충주문화관광재단", name: "백인욱 이사장", 
@@ -475,12 +504,12 @@
                 headline: "지역 고유 서사와 전통 예술을 현대적 감각으로 재해석하는 우리 문화의 현대화 선도", 
                 desc: "충주문화관광재단 문화도시센터장으로, GS칼텍스 예울마루 개관, 정동극장 상설 공연 제작과 포항 대표 축제의 팀장을 역임하며 지역문화기획자로서의 역량을 쌓아왔습니다. 그는 지역의 고유 서사와 한국 전통 예술의 현대적 감각으로 재해석하는 '우리 문화의 현대화'에 깊은 관심을 기울여왔습니다.", 
                 orgHeadline: "'대한민국 문화도시'이자 '국악콘텐츠 허브도시' 충주를 이끄는 핵심 실행 기관", 
-                orgDesc: "충주문화관광재단 문화도시센터는 충주시를 '대한민국 문화도시'이자 '국악콘텐츠 허브도시'로 이끄는 핵심 실행 기관이다. 지역 고유의 문화 자산인 '국악'을 모티브로 삼아 전통과 현대, 예술과 기술이 결합된 새로운 문화 콘텐츠를 발굴하고 시민이 일상에서 문화를 누릴 수 있는 기반을 조성하고 있다. 2024년 12월 대한민국 문화도시로 최종 지정된 이후, 3년간 200억 원의 예산을 투입해 지역 문화콘텐츠 생태계를 구축하고 있다. 로컬 콘텐츠 창·제작 지원, 문화적 도시재생 및 활력 부여, 글로벌 네트워크 및 교류 확장에 앞장서고 있다." }, 
+                orgDesc: "충주문화관광재단 문화도시센터는 충주시를 '대한민국 문화도시'이자 '국악콘텐츠 허브도시'로 이끄는 핵심 실행 기관이다. 지역 고유의 문화 자산인 '국악'을 모티브로 삼아 전통과 현대, 예술과 기술이 결합된 새로운 문화 콘텐츠를 발굴하고 기반을 조성하고 있다." }, 
           en: { org: "CJ Culture City Center", name: "Head Shin Jaemin", 
                 headline: "A pioneer in modernizing 'our culture' by reinterpreting local narratives and traditional arts with a modern sense", 
-                desc: "As the Head of the CJ Culture City Center, he is an expert who has proven his outstanding planning ability encompassing central stages and local festivals, having served as the producer of Jeongdong Theater's regular performances and the general planner of Pohang's representative festival. He has paid deep attention to the 'modernization of our culture', reinterpreting local narratives and Korean traditional arts with a modern sense. In particular, he plays a pivotal role in leading global cooperation projects with overseas partners, including the UK, and guiding Chungju's local contents to gain global competitiveness.", 
+                desc: "As the Head of the CJ Culture City Center, he is an expert who has proven his outstanding planning ability encompassing central stages and local festivals. He plays a pivotal role in leading global cooperation projects with overseas partners, including the UK, and guiding Chungju's local contents to gain global competitiveness.", 
                 orgHeadline: "The core execution agency leading Chungju as the 'Cultural City of Korea' and 'Gugak Content Hub City'", 
-                orgDesc: "The CJ Culture City Center is the core execution agency leading Chungju to become the 'Cultural City of Korea' and 'Gugak Content Hub City'. Taking the region's unique cultural asset, 'Gugak', as a motif, it discovers new cultural contents combining tradition and modernity, art and technology, and creates a foundation for citizens to enjoy culture in their daily lives. Since being finally designated as a Cultural City of Korea in December 2024, it has been building a local cultural content ecosystem by investing a budget of 20 billion KRW over three years. It takes the lead in supporting local content creation, cultural urban regeneration, and expanding global networks." } 
+                orgDesc: "The CJ Culture City Center is the core execution agency leading Chungju to become the 'Cultural City of Korea' and 'Gugak Content Hub City'. Taking the region's unique
         },
         { 
           ko: { org: "(주)보탬플러스", name: "이상창 이사", 
