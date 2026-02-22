@@ -66,15 +66,13 @@
         .speaker-org { font-size: 11px; color: var(--accent-yellow); margin-bottom: 6px; font-weight:500; }
         .speaker-name { font-weight: 800; font-size: 17px; }
 
-        .lunch-container { display: flex; overflow-x: auto; gap: 15px; padding-bottom: 15px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
-        .lunch-card { background: white; color: #333; border-radius: 16px; min-width: 250px; scroll-snap-align: start; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.15); display:flex; flex-direction: column;}
-        .lunch-photos { display: flex; height: 130px; background:#ddd; }
-        .lunch-photos img { width: 50%; height: 100%; object-fit: cover; border-right: 2px solid white; }
-        .lunch-photos img:last-child { border-right: none; }
-        .lunch-info { padding: 15px; display:flex; flex-direction: column; flex: 1; justify-content: space-between; }
-        .lunch-title { font-weight: 900; font-size: 16px; margin-bottom: 6px; color: var(--primary-blue); }
-        .lunch-tags { font-size: 12px; color: #666; margin-bottom: 12px; line-height: 1.4; }
-        .btn-kakao { width: 100%; padding: 10px; background: #fee500; color: #3c1e1e; border: none; border-radius: 8px; font-weight: bold; font-size: 13px; cursor: pointer; transition: 0.1s; }
+        /* [NEW] 사진 없는 버전의 맛집 가이드 스와이프 카드 UI */
+        .lunch-container { display: flex; overflow-x: auto; gap: 12px; padding-bottom: 15px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+        .lunch-card { background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%); color: #333; border-radius: 16px; min-width: 220px; padding: 20px; scroll-snap-align: start; box-shadow: 0 8px 20px rgba(0,0,0,0.15); display:flex; flex-direction: column; position: relative; border: 1px solid #eee;}
+        .lunch-emoji { font-size: 36px; margin-bottom: 10px; }
+        .lunch-title { font-weight: 900; font-size: 17px; margin-bottom: 6px; color: var(--primary-blue); word-break: keep-all;}
+        .lunch-tags { font-size: 12px; color: #666; margin-bottom: 15px; line-height: 1.5; font-weight: 500;}
+        .btn-kakao { width: 100%; padding: 12px; background: #fee500; color: #3c1e1e; border: none; border-radius: 10px; font-weight: bold; font-size: 13px; cursor: pointer; transition: 0.1s; margin-top: auto; display: flex; align-items: center; justify-content: center; gap: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);}
         .btn-kakao:active { transform: scale(0.97); }
 
         .accordion-btn { background: rgba(0,0,0,0.2); border-radius: 10px; padding: 12px; text-align: center; font-size: 13px; color: var(--accent-yellow); font-weight: bold; cursor: pointer; margin-top: 15px; transition: 0.2s; border: 1px solid rgba(255,255,255,0.2); }
@@ -108,6 +106,13 @@
         .spk-tab.active::after { content:''; position:absolute; bottom:-11px; left:0; width:100%; height:3px; background:var(--primary-blue); border-radius:2px; }
         .spk-headline { font-size: 16px; font-weight: 800; color: var(--action-red); margin-bottom: 12px; line-height: 1.4; word-break: keep-all; }
         .spk-desc-text { font-size: 14px; color: #444; line-height: 1.7; word-break: keep-all; }
+        
+        .skeleton { background: #eee; background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%); border-radius: 8px; background-size: 200% 100%; animation: 1.5s shimmer linear infinite; }
+        @keyframes shimmer { to { background-position-x: -200%; } }
+        .skeleton-card { height: 160px; display: flex; flex-direction: column; justify-content: space-between; }
+        .skeleton-text { height: 20px; width: 80%; margin-bottom: 10px; }
+        .skeleton-text.short { width: 40%; }
+        .skeleton-badge { width: 60px; height: 24px; border-radius: 12px; align-self: flex-end; }
     </style>
 </head>
 <body>
@@ -239,63 +244,38 @@
             <div class="lunch-container" id="lunch-list">
                 
                 <div class="lunch-card">
-                    <div class="lunch-photos">
-                        <img src="여기에_막국수사진1.jpg_넣으세요" alt="막국수1">
-                        <img src="여기에_막국수사진2.jpg_넣으세요" alt="막국수2">
-                    </div>
-                    <div class="lunch-info">
-                        <div class="lunch-title" id="t-r-1-title">원조중앙탑막국수 단월점</div>
-                        <div class="lunch-tags" id="t-r-1-desc">#메밀막국수 #메밀후라이드치킨<br>🚗 차량 3분 (향토음식)</div>
-                        <button class="btn-kakao" onclick="window.open('https://map.kakao.com/link/search/충주 원조중앙탑막국수 단월점')">📍 카카오맵 길찾기</button>
-                    </div>
+                    <div class="lunch-emoji">🍜🍗</div>
+                    <div class="lunch-title" id="t-r-1-title">원조중앙탑막국수 단월점</div>
+                    <div class="lunch-tags" id="t-r-1-desc">#메밀막국수 #메밀후라이드치킨<br>🚗 차량 3분 (향토음식)</div>
+                    <button class="btn-kakao" onclick="window.open('https://map.kakao.com/link/search/충주 원조중앙탑막국수 단월점')">📍 카카오맵 사진/리뷰 보기</button>
                 </div>
 
                 <div class="lunch-card">
-                    <div class="lunch-photos">
-                        <img src="여기에_공아춘사진1.jpg_넣으세요" alt="공아춘1">
-                        <img src="여기에_공아춘사진2.jpg_넣으세요" alt="공아춘2">
-                    </div>
-                    <div class="lunch-info">
-                        <div class="lunch-title" id="t-r-2-title">공아춘</div>
-                        <div class="lunch-tags" id="t-r-2-desc">#빠른회전율 #실패없는_중식<br>🚗 차량 3분</div>
-                        <button class="btn-kakao" onclick="window.open('https://map.kakao.com/link/search/충주 공아춘')">📍 카카오맵 길찾기</button>
-                    </div>
+                    <div class="lunch-emoji">🥢🥟</div>
+                    <div class="lunch-title" id="t-r-2-title">공아춘</div>
+                    <div class="lunch-tags" id="t-r-2-desc">#빠른회전율 #실패없는_중식<br>🚗 차량 3분</div>
+                    <button class="btn-kakao" onclick="window.open('https://map.kakao.com/link/search/충주 공아춘')">📍 카카오맵 사진/리뷰 보기</button>
                 </div>
 
                 <div class="lunch-card">
-                    <div class="lunch-photos">
-                        <img src="여기에_커피단월사진1.jpg_넣으세요" alt="커피단월1">
-                        <img src="여기에_커피단월사진2.jpg_넣으세요" alt="커피단월2">
-                    </div>
-                    <div class="lunch-info">
-                        <div class="lunch-title" id="t-r-3-title">커피단월</div>
-                        <div class="lunch-tags" id="t-r-3-desc">#대형로스터리 #베이커리 #네트워킹<br>🚗 차량 3분 (달천강 뷰)</div>
-                        <button class="btn-kakao" onclick="window.open('https://map.kakao.com/link/search/충주 커피단월')">📍 카카오맵 길찾기</button>
-                    </div>
+                    <div class="lunch-emoji">🍲🍗</div>
+                    <div class="lunch-title" id="t-r-3-title">장수촌</div>
+                    <div class="lunch-tags" id="t-r-3-desc">#누룽지백숙 #든든한보양식<br>🚗 차량 3분 (예약 권장)</div>
+                    <button class="btn-kakao" onclick="window.open('https://map.kakao.com/link/search/충주 단월 장수촌')">📍 카카오맵 사진/리뷰 보기</button>
                 </div>
 
                 <div class="lunch-card">
-                    <div class="lunch-photos">
-                        <img src="여기에_장수촌사진1.jpg_넣으세요" alt="장수촌1">
-                        <img src="여기에_장수촌사진2.jpg_넣으세요" alt="장수촌2">
-                    </div>
-                    <div class="lunch-info">
-                        <div class="lunch-title" id="t-r-4-title">장수촌</div>
-                        <div class="lunch-tags" id="t-r-4-desc">#누룽지백숙 #든든한보양식<br>🚗 차량 3분 (예약 권장)</div>
-                        <button class="btn-kakao" onclick="window.open('https://map.kakao.com/link/search/충주 단월 장수촌')">📍 카카오맵 길찾기</button>
-                    </div>
+                    <div class="lunch-emoji">🍛🫓</div>
+                    <div class="lunch-title" id="t-r-4-title">포카라 (인도/네팔 커리)</div>
+                    <div class="lunch-tags" id="t-r-4-desc">#이색맛집 #커리와난 #비건옵션<br>🚶‍♂️ 차량 3분 </div>
+                    <button class="btn-kakao" onclick="window.open('https://map.kakao.com/link/search/충주 단월 포카라')">📍 카카오맵 사진/리뷰 보기</button>
                 </div>
 
                 <div class="lunch-card">
-                    <div class="lunch-photos">
-                        <img src="여기에_포카라사진1.jpg_넣으세요" alt="포카라1">
-                        <img src="여기에_포카라사진2.jpg_넣으세요" alt="포카라2">
-                    </div>
-                    <div class="lunch-info">
-                        <div class="lunch-title" id="t-r-5-title">포카라 (인도/네팔 커리)</div>
-                        <div class="lunch-tags" id="t-r-5-desc">#이색맛집 #커리와난 #비건옵션<br>🚶‍♂️ 도보 5분 (캠퍼스 앞)</div>
-                        <button class="btn-kakao" onclick="window.open('https://map.kakao.com/link/search/충주 단월 포카라')">📍 카카오맵 길찾기</button>
-                    </div>
+                    <div class="lunch-emoji">☕🥐</div>
+                    <div class="lunch-title" id="t-r-5-title">커피단월</div>
+                    <div class="lunch-tags" id="t-r-5-desc">#대형로스터리 #베이커리 #네트워킹<br>🚗 차량 3분 (달천강 뷰)</div>
+                    <button class="btn-kakao" onclick="window.open('https://map.kakao.com/link/search/충주 커피단월')">📍 카카오맵 사진/리뷰 보기</button>
                 </div>
 
             </div>
@@ -519,7 +499,7 @@
                 orgDesc: "Botam Plus is a locally innovative cooperative (now a corporation) voluntarily formed by young entrepreneurs and local creators centered around Gwanagol, Chungju's original downtown. They breathe creative content into declining old downtown alleys, practicing sustainable 'placemaking'." } 
         },
         { 
-          ko: { org: "충북창조경제혁신센터", name: "심병철 책임", 
+          ko: { org: "충북창조경제혁신센터", name: "심병철 책임연구원", 
                 headline: "로컬 창업가들을 연결하여 '스스로 존립하는 온전한 지역 생태계'를 구축하는 현장 밀착형 실행가", 
                 desc: "충북창조경제혁신센터에서 로컬 크리에이터 생태계 조성을 총괄하는 책임연구원(파트장)이다. 2018년부터 혁신적인 로컬 창업가들을 찾아내 생태계의 그릇을 만들고 거버넌스를 조직해 왔으며, 강한 현장 밀착형 실행력을 지녔다.", 
                 orgHeadline: "지역 혁신 창업의 핵심 허브이자 로컬 크리에이터를 가장 선도적으로 발굴·육성하는 공공 엑셀러레이터", 
@@ -582,26 +562,23 @@
             "t-ws-6": "현재/미래 자원 매핑 (Next Step 구상)",
             "t-ws-7": "최종 결과 공유 및 비전 통합",
             
-            // 맛집 가이드
             "t-lunch-title": "🍔 주변 맛집 가이드 <span style='font-size:11px; font-weight:normal; color:#aaa;'>(Swipe & Click!)</span>",
             "t-r-1-title": "원조중앙탑막국수 단월점",
             "t-r-1-desc": "#메밀막국수 #메밀후라이드치킨<br>🚗 차량 3분 (향토음식)",
             "t-r-2-title": "공아춘",
             "t-r-2-desc": "#빠른회전율 #실패없는_중식<br>🚗 차량 3분",
-            "t-r-3-title": "커피단월",
-            "t-r-3-desc": "#대형로스터리 #베이커리 #네트워킹<br>🚗 차량 3분 (달천강 뷰)",
-            "t-r-4-title": "장수촌",
-            "t-r-4-desc": "#누룽지백숙 #든든한보양식<br>🚗 차량 3분 (예약 권장)",
-            "t-r-5-title": "포카라 (인도/네팔 커리)",
-            "t-r-5-desc": "#이색맛집 #커리와난 #비건옵션<br>🚶‍♂️ 도보 5분 (캠퍼스 앞)",
+            "t-r-3-title": "장수촌",
+            "t-r-3-desc": "#누룽지백숙 #든든한보양식<br>🚗 차량 3분 (예약 권장)",
+            "t-r-4-title": "포카라 (인도/네팔 커리)",
+            "t-r-4-desc": "#이색맛집 #커리와난 #비건옵션<br>🚶‍♂️ 도보 5분 (캠퍼스 앞)",
+            "t-r-5-title": "커피단월",
+            "t-r-5-desc": "#대형로스터리 #베이커리 #네트워킹<br>🚗 차량 3분 (달천강 뷰)",
 
             "t-loc-label1": "건국대학교 글로컬캠퍼스<br>중원도서관 숨스퀘어",
             "t-loc-label2": "건국대학교 글로컬캠퍼스<br>중원도서관 숨스퀘어",
             "t-speaker-title": "🎙️ 주요 연사 <span style='font-size:11px; font-weight:normal; color:#aaa;'>(Click!)</span>",
             "t-map-title": "🗺️ 오시는 길",
             "t-map-btn": "중원도서관 숨스퀘어 지도보기",
-            "t-file-title": "📂 자료실",
-            "t-file-btn": "[포럼 자료집] 다운로드",
             "t-match-title": "참가자 네트워킹 👥",
             "t-match-sub": "나의 프로필 기반 맞춤 추천",
             "t-match-msg": "님을 위한 네트워킹 제안",
@@ -657,26 +634,23 @@
             "t-ws-6": "Current/Future Resource Mapping",
             "t-ws-7": "Final Result Sharing & Vision Integration",
 
-            // 맛집 가이드 영문
             "t-lunch-title": "🍔 Nearby Lunch Guide <span style='font-size:11px; font-weight:normal; color:#aaa;'>(Swipe & Click!)</span>",
             "t-r-1-title": "Jungangtap Makguksu",
             "t-r-1-desc": "#Buckwheat_Noodles #Fried_Chicken<br>🚗 3 mins (Local Food)",
             "t-r-2-title": "Gong-a-chun",
             "t-r-2-desc": "#Fast_Service #Chinese_Food<br>🚗 3 mins",
-            "t-r-3-title": "Coffee Danwol",
-            "t-r-3-desc": "#Large_Cafe #Bakery #Networking<br>🚗 3 mins (River View)",
-            "t-r-4-title": "Jangsuchon",
-            "t-r-4-desc": "#Chicken_Soup #Healthy_Food<br>🚗 3 mins (RSVP Rec.)",
-            "t-r-5-title": "Pokhara (Indian/Nepali)",
-            "t-r-5-desc": "#Curry #Exotic #Vegan_Option<br>🚶‍♂️ 5 min walk",
+            "t-r-3-title": "Jangsuchon",
+            "t-r-3-desc": "#Chicken_Soup #Healthy_Food<br>🚗 3 mins (RSVP Rec.)",
+            "t-r-4-title": "Pokhara (Indian/Nepali)",
+            "t-r-4-desc": "#Curry #Exotic #Vegan_Option<br>🚶‍♂️ 5 min walk",
+            "t-r-5-title": "Coffee Danwol",
+            "t-r-5-desc": "#Large_Cafe #Bakery #Networking<br>🚗 3 mins (River View)",
 
             "t-loc-label1": "Jungwon Library, Konkuk Univ.",
             "t-loc-label2": "Jungwon Library, Konkuk Univ.",
             "t-speaker-title": "🎙️ Speakers <span style='font-size:11px; font-weight:normal; color:#aaa;'>(Click!)</span>",
             "t-map-title": "🗺️ Location",
             "t-map-btn": "View Map (Jungwon Library)",
-            "t-file-title": "📂 Materials",
-            "t-file-btn": "Download PDF",
             "t-match-title": "Networking 👥",
             "t-match-sub": "Custom recommendations for you",
             "t-match-msg": "'s Networking Suggestions",
@@ -715,7 +689,7 @@
 
         const kakaoBtns = document.getElementsByClassName('btn-kakao');
         for(let btn of kakaoBtns) {
-            btn.innerText = currentLang === 'ko' ? '📍 카카오맵 길찾기' : '📍 Open KakaoMap';
+            btn.innerText = currentLang === 'ko' ? '📍 카카오맵 사진/리뷰 보기' : '📍 Open KakaoMap';
         }
     }
 
