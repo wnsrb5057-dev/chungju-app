@@ -243,18 +243,22 @@
             <div class="speaker-container" id="speaker-list">
                 </div>
 
-            <h4 id="t-map-title" style="margin:25px 0 10px 0;">🗺️ 오시는 길</h4>
-            <button class="btn btn-dark" style="margin-bottom:10px; font-weight:normal;" onclick="window.open('https://map.kakao.com/link/search/건국대학교글로컬캠퍼스중원도서관')">
-                📍 <span id="t-map-btn">중원도서관 숨스퀘어 지도보기</span>
-            </button>
-            <button class="btn btn-dark" style="font-weight:normal;" onclick="alert('준비 중입니다.')">📄 <span id="t-file-btn">[포럼 자료집] 다운로드</span></button>
+            <h4 id="t-map-title" style="margin:25px 0 10px 0;">🗺️ 오시는 길 및 자료</h4>
+            <div style="display:flex; gap:10px; margin-bottom:10px;">
+                <button class="btn btn-dark" style="margin:0; font-weight:normal; font-size:14px; flex:1;" onclick="window.open('https://map.kakao.com/link/search/건국대학교글로컬캠퍼스중원도서관')">
+                    📍 <span id="t-map-btn">숨스퀘어 지도</span>
+                </button>
+                <button class="btn btn-primary" style="margin:0; font-weight:bold; font-size:14px; flex:1.2;" onclick="window.open('https://drive.google.com/file/d/1pnz1Sy-AnBpAT-1VQmHzR7dWzzoXywBT/view?usp=sharing')">
+                    📄 <span id="t-file-btn">[포럼 자료집] 다운로드</span>
+                </button>
+            </div>
 
             <h4 id="t-lunch-title" style="margin:35px 0 10px 0;">🍔 주변 맛집 가이드 <span style="font-size:11px; font-weight:normal; color:#aaa;">(Swipe & Click!)</span></h4>
             <div class="lunch-container" id="lunch-list">
                 <div class="lunch-card">
                     <div class="lunch-emoji">🍜🍗</div>
                     <div class="lunch-title" id="t-r-1-title">원조중앙탑막국수 단월점</div>
-                    <div class="lunch-tags" id="t-r-1-desc">#메밀막국수 #메밀만두<br>🚗 차량 3분 (원조음식)</div>
+                    <div class="lunch-tags" id="t-r-1-desc">#메밀막국수 #메밀후라이드치킨<br>🚗 차량 3분 (향토음식)</div>
                     <button class="btn-kakao" onclick="window.open('https://map.kakao.com/link/search/충주 원조중앙탑막국수 단월점')">📍 카카오맵 사진/리뷰 보기</button>
                 </div>
                 <div class="lunch-card">
@@ -272,7 +276,7 @@
                 <div class="lunch-card">
                     <div class="lunch-emoji">🍛🫓</div>
                     <div class="lunch-title" id="t-r-4-title">포카라 (인도/네팔 커리)</div>
-                    <div class="lunch-tags" id="t-r-4-desc">#이색맛집 #커리와난 #비건옵션<br>🚗 차량 3분</div>
+                    <div class="lunch-tags" id="t-r-4-desc">#이색맛집 #커리와난 #비건옵션<br>🚶‍♂️ 도보 5분 (캠퍼스 앞)</div>
                     <button class="btn-kakao" onclick="window.open('https://map.kakao.com/link/search/충주 단월 포카라')">📍 카카오맵 사진/리뷰 보기</button>
                 </div>
                 <div class="lunch-card">
@@ -498,7 +502,7 @@
                 orgDesc: "Botam Plus is a locally innovative cooperative (now a corporation) voluntarily formed by young entrepreneurs and local creators centered around Gwanagol, Chungju's original downtown. They breathe creative content into declining old downtown alleys, practicing sustainable 'placemaking'." } 
         },
         { 
-          ko: { org: "충북창조경제혁신센터", name: "심병철 책임연구원", 
+          ko: { org: "충북창조경제혁신센터", name: "심병철 책임", 
                 headline: "로컬 창업가들을 연결하여 '스스로 존립하는 온전한 지역 생태계'를 구축하는 현장 밀착형 실행가", 
                 desc: "충북창조경제혁신센터에서 로컬 크리에이터 생태계 조성을 총괄하는 책임연구원(파트장)이다. 2018년부터 혁신적인 로컬 창업가들을 찾아내 생태계의 그릇을 만들고 거버넌스를 조직해 왔으며, 강한 현장 밀착형 실행력을 지녔다.", 
                 orgHeadline: "지역 혁신 창업의 핵심 허브이자 로컬 크리에이터를 가장 선도적으로 발굴·육성하는 공공 엑셀러레이터", 
@@ -563,21 +567,22 @@
             
             "t-lunch-title": "🍔 주변 맛집 가이드 <span style='font-size:11px; font-weight:normal; color:#aaa;'>(Swipe & Click!)</span>",
             "t-r-1-title": "원조중앙탑막국수 단월점",
-            "t-r-1-desc": "#메밀막국수 #메밀후라이드치킨<br>🚗 차량 3분 (향토음식)",
+            "t-r-1-desc": "#메밀막국수 #메밀만두<br>🚗 차량 3분 (향토음식)",
             "t-r-2-title": "공아춘",
             "t-r-2-desc": "#빠른회전율 #실패없는_중식<br>🚗 차량 3분",
             "t-r-3-title": "장수촌",
             "t-r-3-desc": "#누룽지백숙 #든든한보양식<br>🚗 차량 3분 (예약 권장)",
             "t-r-4-title": "포카라 (인도/네팔 커리)",
-            "t-r-4-desc": "#이색맛집 #커리와난 #비건옵션<br>🚶‍♂️ 도보 5분 (캠퍼스 앞)",
+            "t-r-4-desc": "#이색맛집 #커리와난 #비건옵션<br>🚗 차량 3분",
             "t-r-5-title": "커피단월",
             "t-r-5-desc": "#대형로스터리 #베이커리 #네트워킹<br>🚗 차량 3분 (달천강 뷰)",
 
             "t-loc-label1": "건국대학교 글로컬캠퍼스<br>중원도서관 숨스퀘어",
             "t-loc-label2": "건국대학교 글로컬캠퍼스<br>중원도서관 숨스퀘어",
             "t-speaker-title": "🎙️ 주요 연사 <span style='font-size:11px; font-weight:normal; color:#aaa;'>(Click!)</span>",
-            "t-map-title": "🗺️ 오시는 길",
-            "t-map-btn": "중원도서관 숨스퀘어 지도보기",
+            "t-map-title": "🗺️ 오시는 길 및 자료",
+            "t-map-btn": "숨스퀘어 지도",
+            "t-file-btn": "[포럼 자료집] 다운로드",
             "t-match-title": "참가자 네트워킹 👥",
             "t-match-sub": "나의 프로필 기반 맞춤 추천",
             "t-match-msg": "님을 위한 네트워킹 제안",
@@ -648,8 +653,9 @@
             "t-loc-label1": "Jungwon Library, Konkuk Univ.",
             "t-loc-label2": "Jungwon Library, Konkuk Univ.",
             "t-speaker-title": "🎙️ Speakers <span style='font-size:11px; font-weight:normal; color:#aaa;'>(Click!)</span>",
-            "t-map-title": "🗺️ Location",
-            "t-map-btn": "View Map (Jungwon Library)",
+            "t-map-title": "🗺️ Location & Materials",
+            "t-map-btn": "View Map",
+            "t-file-btn": "Download PDF",
             "t-match-title": "Networking 👥",
             "t-match-sub": "Custom recommendations for you",
             "t-match-msg": "'s Networking Suggestions",
@@ -767,7 +773,6 @@
     window.onload = function() {
         renderSpeakers(); 
         
-        // [NEW] URL에 ?checkin=true 가 있으면 자동 체크인 로직 실행
         const urlParams = new URLSearchParams(window.location.search);
         const isAutoCheckin = urlParams.get('checkin') === 'true';
 
@@ -775,14 +780,12 @@
         if (savedUser) {
             userData = JSON.parse(savedUser);
             
-            // 이미 정보가 있고 자동 체크인 링크를 탔다면 즉시 서버에 출석 요청
             if (isAutoCheckin && userData.name && userData.phone) {
                 fetch(GOOGLE_SCRIPT_URL, { 
                     method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain" }, 
                     body: JSON.stringify({ action: "checkin", name: userData.name }) 
                 });
                 alert("✅ 행사장 출석 확인이 완료되었습니다!");
-                // 파라미터 지우기 (새로고침 시 무한 알림 방지)
                 window.history.replaceState({}, document.title, window.location.pathname);
             }
 
@@ -794,7 +797,6 @@
                 initUserMode();
             }
         } else {
-            // [NEW] 처음 온 사람인데 체크인 링크를 탔다면 메시지 표시
             if(isAutoCheckin) {
                 document.getElementById('auto-checkin-msg').style.display = 'block';
             }
@@ -839,7 +841,6 @@
                 userData = { ...userData, ...found }; 
                 localStorage.setItem('dynamite_user', JSON.stringify(userData));
                 
-                // [NEW] 로그인 시 URL에 체크인 파라미터가 있으면 즉시 출석
                 const urlParams = new URLSearchParams(window.location.search);
                 if(urlParams.get('checkin') === 'true') {
                     fetch(GOOGLE_SCRIPT_URL, { 
@@ -902,7 +903,6 @@
             alert("✅ 프로필 등록 완료!");
             localStorage.setItem('dynamite_user', JSON.stringify(userData));
             
-            // [NEW] 가입 완료 시 URL에 체크인 파라미터가 있으면 즉시 출석
             const urlParams = new URLSearchParams(window.location.search);
             if(urlParams.get('checkin') === 'true') {
                 fetch(GOOGLE_SCRIPT_URL, { 
