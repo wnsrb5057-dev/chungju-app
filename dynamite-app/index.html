@@ -1090,21 +1090,22 @@ s<!DOCTYPE html>
         fetch(GOOGLE_SCRIPT_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain" }, body: JSON.stringify({ action: "respond_match", sender: currentRequester, receiver: userData.name, response: response }) });
     }
 
-    function postQuestion() {
+   function postQuestion() {
         const input = document.getElementById('chatInput');
         if(!input.value) return;
         const board = document.getElementById('qa-board');
         
-        const tempMsg = `<div class="chat-msg" style="opacity:0.5;"><b>${userData.name}:</b> 전송/번역 중...</div>`;
+        // 참가자 본인 화면에 출력되는 전송 대기 메시지 익명 처리
+        const tempMsg = `<div class="chat-msg" style="opacity:0.5;"><b>익명:</b> 전송/번역 중...</div>`;
         board.innerHTML += tempMsg;
         
+        // 서버에는 기존과 동일하게 실명(userData.name) 전송
         fetch(GOOGLE_SCRIPT_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain" }, body: JSON.stringify({ action: "ask", name: userData.name, question: input.value }) }).then(() => {
             input.value = '';
             setTimeout(fetchQuestions, 1000); 
         });
     }
 
-    // [버그 수정 및 순서 개편 완료] 시간순 정렬 + 자동 스크롤
     function fetchQuestions() {
         fetch(GOOGLE_SCRIPT_URL + "?action=get_questions").then(res => res.json()).then(data => {
             const feed = document.getElementById('admin-qa-feed'); 
@@ -1114,25 +1115,26 @@ s<!DOCTYPE html>
             if(data.length === 0) { 
                 if(feed) feed.innerHTML = "<div style='padding:10px; color:#aaa;'>등록된 질문이 없습니다.</div>"; 
                 if(bigFeed) bigFeed.innerHTML = "<div style='text-align:center; color:#666; margin-top:50px;'>No questions yet.</div>";
+                if(board) board.innerHTML = "<div style='color:#999; text-align:center; margin-top:20px;'>No messages yet.</div>";
                 return; 
             }
             
-            // 1. 일반 참가자 Q&A 화면 (시간순)
+            // 1. 일반 참가자 Q&A 화면 (익명 노출)
             if(board) {
-                board.innerHTML = data.map(q => `<div class="chat-msg"><b>${q.name}:</b><br>${q.text}</div>`).join('');
-                board.scrollTop = board.scrollHeight; // 새 질문 오면 맨 아래로 자동 스크롤
+                board.innerHTML = data.map(q => `<div class="chat-msg"><b>익명:</b><br>${q.text}</div>`).join('');
+                board.scrollTop = 0; 
             }
             
-            // 2. 관리자 조작 패널 Q&A 피드 (시간순)
+            // 2. 관리자 조작 패널 Q&A 피드 (실명 유지 - 식별용)
             if(feed) {
                 feed.innerHTML = data.map(q => `<div style="background:#444; padding:10px; margin-bottom:5px; border-radius:5px; font-size:14px;"><span style="color:var(--accent-yellow)">[${q.name}]</span><br>${q.text}</div>`).join('');
-                feed.scrollTop = 0
+                feed.scrollTop = 0; 
             }
             
-            // 3. 대형 스크린(Big Screen) 화면 (시간순)
+            // 3. 대형 스크린(Big Screen) 화면 (익명 노출)
             if(bigFeed) {
-                bigFeed.innerHTML = data.map(q => `<div class="big-qa-item"><span class="big-qa-author" style="color:var(--accent-yellow);">[${q.name}]</span><br><div style="margin-top:10px;">${q.text}</div></div>`).join('');
-                bigFeed.scrollTop = 0
+                bigFeed.innerHTML = data.map(q => `<div class="big-qa-item"><span class="big-qa-author" style="color:var(--accent-yellow);">[익명]</span><br><div style="margin-top:10px;">${q.text}</div></div>`).join('');
+                bigFeed.scrollTop = 0; 
             }
             
         }).catch(e => console.log('QnA Load Error:', e));
