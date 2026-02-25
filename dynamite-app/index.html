@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+s<!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -1132,7 +1132,7 @@
             // 3. 대형 스크린(Big Screen) 화면 (시간순)
             if(bigFeed) {
                 bigFeed.innerHTML = data.map(q => `<div class="big-qa-item"><span class="big-qa-author" style="color:var(--accent-yellow);">[${q.name}]</span><br><div style="margin-top:10px;">${q.text}</div></div>`).join('');
-                bigFeed.scrollTop = bigFeed.scrollHeight; // 새 질문 오면 화면 맨 아래로 자동 스크롤
+                bigFeed.scrollTop = 0
             }
             
         }).catch(e => console.log('QnA Load Error:', e));
