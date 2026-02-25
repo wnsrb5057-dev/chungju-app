@@ -1126,7 +1126,7 @@ s<!DOCTYPE html>
             // 2. 관리자 조작 패널 Q&A 피드 (시간순)
             if(feed) {
                 feed.innerHTML = data.map(q => `<div style="background:#444; padding:10px; margin-bottom:5px; border-radius:5px; font-size:14px;"><span style="color:var(--accent-yellow)">[${q.name}]</span><br>${q.text}</div>`).join('');
-                feed.scrollTop = feed.scrollHeight; // 새 질문 오면 맨 아래로 자동 스크롤
+                feed.scrollTop = 0
             }
             
             // 3. 대형 스크린(Big Screen) 화면 (시간순)
